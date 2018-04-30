@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Checkers_LogicAndDataSection;
+using Checkers_UI;
 
 namespace Checkers_GameManager
 {
@@ -45,7 +46,8 @@ namespace Checkers_GameManager
 
                 while (!m_isRequestedMoveLegal)
                 {
-                    m_RequestedMove = UI.ReadAndCheckInput();
+                    
+                    m_RequestedMove = input.ReadAndCheckInput();
                     if (Checkers_LogicAndDataSection.GameBoard.CheckIfMoveIsOk(m_RequestedMove))
                     {
                         m_isRequestedMoveLegal = true;

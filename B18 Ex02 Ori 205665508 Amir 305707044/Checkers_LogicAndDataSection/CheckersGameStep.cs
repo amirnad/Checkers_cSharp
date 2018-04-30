@@ -1,17 +1,12 @@
 ﻿namespace Checkers_LogicAndDataSection
 {
-    public struct Point
-    {
-        public int x;
-        public int y;
-    }
 
     public struct CheckersGameStep
     {
 
         private Point currentSoldierPosition;
         private Point requestedSoldierPosition;
-
+        makeAMove
         public Point CurrentPosition
         {
             get { return currentSoldierPosition; }
