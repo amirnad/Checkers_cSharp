@@ -1,12 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Checkers_LogicAndDataSection
 {
-    class SessionData
+    public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
+    public class SessionData
     {
+        public static eBoardSizeOptions m_BoardSize = eBoardSizeOptions.Undefined;
+        private static int m_SessionScore;
+        private static int m_SessionPoints;
+        public static string lastMove;
+
+        public static void Main()
+        {
+            string name = System.Console.ReadLine();
+            Player p1 = new Player();
+
+            p1.InitializePlayer(name);
+
+        }
     }
 }
