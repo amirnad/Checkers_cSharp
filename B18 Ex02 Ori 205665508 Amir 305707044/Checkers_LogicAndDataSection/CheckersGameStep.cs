@@ -6,8 +6,8 @@
 
         private Point currentSoldierPosition;
         private Point requestedSoldierPosition;
-
-        public Point setCurrentPosition
+        makeAMove
+        public Point CurrentPosition
         {
             get { return currentSoldierPosition; }
             set
@@ -16,7 +16,7 @@
                 currentSoldierPosition.y = value.y;
             }
         }
-        public Point setRequestedPosition
+        public Point RequestedPosition
         {
             get { return requestedSoldierPosition; }
             set
@@ -25,6 +25,7 @@
                 requestedSoldierPosition.y = value.y;
             }
         }
+
 
     }
 }
