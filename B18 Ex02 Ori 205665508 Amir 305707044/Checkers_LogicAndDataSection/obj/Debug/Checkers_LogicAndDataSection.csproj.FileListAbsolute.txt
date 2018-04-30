@@ -4,3 +4,9 @@ C:\Users\Amir Nadav\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir
 C:\Users\Amir Nadav\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\bin\Debug\Checkers_LogicAndDataSection.pdb
 C:\Users\Amir Nadav\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\obj\Debug\Checkers_LogicAndDataSection.exe
 C:\Users\Amir Nadav\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\obj\Debug\Checkers_LogicAndDataSection.pdb
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\bin\Debug\Checkers_LogicAndDataSection.exe.config
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\bin\Debug\Checkers_LogicAndDataSection.exe
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\bin\Debug\Checkers_LogicAndDataSection.pdb
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\obj\Debug\Checkers_LogicAndDataSection.csprojResolveAssemblyReference.cache
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\obj\Debug\Checkers_LogicAndDataSection.exe
+C:\Users\lerman\Documents\GitHub\Checkers_cSharp\B18 Ex02 Ori 205665508 Amir 305707044\Checkers_LogicAndDataSection\obj\Debug\Checkers_LogicAndDataSection.pdb

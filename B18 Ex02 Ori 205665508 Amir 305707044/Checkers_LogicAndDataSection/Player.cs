@@ -1,4 +1,6 @@
-﻿namespace Checkers_LogicAndDataSection
+﻿using System;
+
+namespace Checkers_LogicAndDataSection
 {
     public enum ePlayerOptions { Player1, Player2, ComputerPlayer }
     public class Player
@@ -62,6 +64,11 @@
                     numberOfSoldiers = k_NumberOfSoldiersInLargeBoard;
                     break;
             }
+        }
+
+        public void MakeAMove(CheckersGameStep m_RequestedMove, GameBoard i_CheckersBoard)
+        {
+            
         }
 
         //public void move()
