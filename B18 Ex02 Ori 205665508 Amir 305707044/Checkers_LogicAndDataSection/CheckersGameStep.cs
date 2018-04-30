@@ -1,10 +1,5 @@
 ﻿namespace Checkers_LogicAndDataSection
 {
-    public struct Point
-    {
-        public int x;
-        public int y;
-    }
 
     public struct CheckersGameStep
     {
@@ -12,7 +7,7 @@
         private Point currentSoldierPosition;
         private Point requestedSoldierPosition;
 
-        private Point setCurrentPosition
+        public Point setCurrentPosition
         {
             get { return currentSoldierPosition; }
             set
@@ -21,7 +16,7 @@
                 currentSoldierPosition.y = value.y;
             }
         }
-        private Point setRequestedPosition
+        public Point setRequestedPosition
         {
             get { return requestedSoldierPosition; }
             set
