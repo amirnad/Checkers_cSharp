@@ -36,7 +36,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="input.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="Output.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

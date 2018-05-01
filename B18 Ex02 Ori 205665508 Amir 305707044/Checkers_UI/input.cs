@@ -7,7 +7,7 @@ using Checkers_LogicAndDataSection;
 namespace Checkers_UI
 {
 
-    public class input
+    public class Input
     {
         public static int i = 0;
         public static void Main()
@@ -18,17 +18,20 @@ namespace Checkers_UI
 
         public static CheckersGameStep ReadAndCheckInput()
         {
-            string[] inputs = {"ab>Dc","  Ac>Be "};
+            string[] inputs = { "ab>Dc", "  Ac>Be " };
             bool[] validation = new bool[3];
 
             string i_inputFromUser = string.Empty;
 
             //goto xy clear and that stuff
             //i_inputFromUser = Console.ReadLine();
-           
+
             CheckersGameStep result = new CheckersGameStep();
 
-            while ( !(validation[0] && validation[1] && validation[2]))
+            Point currentPoint = new Point();
+            Point NextPoint = new Point();
+
+            while (!(validation[0] && validation[1] && validation[2]))
             {
                 validation[0] = false;
                 validation[1] = false;
@@ -38,15 +41,12 @@ namespace Checkers_UI
 
 
 
-                Point currentPoint = new Point();
-                Point NextPoint = new Point();
-
                 string processedString = i_inputFromUser.Replace(" ", "");
 
                 if (char.IsUpper(processedString[0]) && char.IsUpper(processedString[3]))
                 {
-                    currentPoint.x = (int)(processedString[0]-'A');
-                    NextPoint.x = (int)(processedString[3]-'A');
+                    currentPoint.x = (int)(processedString[0] - 'A');
+                    NextPoint.x = (int)(processedString[3] - 'A');
                     validation[0] = true;
                 }
                 if (char.IsLower(processedString[1]) && char.IsLower(processedString[4]))
@@ -61,11 +61,12 @@ namespace Checkers_UI
                     validation[2] = true;
                 }
 
-                 result.setCurrentPosition = currentPoint;
-                 result.setRequestedPosition = NextPoint;
 
                 i++;
             }
+
+            result.CurrentPosition = currentPoint;
+            result.RequestedPosition= NextPoint;
             return result;
 
 

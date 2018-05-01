@@ -8,13 +8,15 @@ using Checkers_UI;
 
 namespace Checkers_GameManager
 {
-
+    public enum moveTypes {eatMove, }
     class Program
     {
 
         public static void Main()
         {
             CheckersGame myGame = new CheckersGame();
+          
+
             myGame.RunCheckersGame();
 
         }
@@ -36,9 +38,11 @@ namespace Checkers_GameManager
             m_IsGameOn = true;
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings = setup();//Checkers_UI.class.setup
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
+            eMoveTypes currentMoveType = eMoveTypes.Undefined;
 
             InitializePlayers(GameDemoSettings);
-            InitializeGameBoard();
+            m_CheckersBoard.InitializeCheckersBoard();
+
 
             while (m_IsGameOn)
             {
@@ -47,13 +51,14 @@ namespace Checkers_GameManager
                 while (!m_isRequestedMoveLegal)
                 {
                     
-                    m_RequestedMove = input.ReadAndCheckInput();
-                    if (Checkers_LogicAndDataSection.GameBoard.CheckIfMoveIsOk(m_RequestedMove))
+                    m_RequestedMove = Input.ReadAndCheckInput();
+                    currentMoveType = m_CheckersBoard.SortMoveType(m_RequestedMove);
+                    if (currentMoveType != eMoveTypes.Undefined)
                     {
                         m_isRequestedMoveLegal = true;
                     }
                 }
-                m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
+                //  m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard,currentMoveType); //at the end of this method - we are ready to get the next move in the game
             }
 
 
@@ -63,7 +68,14 @@ namespace Checkers_GameManager
   
         private Player GetNextPlayer()
         {
-
+            if(SessionData.m_currentActivePlayer== ePlayerOptions.Player1)
+            {
+                return m_Player1;
+            }
+            else//pc also sits at player2 spot
+            {
+                return m_Player2;
+            }
         }
 
         private void InitializePlayers(InitialGameSetting i_NameSettings)
@@ -87,7 +99,7 @@ namespace Checkers_GameManager
             res.player1Name = "amir";
             res.player2Name = "ori";
             res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer;
-            res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.MediumBoard;
+            res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.SmallBoard;
 
             return res;
         }

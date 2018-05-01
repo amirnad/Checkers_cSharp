@@ -4,13 +4,14 @@ namespace Checkers_LogicAndDataSection
 {
     public enum ePlayerOptions { Player1, Player2, ComputerPlayer }
     public enum eMoveTypes { EatMove, RegularMove , Undefined }
+    
 
     public class Player
     {
         public const int k_NoSoldiers = 0;
         public const int k_NumberOfSoldiersInSmallBoard = 6;
         public const int k_NumberOfSoldiersInMediumBoard = 12;
-        public const int k_NumberOfSoldiersInLargeBoard = 15;
+        public const int k_NumberOfSoldiersInLargeBoard = 20;
 
 
         private ePlayerOptions m_PlayerId;
@@ -77,39 +78,39 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
-        {
-            Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
-            MovementType typeOfMove;
-            switch (m_PlayerId)
-            {
-                case ePlayerOptions.ComputerPlayer:
-                    break;
-                case ePlayerOptions.Player1:
-                case ePlayerOptions.Player2:
-                    typeOfMove = io_CheckersBoard.MoveSoldier(io_MoveToExecute);
-                    break;
-            }
+        //public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
+        //{
+        //    GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
+        //    MovementType typeOfMove;
+        //    switch (m_PlayerId)
+        //    {
+        //        case ePlayerOptions.ComputerPlayer:
+        //            break;
+        //        case ePlayerOptions.Player1:
+        //        case ePlayerOptions.Player2:
+        //            typeOfMove = io_CheckersBoard.MoveSoldier(io_MoveToExecute);
+        //            break;
+        //    }
 
-            currentSoldierToMove.UpdatePossibleMovements(typeOfMove);
-            if (typeOfMove.KingMove)
-            {
-                currentSoldierToMove.BecomeAKing();
-            }
+        //    currentSoldierToMove.UpdatePossibleMovements(typeOfMove);
+        //    if (typeOfMove.KingMove)
+        //    {
+        //        currentSoldierToMove.BecomeAKing();
+        //    }
 
-            if (typeOfMove.Type != eMoveTypes.EatMove)
-            {
-                SessionData.ChangeTurn();
-            }
-            else
-            {
-                if(currentSoldierToMove.PossibleMovements.length == 0)
-                {
-                    SessionData.ChangeTurn();
-                }
-            }
-            //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
-        }
+        //    if (typeOfMove.Type != eMoveTypes.EatMove)
+        //    {
+        //        SessionData.ChangeTurn();
+        //    }
+        //    else
+        //    {
+        //        if (currentSoldierToMove.PossibleMovements.length == 0)
+        //        {
+        //            SessionData.ChangeTurn();
+        //        }
+        //    }
+        //    //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
+        //}
 
         //public void move()
         //{

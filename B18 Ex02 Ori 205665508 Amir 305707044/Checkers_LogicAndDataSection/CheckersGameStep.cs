@@ -6,7 +6,6 @@
 
         private Point currentSoldierPosition;
         private Point requestedSoldierPosition;
-        makeAMove
         public Point CurrentPosition
         {
             get { return currentSoldierPosition; }

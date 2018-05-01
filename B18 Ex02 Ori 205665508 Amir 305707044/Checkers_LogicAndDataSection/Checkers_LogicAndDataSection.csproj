@@ -38,12 +38,10 @@
   <ItemGroup>
     <Compile Include="CheckersGameStep.cs" />
     <Compile Include="GameBoard.cs" />
-
     <Compile Include="InitialGameSetting.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="point.cs" />
     <Compile Include="SessionData.cs" />
-    <Compile Include="Soldier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
