@@ -52,7 +52,7 @@ namespace Checkers_GameManager
                 {
                     
                     m_RequestedMove = Input.ReadAndCheckInput();
-                    currentMoveType = m_CheckersBoard.SortMoveType(m_RequestedMove);
+                    currentMoveType = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
                     if (currentMoveType != eMoveTypes.Undefined)
                     {
                         m_isRequestedMoveLegal = true;
