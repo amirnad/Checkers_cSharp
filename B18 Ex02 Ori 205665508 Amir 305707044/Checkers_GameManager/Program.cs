@@ -8,7 +8,7 @@ using Checkers_UI;
 
 namespace Checkers_GameManager
 {
-    public enum moveTypes {eatMove, }
+    
     class Program
     {
 
@@ -38,7 +38,9 @@ namespace Checkers_GameManager
             m_IsGameOn = true;
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings = setup();//Checkers_UI.class.setup
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
-            eMoveTypes currentMoveType = eMoveTypes.Undefined;
+            CheckersGameStep.MoveType currentMoveType = CheckersGameStep.MoveType.initalize();
+            
+
 
             InitializePlayers(GameDemoSettings);
             m_CheckersBoard.InitializeCheckersBoard();
@@ -50,12 +52,15 @@ namespace Checkers_GameManager
 
                 while (!m_isRequestedMoveLegal)
                 {
-                    
                     m_RequestedMove = Input.ReadAndCheckInput();
-                    currentMoveType = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
-                    if (currentMoveType != eMoveTypes.Undefined)
+                    m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined)
                     {
                         m_isRequestedMoveLegal = true;
+                    }
+                    if (!m_isRequestedMoveLegal)
+                    {
+                        Output.InputException();
                     }
                 }
                 //  m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard,currentMoveType); //at the end of this method - we are ready to get the next move in the game
@@ -78,7 +83,7 @@ namespace Checkers_GameManager
             }
         }
 
-        private void InitializePlayers(InitialGameSetting i_NameSettings)
+        public void InitializePlayers(InitialGameSetting i_NameSettings)
         {
             m_Player1.InitializePlayer(i_NameSettings.player1Name, Checkers_LogicAndDataSection.ePlayerOptions.Player1);
             switch (Checkers_LogicAndDataSection.SessionData.gameType)

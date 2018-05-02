@@ -30,8 +30,9 @@ namespace Checkers_UI
 
             Point currentPoint = new Point();
             Point NextPoint = new Point();
+            bool valid = false;
 
-            while (!(validation[0] && validation[1] && validation[2]))
+            while (!valid)
             {
                 validation[0] = false;
                 validation[1] = false;
@@ -60,8 +61,9 @@ namespace Checkers_UI
                 {
                     validation[2] = true;
                 }
+                valid = (validation[0] && validation[1] && validation[2]);
 
-
+                if (valid)
                 i++;
             }
 

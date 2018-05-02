@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Checkers_UI
 {
-    class Output
+    public class Output
     {
         public static void printPoint(Checkers_LogicAndDataSection.Point pt)
         {
