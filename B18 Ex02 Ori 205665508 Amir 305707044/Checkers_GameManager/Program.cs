@@ -27,9 +27,9 @@ namespace Checkers_GameManager
         private const int k_maxGamePlayers = 2;
         private bool m_IsGameOn = false;
         private Checkers_LogicAndDataSection.GameBoard m_CheckersBoard = new Checkers_LogicAndDataSection.GameBoard();
-        private Checkers_LogicAndDataSection.Player m_Player1 = new Checkers_LogicAndDataSection.Player();
-        private Checkers_LogicAndDataSection.Player m_Player2 = new Checkers_LogicAndDataSection.Player();
-        private Player m_currentActivePlayer;
+        private Checkers_LogicAndDataSection.Player m_Player1 = new Checkers_LogicAndDataSection.Player();//problem
+        private Checkers_LogicAndDataSection.Player m_Player2 = new Checkers_LogicAndDataSection.Player();//problem
+        private Player m_currentActivePlayer;//o.k
         private bool m_isRequestedMoveLegal = false;
         private Checkers_LogicAndDataSection.CheckersGameStep m_RequestedMove = new Checkers_LogicAndDataSection.CheckersGameStep();
 
