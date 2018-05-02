@@ -3,8 +3,8 @@
 namespace Checkers_LogicAndDataSection
 {
     public enum ePlayerOptions { Player1, Player2, ComputerPlayer }
-    public enum eMoveTypes { EatMove, RegularMove , Undefined }
-    
+    public enum eMoveTypes { EatMove, RegularMove, Undefined }
+
 
     public class Player
     {
@@ -81,15 +81,9 @@ namespace Checkers_LogicAndDataSection
         public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
         {
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
-            switch (m_PlayerId)
-            {
-                case ePlayerOptions.ComputerPlayer:
-                    break;
-                case ePlayerOptions.Player1:
-                case ePlayerOptions.Player2:
-                     io_CheckersBoard.MoveSoldier(io_MoveToExecute);
-                    break;
-            }
+
+            io_CheckersBoard.MoveSoldier(io_MoveToExecute);
+
 
             currentSoldierToMove.UpdatePossibleMovements(io_MoveToExecute);
 
@@ -112,19 +106,5 @@ namespace Checkers_LogicAndDataSection
             //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
         }
 
-        public void move()
-        {
-            switch (m_PlayerId)
-            {
-                case ePlayerOptions.ComputerPlayer:
-                    movePcPlayer();
-                    break;
-                case ePlayerOptions.Player1:
-                case ePlayerOptions.Player2:
-                    moveHumanPlayer();
-                    break;
-
-            }
-        }
     }
 }

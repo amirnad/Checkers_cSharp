@@ -60,7 +60,7 @@ namespace Checkers_GameManager
                         Output.InputException();
                     }
                 }
-                //  m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard,currentMoveType); //at the end of this method - we are ready to get the next move in the game
+                  //m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard,currentMoveType); //at the end of this method - we are ready to get the next move in the game
             }
 
 

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using static System.Math;
 namespace Checkers_LogicAndDataSection
 {
     public class GameBoard
     {
 
         private List <Soldier> computerArmy = null;//in case of cpu this well get filled
-        private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
+       // private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
 
 
         private Soldier[,] m_CheckersBoard = null;
@@ -242,6 +242,30 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
+        internal void MoveSoldier(CheckersGameStep io_MoveToExecute)
+        {
+            Soldier theOneWeMove = GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
+            m_CheckersBoard[io_MoveToExecute.CurrentPosition.x, io_MoveToExecute.CurrentPosition.y] = null;
+            m_CheckersBoard[io_MoveToExecute.RequestedPosition.x, io_MoveToExecute.RequestedPosition.y] = theOneWeMove;
+            
+            if(io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
+            {
+                Point eatenSoldierLocation = calculatePositionOfEatenSoldier(io_MoveToExecute);
+                Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierLocation);
+                m_CheckersBoard[eatenSoldier.Position.x, eatenSoldier.Position.y] = null;
+            }
+
+            
+        }
+        private Point calculatePositionOfEatenSoldier(CheckersGameStep i_move)
+        {
+            Point resultPosition = new Point();
+
+            resultPosition.x = i_move.CurrentPosition.x + ((i_move.CurrentPosition.x-i_move.RequestedPosition.x)/2);
+            resultPosition.y = i_move.CurrentPosition.y + ((i_move.CurrentPosition.y - i_move.RequestedPosition.y) / 2);
+
+            return resultPosition;
+        }
 
 
         public void InitializeCheckersBoard()
