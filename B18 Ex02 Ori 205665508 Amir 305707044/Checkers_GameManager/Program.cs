@@ -78,7 +78,7 @@ namespace Checkers_GameManager
 
             res.player1Name = "amir";
             res.player2Name = "ori";
-            res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer;
+            res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer;
             res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.MediumBoard;
 
             return res;

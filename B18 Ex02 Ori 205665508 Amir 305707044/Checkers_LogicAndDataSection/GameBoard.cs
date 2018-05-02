@@ -6,6 +6,9 @@ namespace Checkers_LogicAndDataSection
     public class GameBoard
     {
 
+        private List <Soldier> computerArmy = null;//in case of cpu this well get filled
+        private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
+
 
         private Soldier[,] m_CheckersBoard = null;
         public enum eSoldierRanks { Regular = 1, King = 4 }
@@ -288,7 +291,22 @@ namespace Checkers_LogicAndDataSection
                 localPointPlayer2 = Soldier.PointToFillPlayer2;
 
                 m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
+
                 m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+
+                if(SessionData.gameType==eTypeOfGame.singlePlayer)//preperation for minimal dataBase of moves for AI
+                {
+                    if(computerArmy == null)
+                    {
+                        computerArmy = new List<Soldier>(NumberOfSoldiers);
+                        //playerArmy = new List<Soldier>(NumberOfSoldiers); //AI-practice-MODE
+                    }
+                    computerArmy.Add(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);
+                    //playerArmy.Add(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);////AI-Practice-MODE
+
+                }
+
+
 
                 Soldier.moveToNextPlace();
 
