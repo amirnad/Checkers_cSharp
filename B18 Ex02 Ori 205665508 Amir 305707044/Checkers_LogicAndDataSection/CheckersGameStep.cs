@@ -18,24 +18,40 @@ namespace Checkers_LogicAndDataSection
                     m_moveType = value;
                 }
             }
-            public bool 
+            public bool kingMove
             {
-                get { return m_moveType; }
+                get { return m_KingMove; }
                 set
                 {
-                    m_moveType = value;
+                    m_KingMove = value;
                 }
+            }
+
+            public static MoveType initalize()
+            {
+                MoveType result = new MoveType();
+
+                result.m_moveType = eMoveTypes.Undefined;
+                result.m_KingMove = false;
+
+                return result;
+
             }
 
 
 
-            public static MoveType checkMoveType(CheckersGameStep i_requestedStep)
+            public static MoveType CalculateMoveType(CheckersGameStep i_requestedStep)
             {
-                MoveType result;
+                MoveType result = new MoveType();
+                
                 int distanceY = 0;
+                int distanceX = 0;
+
                 int indexForLastLineOnBoard = 0;
 
                 distanceY = Abs(i_requestedStep.RequestedPosition.y - i_requestedStep.CurrentPosition.y);
+                distanceX = Abs(i_requestedStep.RequestedPosition.x - i_requestedStep.CurrentPosition.x);
+
 
                 if (distanceY == 2)
                 {
@@ -46,6 +62,10 @@ namespace Checkers_LogicAndDataSection
                     result.m_moveType = eMoveTypes.RegularMove;
                 }
                 else
+                {
+                    result.m_moveType = eMoveTypes.Undefined;
+                }
+                if(distanceX>1)
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
@@ -64,11 +84,11 @@ namespace Checkers_LogicAndDataSection
                 }
                 if (i_requestedStep.RequestedPosition.y == indexForLastLineOnBoard)
                 {
-                    result.KingMove = true;
+                    result.kingMove = true;
                 }
                 else
                 {
-                    result.KingMove = false;
+                    result.kingMove = false;
                 }
 
                 return result;

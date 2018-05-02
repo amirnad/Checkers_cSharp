@@ -18,7 +18,7 @@ namespace Checkers_UI
 
         public static CheckersGameStep ReadAndCheckInput()
         {
-            string[] inputs = { "ab>Dc", "  Ac>Be " };
+            string[] inputs = { "Af>Be", "  Cf>De ","aa>bb" };
             bool[] validation = new bool[3];
 
             string i_inputFromUser = string.Empty;
@@ -63,7 +63,10 @@ namespace Checkers_UI
                 }
                 valid = (validation[0] && validation[1] && validation[2]);
 
-                if (valid)
+                if (!valid)
+                {
+                    Output.InputException();
+                }
                 i++;
             }
 

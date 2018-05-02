@@ -15,6 +15,36 @@ namespace Checkers_LogicAndDataSection
         public static string lastMove;
         public static ePlayerOptions m_currentActivePlayer = ePlayerOptions.Player1;
 
+        readonly static Player m_Player1 = new Checkers_LogicAndDataSection.Player();
+        readonly static Player m_Player2 = new Checkers_LogicAndDataSection.Player();
+
+
+        public static void InitializePlayers(InitialGameSetting i_NameSettings)
+        {
+            m_Player1.InitializePlayer(i_NameSettings.player1Name, Checkers_LogicAndDataSection.ePlayerOptions.Player1);
+            switch (Checkers_LogicAndDataSection.SessionData.gameType)
+            {
+                case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
+                    m_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
+                    break;
+                case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
+                    m_Player2.InitializePlayer(i_NameSettings.player2Name, Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    break;
+            }
+        }
+
+        public static Player GetNextPlayer()
+        {
+            if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
+            {
+                return m_Player1;
+            }
+            else//pc also sits at player2 spot
+            {
+                return m_Player2;
+            }
+        }
+
         public static void Main()
         {
             string name = System.Console.ReadLine();

@@ -62,5 +62,10 @@ namespace Checkers_UI
 
 
         }
+
+        public static void InputException()
+        {
+            Console.WriteLine("wrong input! try again");
+        }
     }
 }

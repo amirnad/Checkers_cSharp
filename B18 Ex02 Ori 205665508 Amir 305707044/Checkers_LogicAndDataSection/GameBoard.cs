@@ -14,9 +14,13 @@ namespace Checkers_LogicAndDataSection
             private static Point nextPointToFillPlayer1;
             private static Point nextPointToFillPlayer2;
             private Point m_CoordinateInMatrix;
-            internal List<CheckersGameStep> m_PossibleMovements = null;
+            internal List<CheckersGameStep> m_PossibleRegularMovements = null;
+            internal List<CheckersGameStep> m_PossibleEatMovements = null;
+
             private ePlayerOptions m_SoldierTeam;
             private eSoldierRanks m_Rank;
+
+
 
 
             public static Point PointToFillPlayer1
@@ -44,10 +48,15 @@ namespace Checkers_LogicAndDataSection
                 }
             }
 
-            public List<CheckersGameStep> PossibleMovements
+            public List<CheckersGameStep> eatPossibleMovements
             {
-                get { return m_PossibleMovements; }
-                set { m_PossibleMovements = value; }
+                get { return m_PossibleEatMovements; }
+                set { m_PossibleEatMovements = value; }
+            }
+            public List<CheckersGameStep> regularPossibleMovements
+            {
+                get { return m_PossibleRegularMovements; }
+                set { m_PossibleRegularMovements = value; }
             }
             public ePlayerOptions Team
             {
@@ -65,32 +74,57 @@ namespace Checkers_LogicAndDataSection
                 Soldier returnedSoldier = new Soldier();
 
                 returnedSoldier.Position = i_PositionInMatrix;
-                returnedSoldier.PossibleMovements = calculatePossibleMovements(i_PositionInMatrix);
+                returnedSoldier.regularPossibleMovements = calculateInitPossibleMovements(i_PositionInMatrix,i_Team);
                 returnedSoldier.Team = i_Team;
                 returnedSoldier.Rank = eSoldierRanks.Regular;
                 return returnedSoldier;
             }
 
-            public static List<CheckersGameStep> calculatePossibleMovements(Point i_CurrentSoldierPosition)
+            public static List<CheckersGameStep> calculateInitPossibleMovements(Point i_CurrentSoldierPosition,ePlayerOptions playerId)
             {
 
 
-                List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
-                switch (SessionData.m_BoardSize)
+                List<CheckersGameStep> resultPossibleMovesArray = null;
+
+                int indexForTopRow = 0;
+                if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
                 {
-                    case eBoardSizeOptions.SmallBoard:
-                        resultPossibleMovesArray = resetPossibleMovesArray(1, i_CurrentSoldierPosition);
-                        break;
-                    case eBoardSizeOptions.MediumBoard:
-                        resultPossibleMovesArray = resetPossibleMovesArray(2, i_CurrentSoldierPosition);
-                        break;
+                    switch (SessionData.m_BoardSize)
+                    {
+                        case eBoardSizeOptions.SmallBoard:
+                            indexForTopRow = 4;
+                            break;
+                        case eBoardSizeOptions.MediumBoard:
+                            indexForTopRow = 5;
+                            break;
 
-                    case eBoardSizeOptions.LargeBoard:
-                        resultPossibleMovesArray = resetPossibleMovesArray(3, i_CurrentSoldierPosition);
-                        break;
+                        case eBoardSizeOptions.LargeBoard:
+                            indexForTopRow = 6;
+                            break;
 
 
+                    }
                 }
+                else
+                {
+                    switch (SessionData.m_BoardSize)
+                    {
+                        case eBoardSizeOptions.SmallBoard:
+                            indexForTopRow = 1;
+
+                            break;
+                        case eBoardSizeOptions.MediumBoard:
+                            indexForTopRow = 2;
+                            break;
+
+                        case eBoardSizeOptions.LargeBoard:
+                            indexForTopRow = 3;
+                            break;
+
+
+                    }
+                }
+                resultPossibleMovesArray = resetPossibleMovesArray(indexForTopRow, i_CurrentSoldierPosition,playerId);
                 return resultPossibleMovesArray;
 
 
@@ -98,7 +132,7 @@ namespace Checkers_LogicAndDataSection
 
 
             }
-            private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition)
+            private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition,ePlayerOptions playerId)
             {
                 List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
 
@@ -113,12 +147,25 @@ namespace Checkers_LogicAndDataSection
 
                     stepToTheLeft.CurrentPosition = i_CurrentSoldierPosition;
                     stepToTheRight.CurrentPosition = i_CurrentSoldierPosition;
-
+                    if (playerId == ePlayerOptions.Player1)
+                    {
                     MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
-                    MoveToTheLeft.y = i_CurrentSoldierPosition.y + 1;
+                    MoveToTheLeft.y = i_CurrentSoldierPosition.y - 1;
 
+                    
                     MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
-                    MoveToTheRight.y = i_CurrentSoldierPosition.y + 1;
+                    MoveToTheRight.y = i_CurrentSoldierPosition.y - 1;
+                    }
+                    else
+                    {
+                        MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
+                        MoveToTheLeft.y = i_CurrentSoldierPosition.y + 1;
+
+
+                        MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
+                        MoveToTheRight.y = i_CurrentSoldierPosition.y + 1;
+                    }
+
 
                     stepToTheLeft.RequestedPosition = MoveToTheLeft;
                     stepToTheRight.RequestedPosition = MoveToTheRight;
@@ -139,6 +186,7 @@ namespace Checkers_LogicAndDataSection
 
 
             }
+
 
             internal static void initializeNextPointToFill()
             {
@@ -248,7 +296,56 @@ namespace Checkers_LogicAndDataSection
 
 
         }
+        public CheckersGameStep.MoveType SortMoveType(CheckersGameStep i_RequestedMove)
+        {
+            Soldier currentPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.CurrentPosition);
+            Soldier NextPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.RequestedPosition);
+            CheckersGameStep.MoveType result = new CheckersGameStep.MoveType();
+            List<CheckersGameStep> arrayOfMovements;
+            bool validity = true;
+            bool exists = false;
 
+            if (currentPositonSoldier == null)
+            {
+                validity = false;
+            }
+            if (validity && currentPositonSoldier.Team != SessionData.m_currentActivePlayer)
+            {
+                validity = false;
+            }
+            if (validity && NextPositonSoldier != null)
+            {
+                validity = false;
+            }
+            if (validity)
+            {
+                result = CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove);
+
+                if (result.moveType != eMoveTypes.Undefined)
+                    if (result.moveType == eMoveTypes.EatMove)
+                        arrayOfMovements = currentPositonSoldier.eatPossibleMovements;
+                    else
+                        arrayOfMovements = currentPositonSoldier.regularPossibleMovements;
+                else
+                    arrayOfMovements = null;
+
+
+
+                foreach (CheckersGameStep step in arrayOfMovements)
+                {
+                    if (step.Equals(i_RequestedMove))
+                    {
+                        exists = true;
+                    }
+                }
+            }
+
+            if (!validity || !exists)
+                result.moveType = eMoveTypes.Undefined;
+
+
+            return result;
+        }
         public Soldier GetSoldierFromMatrix(Point i_GivenCoordinate)
         {
             return m_CheckersBoard[i_GivenCoordinate.y, i_GivenCoordinate.x];
@@ -257,43 +354,6 @@ namespace Checkers_LogicAndDataSection
         //{
 
         //}
-        public eMoveTypes SortMoveType(CheckersGameStep i_RequestedMove)
-        {
-            Soldier currentPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.CurrentPosition);
-            Soldier NextPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.RequestedPosition);
-            bool validity = true;
-            bool exists = false;
-            eMoveTypes result = eMoveTypes.Undefined;
 
-            if (currentPositonSoldier == null)
-            {
-                validity = false;
-            }
-            if (currentPositonSoldier.Team != SessionData.m_currentActivePlayer)
-            {
-                validity = false;
-            }
-            if (NextPositonSoldier != null)
-            {
-                validity = false;
-            }
-            if (validity)
-            {
-
-                foreach (CheckersGameStep cgs in currentPositonSoldier.PossibleMovements)
-                {
-                    if (cgs.Equals(i_RequestedMove))
-                    {
-                        exists = true;
-                    }
-                }
-            }
-
-            if (!validity && !exists)
-                result = eMoveTypes.Undefined;
-
-
-            return result;
-        }
     }
 }
