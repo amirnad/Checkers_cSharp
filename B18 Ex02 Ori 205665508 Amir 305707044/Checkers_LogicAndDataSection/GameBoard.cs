@@ -123,9 +123,9 @@ namespace Checkers_LogicAndDataSection
                     stepToTheLeft.RequestedPosition = MoveToTheLeft;
                     stepToTheRight.RequestedPosition = MoveToTheRight;
 
-                    if(stepToTheLeft.RequestedPosition.x >=0 && stepToTheLeft.RequestedPosition.x < (int)SessionData.m_BoardSize)
+                    if (stepToTheLeft.RequestedPosition.x >= 0 && stepToTheLeft.RequestedPosition.x < (int)SessionData.m_BoardSize)
                     {
-                    resultPossibleMovesArray.Add(stepToTheLeft);
+                        resultPossibleMovesArray.Add(stepToTheLeft);
                     }
                     if (stepToTheRight.RequestedPosition.x >= 0 && stepToTheRight.RequestedPosition.x < (int)SessionData.m_BoardSize)
                     {
@@ -135,7 +135,7 @@ namespace Checkers_LogicAndDataSection
 
                 }
 
-                    return resultPossibleMovesArray;
+                return resultPossibleMovesArray;
 
 
             }
@@ -262,15 +262,34 @@ namespace Checkers_LogicAndDataSection
             Soldier currentPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.CurrentPosition);
             Soldier NextPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.RequestedPosition);
             bool validity = true;
-
+            bool exists = false;
             eMoveTypes result = eMoveTypes.Undefined;
 
             if (currentPositonSoldier == null)
+            {
                 validity = false;
+            }
+            if (currentPositonSoldier.Team != SessionData.m_currentActivePlayer)
+            {
+                validity = false;
+            }
+            if (NextPositonSoldier != null)
+            {
+                validity = false;
+            }
+            if (validity)
+            {
 
+                foreach (CheckersGameStep cgs in currentPositonSoldier.PossibleMovements)
+                {
+                    if (cgs.Equals(i_RequestedMove))
+                    {
+                        exists = true;
+                    }
+                }
+            }
 
-
-            if (!validity)
+            if (!validity && !exists)
                 result = eMoveTypes.Undefined;
 
 
