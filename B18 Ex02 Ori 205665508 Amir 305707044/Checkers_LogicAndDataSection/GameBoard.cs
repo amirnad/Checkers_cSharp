@@ -78,6 +78,7 @@ namespace Checkers_LogicAndDataSection
 
                 returnedSoldier.Position = i_PositionInMatrix;
                 returnedSoldier.regularPossibleMovements = calculateInitPossibleMovements(i_PositionInMatrix, i_Team);
+                returnedSoldier.eatPossibleMovements = new List<CheckersGameStep>();
                 returnedSoldier.Team = i_Team;
                 returnedSoldier.Rank = eSoldierRanks.Regular;
                 return returnedSoldier;
@@ -90,7 +91,7 @@ namespace Checkers_LogicAndDataSection
                 List<CheckersGameStep> resultPossibleMovesArray = null;
 
                 int indexForTopRow = 0;
-                if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
+                if (playerId == ePlayerOptions.Player1)
                 {
                     switch (SessionData.m_BoardSize)
                     {
@@ -141,10 +142,7 @@ namespace Checkers_LogicAndDataSection
                 throw new NotImplementedException();
             }
 
-            internal void UpdatePossibleMovements(CheckersGameStep io_MoveToExecute)//last thing that i looked at
-            {
-                throw new NotImplementedException();
-            }
+ 
 
             private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
@@ -254,37 +252,99 @@ namespace Checkers_LogicAndDataSection
 
             internal void calculatePossibleMovements(ref GameBoard board)
             {
+
+                m_PossibleEatMovements.Clear();
+                m_PossibleRegularMovements.Clear();
+
                 CheckersGameStep gameStep;
                 List<Point> inspectedPoints = bringPossibleNeigboursPositions(m_CoordinateInMatrix);
-                foreach(Point p in inspectedPoints)
+                foreach (Point p in inspectedPoints)
                 {
                     Soldier s = board.GetSoldierFromMatrix(p);
-                    if(s== null)
+                    if (s == null)
                     {
-                        gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
-                        m_PossibleRegularMovements.Add(gameStep);
+                        if (Rank == eSoldierRanks.King)
+                        {
+                            gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
+                            m_PossibleRegularMovements.Add(gameStep);
+                        }
+                        else//regular soldier
+                        {
+                            if (Team == ePlayerOptions.Player1)
+                            {
+                                if (p.y - Position.y < 0)
+                                {
+                                    gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
+                                    m_PossibleRegularMovements.Add(gameStep);
+                                }
+                            }
+                            else
+                            {
+                                if (p.y - Position.y > 0)
+                                {
+                                    gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
+                                    m_PossibleRegularMovements.Add(gameStep);
+                                }
+                            }
+                        }
                     }
                     else//there is a soldier there
                     {
+                        Point PossibleEatingNextPosition;
+
                         Point localPointDiffrenceBetweenPoints;
                         localPointDiffrenceBetweenPoints.x = p.x - m_CoordinateInMatrix.x;
-                        localPointDiffrenceBetweenPoints.y = p.y - m_CoordinateInMatrix.y; 
-                        if(Team!=s.Team)
+                        localPointDiffrenceBetweenPoints.y = p.y - m_CoordinateInMatrix.y;
+                        if (Team != s.Team)
                         {
-                            Point PossibleEatingNextPosition;
-                            PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
-                            PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
-
-                            if (board.GetSoldierFromMatrix(PossibleEatingNextPosition)==null)//means the spot is clear
+                            if (Rank == eSoldierRanks.King )
                             {
-                                gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
-                                m_PossibleEatMovements.Add(gameStep);
+
+                                PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
+                                PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+
+                                if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                {
+                                    gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                    m_PossibleEatMovements.Add(gameStep);
+                                }
+                            }   
+                            else//regular soldier
+                            {
+                                if (Team == ePlayerOptions.Player1)
+                                {
+                                    if (p.y - Position.y < 0)
+                                    {
+                                        PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
+                                        PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+
+                                        if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                        {
+                                            gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                            m_PossibleEatMovements.Add(gameStep);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (p.y - Position.y > 0)
+                                    {
+                                        PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
+                                        PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+
+                                        if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                        {
+                                            gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                            m_PossibleEatMovements.Add(gameStep);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
-                    
+
             }
         }
 
@@ -316,9 +376,9 @@ namespace Checkers_LogicAndDataSection
             Point beforeMovementSoldierLocation = io_MoveToExecute.CurrentPosition;
             Point afterMovementSoldierLocation = TheMovedSoldier.Position;
             GameBoard gb = this;
-            TheMovedSoldier.calculatePossibleMovements(ref gb);
             UpdatePossibleMovements(beforeMovementSoldierLocation);
             UpdatePossibleMovements(afterMovementSoldierLocation);
+            TheMovedSoldier.calculatePossibleMovements(ref gb);
 
         }
 
@@ -379,7 +439,7 @@ namespace Checkers_LogicAndDataSection
 
         private Point calculatePositionOfEatenSoldier(CheckersGameStep i_move)
         {
-            
+
             Point resultPosition = new Point();
 
             resultPosition.x = i_move.CurrentPosition.x + ((i_move.CurrentPosition.x - i_move.RequestedPosition.x) / 2);
@@ -485,7 +545,7 @@ namespace Checkers_LogicAndDataSection
                 result = CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove);
 
                 if (result.moveType != eMoveTypes.Undefined)
-                    if (currentPositonSoldier.m_PossibleEatMovements != null && result.moveType == eMoveTypes.EatMove)
+                    if (currentPositonSoldier.m_PossibleEatMovements.Capacity != 0 && result.moveType == eMoveTypes.EatMove)
                         arrayOfMovements = currentPositonSoldier.eatPossibleMovements;
                     else
                         arrayOfMovements = currentPositonSoldier.regularPossibleMovements;

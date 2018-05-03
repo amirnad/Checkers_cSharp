@@ -56,17 +56,7 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        public static Player GetNextPlayer()
-        {
-            if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
-            {
-                return m_Player1;
-            }
-            else//pc also sits at player2 spot
-            {
-                return m_Player2;
-            }
-        }//i really want to delete this function
+ 
 
         public static void Main()
         {

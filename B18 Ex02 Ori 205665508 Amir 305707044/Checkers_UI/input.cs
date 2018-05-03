@@ -18,7 +18,7 @@ namespace Checkers_UI
 
         public static CheckersGameStep ReadAndCheckInput()
         {
-            string[] inputs = { "Af>Be", "  Cf>De ","aa>bb" };
+            string[] inputs = { "Af>Be", "Hc>Gd","Be>Cd","Bc>De" };
             bool[] validation = new bool[3];
 
             string i_inputFromUser = string.Empty;

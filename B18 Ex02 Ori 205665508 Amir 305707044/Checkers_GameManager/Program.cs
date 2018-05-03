@@ -45,7 +45,8 @@ namespace Checkers_GameManager
 
             while (m_IsGameOn)
             {
-                m_currentActivePlayer = SessionData.GetNextPlayer();
+                m_currentActivePlayer = SessionData.GetCurrentPlayer();
+                m_isRequestedMoveLegal = false;
 
                 while (!m_isRequestedMoveLegal)
                 {
@@ -79,7 +80,7 @@ namespace Checkers_GameManager
 
             res.player1Name = "amir";
             res.player2Name = "ori";
-            res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer;
+            res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer;
             res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.MediumBoard;
 
             return res;

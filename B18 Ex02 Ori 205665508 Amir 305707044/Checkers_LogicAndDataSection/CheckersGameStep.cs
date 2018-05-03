@@ -65,7 +65,7 @@ namespace Checkers_LogicAndDataSection
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
-                if(distanceX>1)
+                if(distanceX>2||distanceY>2)
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
@@ -74,12 +74,12 @@ namespace Checkers_LogicAndDataSection
                 {
 
                     case ePlayerOptions.Player1:
-                        indexForLastLineOnBoard = (int)SessionData.m_BoardSize - 1;
+                        indexForLastLineOnBoard = 0;
                         break;
 
                     case ePlayerOptions.ComputerPlayer:
                     case ePlayerOptions.Player2:
-                        indexForLastLineOnBoard = 0;
+                        indexForLastLineOnBoard = (int)SessionData.m_BoardSize - 1;
                         break;
                 }
                 if (i_requestedStep.RequestedPosition.y == indexForLastLineOnBoard)
@@ -139,6 +139,14 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-
+        public bool Equals(CheckersGameStep step)
+        {
+            bool validity = true;
+            if(!(step.CurrentPosition.x==CurrentPosition.x&& step.CurrentPosition.x == CurrentPosition.x&& step.CurrentPosition.y == CurrentPosition.y && step.CurrentPosition.y == CurrentPosition.y))
+            {
+                validity = false;
+            }
+            return validity;
+        }
     }
 }
