@@ -66,7 +66,7 @@ namespace Checkers_LogicAndDataSection
             {
                 return m_Player2;
             }
-        }
+        }//i really want to delete this function
 
         public static void Main()
         {
@@ -87,7 +87,9 @@ namespace Checkers_LogicAndDataSection
 
         internal static void ChangeTurn()
         {
-            throw new NotImplementedException();
+            ePlayerOptions temp = m_currentActivePlayer;
+            m_currentActivePlayer = m_theOtherPlayer;
+            m_theOtherPlayer = temp;
         }
     }
 }

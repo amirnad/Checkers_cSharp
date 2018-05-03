@@ -100,6 +100,18 @@ namespace Checkers_LogicAndDataSection
         private Point m_requestedSoldierPosition;
         private MoveType m_moveInfo;
 
+        public static CheckersGameStep CreateCheckersGameStep(Point i_currentSoldierPosition,Point i_requestedSoldierPosition)
+        {
+            CheckersGameStep result = new CheckersGameStep();
+
+            result.CurrentPosition = i_currentSoldierPosition;
+            result.RequestedPosition = i_requestedSoldierPosition;
+            result.moveTypeInfo = MoveType.CalculateMoveType(result);
+
+            return result;
+            
+        }
+
         public Point CurrentPosition
         {
             get { return m_currentSoldierPosition; }

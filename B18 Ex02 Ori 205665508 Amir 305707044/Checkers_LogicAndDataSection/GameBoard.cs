@@ -6,8 +6,8 @@ namespace Checkers_LogicAndDataSection
     public class GameBoard
     {
 
-        private List <Soldier> computerArmy = null;//in case of cpu this well get filled
-       // private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
+        private List<Soldier> computerArmy = null;//in case of cpu this well get filled
+                                                  // private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
 
 
         private Soldier[,] m_CheckersBoard = null;
@@ -77,13 +77,13 @@ namespace Checkers_LogicAndDataSection
                 Soldier returnedSoldier = new Soldier();
 
                 returnedSoldier.Position = i_PositionInMatrix;
-                returnedSoldier.regularPossibleMovements = calculateInitPossibleMovements(i_PositionInMatrix,i_Team);
+                returnedSoldier.regularPossibleMovements = calculateInitPossibleMovements(i_PositionInMatrix, i_Team);
                 returnedSoldier.Team = i_Team;
                 returnedSoldier.Rank = eSoldierRanks.Regular;
                 return returnedSoldier;
             }
 
-            public static List<CheckersGameStep> calculateInitPossibleMovements(Point i_CurrentSoldierPosition,ePlayerOptions playerId)
+            public static List<CheckersGameStep> calculateInitPossibleMovements(Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
 
 
@@ -127,7 +127,7 @@ namespace Checkers_LogicAndDataSection
 
                     }
                 }
-                resultPossibleMovesArray = resetPossibleMovesArray(indexForTopRow, i_CurrentSoldierPosition,playerId);
+                resultPossibleMovesArray = resetPossibleMovesArray(indexForTopRow, i_CurrentSoldierPosition, playerId);
                 return resultPossibleMovesArray;
 
 
@@ -141,12 +141,12 @@ namespace Checkers_LogicAndDataSection
                 throw new NotImplementedException();
             }
 
-            internal void UpdatePossibleMovements(CheckersGameStep io_MoveToExecute)
+            internal void UpdatePossibleMovements(CheckersGameStep io_MoveToExecute)//last thing that i looked at
             {
                 throw new NotImplementedException();
             }
 
-            private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition,ePlayerOptions playerId)
+            private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
                 List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
 
@@ -163,12 +163,12 @@ namespace Checkers_LogicAndDataSection
                     stepToTheRight.CurrentPosition = i_CurrentSoldierPosition;
                     if (playerId == ePlayerOptions.Player1)
                     {
-                    MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
-                    MoveToTheLeft.y = i_CurrentSoldierPosition.y - 1;
+                        MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
+                        MoveToTheLeft.y = i_CurrentSoldierPosition.y - 1;
 
-                    
-                    MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
-                    MoveToTheRight.y = i_CurrentSoldierPosition.y - 1;
+
+                        MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
+                        MoveToTheRight.y = i_CurrentSoldierPosition.y - 1;
                     }
                     else
                     {
@@ -252,16 +252,50 @@ namespace Checkers_LogicAndDataSection
 
             }
 
-       
+            internal void calculatePossibleMovements(ref GameBoard board)
+            {
+                CheckersGameStep gameStep;
+                List<Point> inspectedPoints = bringPossibleNeigboursPositions(m_CoordinateInMatrix);
+                foreach(Point p in inspectedPoints)
+                {
+                    Soldier s = board.GetSoldierFromMatrix(p);
+                    if(s== null)
+                    {
+                        gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
+                        m_PossibleRegularMovements.Add(gameStep);
+                    }
+                    else//there is a soldier there
+                    {
+                        Point localPointDiffrenceBetweenPoints;
+                        localPointDiffrenceBetweenPoints.x = p.x - m_CoordinateInMatrix.x;
+                        localPointDiffrenceBetweenPoints.y = p.y - m_CoordinateInMatrix.y; 
+                        if(Team!=s.Team)
+                        {
+                            Point PossibleEatingNextPosition;
+                            PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
+                            PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+
+                            if (board.GetSoldierFromMatrix(PossibleEatingNextPosition)==null)//means the spot is clear
+                            {
+                                gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                m_PossibleEatMovements.Add(gameStep);
+                            }
+                        }
+                    }
+                }
+
+                    
+            }
         }
 
         internal void MoveSoldier(CheckersGameStep io_MoveToExecute)
         {
             Soldier theOneWeMove = GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
-            m_CheckersBoard[io_MoveToExecute.CurrentPosition.x, io_MoveToExecute.CurrentPosition.y] = null;
-            m_CheckersBoard[io_MoveToExecute.RequestedPosition.x, io_MoveToExecute.RequestedPosition.y] = theOneWeMove;
-            
-            if(io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
+            theOneWeMove.Position = io_MoveToExecute.RequestedPosition;
+            m_CheckersBoard[io_MoveToExecute.CurrentPosition.y, io_MoveToExecute.CurrentPosition.x] = null;
+            m_CheckersBoard[io_MoveToExecute.RequestedPosition.y, io_MoveToExecute.RequestedPosition.x] = theOneWeMove;
+
+            if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
             {
                 Point eatenSoldierLocation = calculatePositionOfEatenSoldier(io_MoveToExecute);
                 Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierLocation);
@@ -270,13 +304,85 @@ namespace Checkers_LogicAndDataSection
                 m_CheckersBoard[eatenSoldier.Position.x, eatenSoldier.Position.y] = null;
             }
 
-            
+
+            updateBoardAfterMove(io_MoveToExecute);
+
+
         }
+
+        private void updateBoardAfterMove(CheckersGameStep io_MoveToExecute)//afterMovement
+        {
+            Soldier TheMovedSoldier = GetSoldierFromMatrix(io_MoveToExecute.RequestedPosition);
+            Point beforeMovementSoldierLocation = io_MoveToExecute.CurrentPosition;
+            Point afterMovementSoldierLocation = TheMovedSoldier.Position;
+            GameBoard gb = this;
+            TheMovedSoldier.calculatePossibleMovements(ref gb);
+            UpdatePossibleMovements(beforeMovementSoldierLocation);
+            UpdatePossibleMovements(afterMovementSoldierLocation);
+
+        }
+
+        private void UpdatePossibleMovements(Point centerPoint)
+        {
+            List<Point> affectedPoints = bringPossibleNeigboursPositions(centerPoint);
+            foreach (Point p in affectedPoints)
+            {
+                Soldier s = GetSoldierFromMatrix(p);
+                if (s != null)
+                {
+                    GameBoard gb = this;
+                    s.calculatePossibleMovements(ref gb);
+
+                }
+            }
+
+        }
+
+        private static List<Point> bringPossibleNeigboursPositions(Point centerPoint)
+        {
+            const int TopLeft = 0;
+            const int TopRight = 1;
+            const int BottomLeft = 2;
+            const int BottomRight = 3;
+
+
+            Point LocalPoint = centerPoint;
+            List<Point> affectedSoldiersPositions = new List<Point>();
+            Point[] points = new Point[4];
+
+
+            points[TopLeft].x = centerPoint.x - 1;
+            points[TopLeft].y = centerPoint.y + 1;
+
+            points[TopRight].x = centerPoint.x + 1;
+            points[TopRight].y = centerPoint.y + 1;
+
+            points[BottomRight].x = centerPoint.x + 1;
+            points[BottomRight].y = centerPoint.y - 1;
+
+            points[BottomLeft].x = centerPoint.x - 1;
+            points[BottomLeft].y = centerPoint.y - 1;
+
+
+
+            foreach (Point p in points)
+            {
+                if (p.isInsideBoard())
+                {
+                    affectedSoldiersPositions.Add(p);
+                }
+            }
+
+
+            return affectedSoldiersPositions;
+        }
+
         private Point calculatePositionOfEatenSoldier(CheckersGameStep i_move)
         {
+            
             Point resultPosition = new Point();
 
-            resultPosition.x = i_move.CurrentPosition.x + ((i_move.CurrentPosition.x-i_move.RequestedPosition.x)/2);
+            resultPosition.x = i_move.CurrentPosition.x + ((i_move.CurrentPosition.x - i_move.RequestedPosition.x) / 2);
             resultPosition.y = i_move.CurrentPosition.y + ((i_move.CurrentPosition.y - i_move.RequestedPosition.y) / 2);
 
             return resultPosition;
@@ -333,9 +439,9 @@ namespace Checkers_LogicAndDataSection
 
                 m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
 
-                if(SessionData.gameType==eTypeOfGame.singlePlayer)//preperation for minimal dataBase of moves for AI
+                if (SessionData.gameType == eTypeOfGame.singlePlayer)//preperation for minimal dataBase of moves for AI
                 {
-                    if(computerArmy == null)
+                    if (computerArmy == null)
                     {
                         computerArmy = new List<Soldier>(NumberOfSoldiers);
                         //playerArmy = new List<Soldier>(NumberOfSoldiers); //AI-practice-MODE
@@ -379,7 +485,7 @@ namespace Checkers_LogicAndDataSection
                 result = CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove);
 
                 if (result.moveType != eMoveTypes.Undefined)
-                    if (result.moveType == eMoveTypes.EatMove)
+                    if (currentPositonSoldier.m_PossibleEatMovements != null && result.moveType == eMoveTypes.EatMove)
                         arrayOfMovements = currentPositonSoldier.eatPossibleMovements;
                     else
                         arrayOfMovements = currentPositonSoldier.regularPossibleMovements;

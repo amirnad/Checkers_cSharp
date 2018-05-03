@@ -91,7 +91,6 @@ namespace Checkers_LogicAndDataSection
             io_CheckersBoard.MoveSoldier(io_MoveToExecute);
 
 
-            currentSoldierToMove.UpdatePossibleMovements(io_MoveToExecute);
 
             if (io_MoveToExecute.moveTypeInfo.kingMove)
             {
