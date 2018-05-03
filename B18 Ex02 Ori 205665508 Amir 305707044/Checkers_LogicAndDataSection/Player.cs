@@ -18,6 +18,11 @@ namespace Checkers_LogicAndDataSection
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
 
+        public void decrementNumberOfSoldier()
+        {
+            m_NumberOfSoldiers--;
+        }
+
         private string PlayerName
         {
             get { return m_PlayerName; }
@@ -50,7 +55,8 @@ namespace Checkers_LogicAndDataSection
 
             }
         }
-        public ePlayerOptions Team
+        //changed from public to private
+        private ePlayerOptions Team
         {
             get { return m_PlayerId; }
             set

@@ -135,6 +135,17 @@ namespace Checkers_LogicAndDataSection
 
 
             }
+
+            internal void BecomeAKing()
+            {
+                throw new NotImplementedException();
+            }
+
+            internal void UpdatePossibleMovements(CheckersGameStep io_MoveToExecute)
+            {
+                throw new NotImplementedException();
+            }
+
             private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition,ePlayerOptions playerId)
             {
                 List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
@@ -240,6 +251,8 @@ namespace Checkers_LogicAndDataSection
 
 
             }
+
+       
         }
 
         internal void MoveSoldier(CheckersGameStep io_MoveToExecute)
@@ -252,6 +265,8 @@ namespace Checkers_LogicAndDataSection
             {
                 Point eatenSoldierLocation = calculatePositionOfEatenSoldier(io_MoveToExecute);
                 Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierLocation);
+                Player p = SessionData.GetOtherPlayer();
+                p.decrementNumberOfSoldier();
                 m_CheckersBoard[eatenSoldier.Position.x, eatenSoldier.Position.y] = null;
             }
 

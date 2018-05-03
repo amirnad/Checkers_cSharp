@@ -14,10 +14,33 @@ namespace Checkers_LogicAndDataSection
         public static eTypeOfGame gameType = eTypeOfGame.Undefined;
         public static string lastMove;
         public static ePlayerOptions m_currentActivePlayer = ePlayerOptions.Player1;
+        public static ePlayerOptions m_theOtherPlayer = ePlayerOptions.Player2;
 
         readonly static Player m_Player1 = new Checkers_LogicAndDataSection.Player();
         readonly static Player m_Player2 = new Checkers_LogicAndDataSection.Player();
 
+        public static Player GetCurrentPlayer()
+        {
+            if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
+            {
+                return m_Player1;
+            }
+            else//pc also sits at player2 spot
+            {
+                return m_Player2;
+            }
+        }
+        public static Player GetOtherPlayer()
+        {
+            if (SessionData.m_theOtherPlayer == ePlayerOptions.Player1)
+            {
+                return m_Player1;
+            }
+            else//pc also sits at player2 spot
+            {
+                return m_Player2;
+            }
+        }
 
         public static void InitializePlayers(InitialGameSetting i_NameSettings)
         {
@@ -62,5 +85,9 @@ namespace Checkers_LogicAndDataSection
 
         }
 
+        internal static void ChangeTurn()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
