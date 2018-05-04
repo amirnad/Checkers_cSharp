@@ -56,17 +56,7 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        public static Player GetNextPlayer()
-        {
-            if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
-            {
-                return m_Player1;
-            }
-            else//pc also sits at player2 spot
-            {
-                return m_Player2;
-            }
-        }
+ 
 
         public static void Main()
         {
@@ -87,7 +77,9 @@ namespace Checkers_LogicAndDataSection
 
         internal static void ChangeTurn()
         {
-            throw new NotImplementedException();
+            ePlayerOptions temp = m_currentActivePlayer;
+            m_currentActivePlayer = m_theOtherPlayer;
+            m_theOtherPlayer = temp;
         }
     }
 }

@@ -91,7 +91,6 @@ namespace Checkers_LogicAndDataSection
             io_CheckersBoard.MoveSoldier(io_MoveToExecute);
 
 
-            currentSoldierToMove.UpdatePossibleMovements(io_MoveToExecute);
 
             if (io_MoveToExecute.moveTypeInfo.kingMove)
             {
@@ -104,7 +103,7 @@ namespace Checkers_LogicAndDataSection
             }
             else
             {
-                if (currentSoldierToMove.eatPossibleMovements.Capacity == 0)
+                if (currentSoldierToMove.eatPossibleMovements.Count == 0)
                 {
                     SessionData.ChangeTurn();
                 }
