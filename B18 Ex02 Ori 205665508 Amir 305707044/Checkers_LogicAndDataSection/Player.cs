@@ -103,7 +103,7 @@ namespace Checkers_LogicAndDataSection
             }
             else
             {
-                if (currentSoldierToMove.eatPossibleMovements.Capacity == 0)
+                if (currentSoldierToMove.eatPossibleMovements.Count == 0)
                 {
                     SessionData.ChangeTurn();
                 }

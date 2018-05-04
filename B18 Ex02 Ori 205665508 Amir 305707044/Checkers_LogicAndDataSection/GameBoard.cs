@@ -142,7 +142,7 @@ namespace Checkers_LogicAndDataSection
                 throw new NotImplementedException();
             }
 
- 
+
 
             private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
@@ -297,7 +297,7 @@ namespace Checkers_LogicAndDataSection
                         localPointDiffrenceBetweenPoints.y = p.y - m_CoordinateInMatrix.y;
                         if (Team != s.Team)
                         {
-                            if (Rank == eSoldierRanks.King )
+                            if (Rank == eSoldierRanks.King)
                             {
 
                                 PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
@@ -308,7 +308,7 @@ namespace Checkers_LogicAndDataSection
                                     gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
                                     m_PossibleEatMovements.Add(gameStep);
                                 }
-                            }   
+                            }
                             else//regular soldier
                             {
                                 if (Team == ePlayerOptions.Player1)
@@ -357,11 +357,12 @@ namespace Checkers_LogicAndDataSection
 
             if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
             {
-                Point eatenSoldierLocation = calculatePositionOfEatenSoldier(io_MoveToExecute);
-                Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierLocation);
+                Point eatenSoldierPosition = calculatePositionOfEatenSoldier(io_MoveToExecute);
+
+                Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierPosition);
                 Player p = SessionData.GetOtherPlayer();
                 p.decrementNumberOfSoldier();
-                m_CheckersBoard[eatenSoldier.Position.x, eatenSoldier.Position.y] = null;
+                m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
             }
 
 
@@ -442,8 +443,8 @@ namespace Checkers_LogicAndDataSection
 
             Point resultPosition = new Point();
 
-            resultPosition.x = i_move.CurrentPosition.x + ((i_move.CurrentPosition.x - i_move.RequestedPosition.x) / 2);
-            resultPosition.y = i_move.CurrentPosition.y + ((i_move.CurrentPosition.y - i_move.RequestedPosition.y) / 2);
+            resultPosition.x = i_move.CurrentPosition.x + ((i_move.RequestedPosition.x - i_move.CurrentPosition.x) / 2);
+            resultPosition.y = i_move.CurrentPosition.y + ((i_move.RequestedPosition.y - i_move.CurrentPosition.y) / 2);
 
             return resultPosition;
         }
