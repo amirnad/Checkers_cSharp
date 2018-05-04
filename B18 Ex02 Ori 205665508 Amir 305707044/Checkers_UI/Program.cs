@@ -12,8 +12,6 @@ namespace Checkers_UI
         public static void Main()
         {
             CheckersGame myGame = new CheckersGame();
-
-
             myGame.RunCheckersGame();
 
         }

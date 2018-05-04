@@ -20,9 +20,11 @@ namespace Checkers_UI
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
             UI.ReadInputFromUser(out GameDemoSettings);
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
-
             SessionData.InitializePlayers(GameDemoSettings);
             m_CheckersBoard.InitializeCheckersBoard();
+
+            Ex02.ConsoleUtils.Screen.Clear();
+            UI.PrintCheckersBoard(m_CheckersBoard);
 
 
             while (m_IsGameOn)
