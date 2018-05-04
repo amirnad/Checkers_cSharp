@@ -36,10 +36,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckersGame.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Output.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>

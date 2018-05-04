@@ -44,14 +44,14 @@ namespace Checkers_LogicAndDataSection
 
         public static void InitializePlayers(InitialGameSetting i_NameSettings)
         {
-            m_Player1.InitializePlayer(i_NameSettings.player1Name, Checkers_LogicAndDataSection.ePlayerOptions.Player1);
+            m_Player1.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
             switch (Checkers_LogicAndDataSection.SessionData.gameType)
             {
                 case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
                     m_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
                     break;
                 case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
-                    m_Player2.InitializePlayer(i_NameSettings.player2Name, Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    m_Player2.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
                     break;
             }
         }
@@ -68,8 +68,8 @@ namespace Checkers_LogicAndDataSection
         }
         public static void initializeSessionData(InitialGameSetting gameSettings)
         {
-            m_BoardSize = gameSettings.boardSize;
-            gameType = gameSettings.gameType;
+            m_BoardSize = gameSettings.getBoardSize();
+            gameType = gameSettings.getGameType();
 
             
 

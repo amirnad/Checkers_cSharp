@@ -10,11 +10,6 @@ namespace Checkers_UI
     public class Input
     {
         public static int i = 0;
-        public static void Main()
-        {
-            ReadAndCheckInput();
-        }
-
 
         public static CheckersGameStep ReadAndCheckInput()
         {
