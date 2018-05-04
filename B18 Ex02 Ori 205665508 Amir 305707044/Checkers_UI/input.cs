@@ -13,13 +13,13 @@ namespace Checkers_UI
 
         public static CheckersGameStep ReadAndCheckInput()
         {
-            string[] inputs = { "Af>Be", "Hc>Gd","Be>Cd","Bc>De" };
+            string[] inputs = { "Af>Be", "Hc>Gd","Be>Cd","Bc>De","Ef>Cd","Dc>Be","Cf>Ad","Gd>He","Gf>Fe","He>Gf","Fg>He","Ab>Bc","Fe>Gd","Gb>Hc","Bg>Cf","Hc>Fe","Dg>Ef","Fe>Dg" };
             bool[] validation = new bool[3];
 
             string i_inputFromUser = string.Empty;
-
+            Console.Write("please enter a  legal move: ");
             //goto xy clear and that stuff
-            //i_inputFromUser = Console.ReadLine();
+
 
             CheckersGameStep result = new CheckersGameStep();
 
@@ -29,6 +29,8 @@ namespace Checkers_UI
 
             while (!valid)
             {
+                //i_inputFromUser = Console.ReadLine();
+
                 validation[0] = false;
                 validation[1] = false;
                 validation[2] = false;
@@ -66,7 +68,7 @@ namespace Checkers_UI
             }
 
             result.CurrentPosition = currentPoint;
-            result.RequestedPosition= NextPoint;
+            result.RequestedPosition = NextPoint;
             return result;
 
 

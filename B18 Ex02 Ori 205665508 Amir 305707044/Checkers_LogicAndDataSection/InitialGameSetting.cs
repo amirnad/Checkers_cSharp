@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Checkers_LogicAndDataSection
 {
+
     public class InitialGameSetting
     {
+
+
         private string m_Player1Name = string.Empty;
         private string m_Player2Name = string.Empty;
         private eBoardSizeOptions m_BoardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.Undefined;

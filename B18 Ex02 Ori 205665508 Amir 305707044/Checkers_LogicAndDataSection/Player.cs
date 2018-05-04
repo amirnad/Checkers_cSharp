@@ -108,6 +108,7 @@ namespace Checkers_LogicAndDataSection
                     SessionData.ChangeTurn();
                 }
             }
+            //if three well be an addition to what we do if a player has eaten another player and he have a chnce to eat another one itll be here
             //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
         }
 

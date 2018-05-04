@@ -5,6 +5,9 @@ namespace Checkers_UI
 {
     public class CheckersGame
     {
+        
+
+
         private const int k_maxGamePlayers = 2;
         private bool m_IsGameOn = false;
         private GameBoard m_CheckersBoard = new Checkers_LogicAndDataSection.GameBoard();
@@ -17,7 +20,8 @@ namespace Checkers_UI
         {
             m_IsGameOn = true;
 
-            Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
+            Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;
+
             UI.ReadInputFromUser(out GameDemoSettings);
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
             SessionData.InitializePlayers(GameDemoSettings);
@@ -29,12 +33,14 @@ namespace Checkers_UI
 
             while (m_IsGameOn)
             {
-                m_currentActivePlayer = SessionData.GetNextPlayer();
+                m_currentActivePlayer = SessionData.GetCurrentPlayer();
+                m_isRequestedMoveLegal = false;
 
                 while (!m_isRequestedMoveLegal)
                 {
                     m_RequestedMove = Input.ReadAndCheckInput();
                     m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+
 
                     if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined)
                     {
@@ -46,6 +52,8 @@ namespace Checkers_UI
                     }
                 }
                 m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
+                Ex02.ConsoleUtils.Screen.Clear();
+                UI.PrintCheckersBoard(m_CheckersBoard);
             }
 
 

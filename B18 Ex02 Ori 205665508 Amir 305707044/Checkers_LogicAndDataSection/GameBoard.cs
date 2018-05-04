@@ -317,11 +317,14 @@ namespace Checkers_LogicAndDataSection
                                     {
                                         PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
                                         PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
-
-                                        if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                        if (PossibleEatingNextPosition.isInsideBoard())
                                         {
-                                            gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
-                                            m_PossibleEatMovements.Add(gameStep);
+
+                                            if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                            {
+                                                gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                                m_PossibleEatMovements.Add(gameStep);
+                                            }
                                         }
                                     }
                                 }
@@ -331,11 +334,14 @@ namespace Checkers_LogicAndDataSection
                                     {
                                         PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
                                         PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
-
-                                        if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                        if (PossibleEatingNextPosition.isInsideBoard())
                                         {
-                                            gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
-                                            m_PossibleEatMovements.Add(gameStep);
+
+                                            if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                            {
+                                                gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                                m_PossibleEatMovements.Add(gameStep);
+                                            }
                                         }
                                     }
                                 }
@@ -376,9 +382,9 @@ namespace Checkers_LogicAndDataSection
             Soldier TheMovedSoldier = GetSoldierFromMatrix(io_MoveToExecute.RequestedPosition);
             Point beforeMovementSoldierLocation = io_MoveToExecute.CurrentPosition;
             Point afterMovementSoldierLocation = TheMovedSoldier.Position;
-            GameBoard gb = this;
             UpdatePossibleMovements(beforeMovementSoldierLocation);
             UpdatePossibleMovements(afterMovementSoldierLocation);
+            GameBoard gb = this;
             TheMovedSoldier.calculatePossibleMovements(ref gb);
 
         }
@@ -386,17 +392,21 @@ namespace Checkers_LogicAndDataSection
         private void UpdatePossibleMovements(Point centerPoint)
         {
             List<Point> affectedPoints = bringPossibleNeigboursPositions(centerPoint);
-            foreach (Point p in affectedPoints)
+            if (affectedPoints != null)
             {
-                Soldier s = GetSoldierFromMatrix(p);
-                if (s != null)
+
+                foreach (Point p in affectedPoints)
                 {
-                    GameBoard gb = this;
-                    s.calculatePossibleMovements(ref gb);
+                    Soldier s = GetSoldierFromMatrix(p);
+                    if (s != null)
+                    {
+                        GameBoard gb = this;
+                        s.calculatePossibleMovements(ref gb);
 
+                    }
                 }
-            }
 
+            }
         }
 
         private static List<Point> bringPossibleNeigboursPositions(Point centerPoint)
@@ -572,6 +582,7 @@ namespace Checkers_LogicAndDataSection
         }
         public Soldier GetSoldierFromMatrix(Point i_GivenCoordinate)
         {
+
             return m_CheckersBoard[i_GivenCoordinate.y, i_GivenCoordinate.x];
         }
         //internal MovementType MoveSoldier(CheckersGameStep io_MoveToExecute)
