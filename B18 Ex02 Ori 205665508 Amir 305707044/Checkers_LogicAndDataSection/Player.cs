@@ -67,10 +67,10 @@ namespace Checkers_LogicAndDataSection
             }
         }
         //changed from public to private
-        private ePlayerOptions Team
+        public ePlayerOptions Team
         {
             get { return m_PlayerId; }
-            set
+            private set
             {
                 m_PlayerId = value;
             }

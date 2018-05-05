@@ -51,6 +51,7 @@ namespace Checkers_LogicAndDataSection
                 case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
                     m_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
                     m_theOtherPlayer = ePlayerOptions.ComputerPlayer;
+
                     break;
                 case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
                     m_Player2.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);

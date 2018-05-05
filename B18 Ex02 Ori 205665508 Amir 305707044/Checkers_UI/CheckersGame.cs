@@ -39,7 +39,14 @@ namespace Checkers_UI
 
                 while (!m_isRequestedMoveLegal)
                 {
+                    if(m_currentActivePlayer.Team != ePlayerOptions.ComputerPlayer)
+                    {
                     m_RequestedMove = Input.ReadAndCheckInput();
+                    }
+                    else
+                    {
+                    m_RequestedMove = m_currentActivePlayer.Com
+                    }
                    
                     m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
 
