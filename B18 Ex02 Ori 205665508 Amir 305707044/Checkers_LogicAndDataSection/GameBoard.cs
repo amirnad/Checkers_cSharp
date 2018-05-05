@@ -138,7 +138,7 @@ namespace Checkers_LogicAndDataSection
 
             internal void BecomeAKing()
             {
-                throw new NotImplementedException();
+                Rank = eSoldierRanks.King;
             }
 
 
