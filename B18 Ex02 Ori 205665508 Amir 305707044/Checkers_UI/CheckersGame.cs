@@ -18,7 +18,7 @@ namespace Checkers_UI
             m_IsGameOn = true;
 
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
-            UI.ReadInputFromUser(out GameDemoSettings);
+            UI.ReadGameInitialInputFromUser(out GameDemoSettings);
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
             SessionData.InitializePlayers(GameDemoSettings);
             m_CheckersBoard.InitializeCheckersBoard();

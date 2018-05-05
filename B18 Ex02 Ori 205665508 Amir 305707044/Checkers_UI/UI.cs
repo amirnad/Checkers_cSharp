@@ -7,8 +7,9 @@ namespace Checkers_UI
     {
         private static string s_StartMessage = "Hello! Welcome to our checkers game. Enjoy!";
         private static string s_UsernameMessage = "Please enter your name: ";
-        private static string s_ChooseGameTypeMessge = "Please choose the game type: ";
+        private static string s_ChooseGameTypeMessge = "Please choose the game type:  ";
         private static string s_ChooseBoardSizeMessage = "Please choose the board size: ";
+        private static string s_EnterMoveMessage = "'s Turn:";
         private static string s_InvalidInputMessage = "Input is invalid, please try again.";
 
         private const int k_PlayerXName = 0;
@@ -17,6 +18,8 @@ namespace Checkers_UI
         private const int k_GameType = 3;
         private const int k_NumberOfInputValues = 4;
         private const int k_MaxNameLength = 20;
+        private const int k_StepInputPartsToCheck = 3;
+        private const int k_
 
         //consts for printing reasons
         private const char k_Space = ' ';
@@ -31,7 +34,7 @@ namespace Checkers_UI
 
 
 
-        public static void ReadInputFromUser(out InitialGameSetting io_GameInitialValues)
+        public static void ReadGameInitialInputFromUser(out InitialGameSetting io_GameInitialValues)
         {
             string userInputValue;
             string tempPlayer1NameHolder = string.Empty;
@@ -58,6 +61,7 @@ namespace Checkers_UI
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+                Ex02.ConsoleUtils.Screen.Clear();
                 while (!inputValidityArray[k_BoardSize])
                 {
                     Console.WriteLine(s_ChooseBoardSizeMessage);
@@ -72,6 +76,7 @@ namespace Checkers_UI
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+                Ex02.ConsoleUtils.Screen.Clear();
                 while (!inputValidityArray[k_GameType])
                 {
                     Console.WriteLine(s_ChooseGameTypeMessge);
@@ -80,6 +85,7 @@ namespace Checkers_UI
                     {
                         inputValidityArray[k_GameType] = true;
                         chosenGameType = (eTypeOfGame)Enum.Parse(typeof(eTypeOfGame), userInputValue);
+                        Ex02.ConsoleUtils.Screen.Clear();
                         if (chosenGameType == eTypeOfGame.doublePlayer)
                         {
                             while (!inputValidityArray[k_PlayerOName])
@@ -96,6 +102,7 @@ namespace Checkers_UI
                                     Console.WriteLine(s_InvalidInputMessage);
                                 }
                             }
+
                         }
 
                     }
@@ -104,6 +111,7 @@ namespace Checkers_UI
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+                Ex02.ConsoleUtils.Screen.Clear();
                 gotAllInput = true;
             }
 
@@ -116,7 +124,7 @@ namespace Checkers_UI
                 We create a StringBuilder object , and we call 3 diff methods to create the top, body, and bottom
                 parts of the checkers board. After all these 3 function finished, the board is ready to be printed.
             */
-            
+
             StringBuilder BoardWithFrames = new StringBuilder();
 
             CreateBoardHeader(BoardWithFrames);
@@ -126,7 +134,42 @@ namespace Checkers_UI
             Console.WriteLine(BoardWithFrames);
 
         }
+        public static CheckersGameStep ReadGameMove()
+        {
+            bool isInputOk = false;
+            string userInput = String.Empty;
+            Point startPosition = new Point();
+            Point requestedPosition = new Point();
+            CheckersGameStep requestedStep = new CheckersGameStep();
+            string playerNameHolder = SessionData.GetCurrentPlayer().PlayerName;
+            System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
+            messageToPrint.AppendFormat("{0}{1}", playerNameHolder, s_EnterMoveMessage);
 
+            while (!isInputOk)
+            {
+                Console.WriteLine(messageToPrint);
+                userInput = Console.ReadLine();
+                isInputOk = CheckStepInputValidity();
+                if (!isInputOk)
+                {
+                    Console.WriteLine(s_InvalidInputMessage);
+                }
+            }
+            MakePointsFromString(userInput, out startPosition, out requestedPosition);
+            //לכתוב את הפונקציה מייק פויינטס על בסיס אינפוט של אורי
+
+            requestedStep.CurrentPosition = startPosition;
+            requestedStep.RequestedPosition = requestedPosition;
+            
+            return requestedStep;
+
+        }
+
+        private static bool CheckStepInputValidity()
+        {
+            bool[] isInputValid = new bool[3];
+        
+        }
 
         private static void CreateBoardHeader(StringBuilder o_BoardHeader)
         {

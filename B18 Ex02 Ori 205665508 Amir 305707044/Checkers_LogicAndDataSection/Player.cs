@@ -23,7 +23,7 @@ namespace Checkers_LogicAndDataSection
             m_NumberOfSoldiers--;
         }
 
-        private string PlayerName
+        public string PlayerName
         {
             get { return m_PlayerName; }
             set
