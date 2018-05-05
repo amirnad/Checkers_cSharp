@@ -7,9 +7,10 @@ namespace Checkers_UI
     {
         private static string s_StartMessage = "Hello! Welcome to our checkers game. Enjoy!";
         private static string s_UsernameMessage = "Please enter your name: ";
-        private static string s_ChooseGameTypeMessge = "Please choose the game type:  ";
-        private static string s_ChooseBoardSizeMessage = "Please choose the board size: ";
-        private static string s_EnterMoveMessage = "'s Turn:";
+        private static string s_ChooseGameTypeMessge = "Please choose the game type: (1) Single-Player , (2) Double-Player";
+        private static string s_ChooseBoardSizeMessage = "Please choose the board size: (6)-Small 6x6 , (8)-Medium 8x8, (10)-Large 10x10 ";
+        private static string s_EnterMoveMessage = "'s Turn: ";
+        private static string s_LastMoveMessage = "'s move was: ";
         private static string s_InvalidInputMessage = "Input is invalid, please try again.";
 
         private const int k_PlayerXName = 0;
@@ -18,8 +19,16 @@ namespace Checkers_UI
         private const int k_GameType = 3;
         private const int k_NumberOfInputValues = 4;
         private const int k_MaxNameLength = 20;
+
+        //values for the step input validity checker method
         private const int k_StepInputPartsToCheck = 3;
-        private const int k_
+        private const int k_ColumnsPart = 0;
+        private const int k_LinesPart = 1;
+        private const int k_StartPositionColumnChar = 0;
+        private const int k_StartPositionLineChar = 1;
+        private const int k_ArrowPlace = 2;
+        private const int k_RequestedPositionColumnChar = 3;
+        private const int k_RequestedPositionLineChar = 4;
 
         //consts for printing reasons
         private const char k_Space = ' ';
@@ -30,6 +39,7 @@ namespace Checkers_UI
         private const char k_Team1KingChar = 'K';
         private const char k_Team2SoldierChar = 'O';
         private const char k_Team2KingChar = 'U';
+        private const char k_ArrowSign = '>';
 
 
 
@@ -90,6 +100,7 @@ namespace Checkers_UI
                         {
                             while (!inputValidityArray[k_PlayerOName])
                             {
+                                Console.Write("{0}, ", ePlayerOptions.Player2.ToString());
                                 Console.WriteLine(s_UsernameMessage);
                                 userInputValue = Console.ReadLine();
                                 if (checkUsernameValidity(userInputValue))
@@ -118,6 +129,15 @@ namespace Checkers_UI
             io_GameInitialValues = new InitialGameSetting();
             io_GameInitialValues.SetGameSettings(tempPlayer1NameHolder, tempPlayer2NameHolder, chosenBoardSize, chosenGameType);
         }
+
+        internal static void PrintLastMove(string io_UserMoveInput)
+        {
+            string playerNameHolder = SessionData.GetOtherPlayer().PlayerName;
+            System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
+            messageToPrint.AppendFormat("{0}{1}{2}", playerNameHolder, s_LastMoveMessage, io_UserMoveInput);
+            Console.WriteLine(messageToPrint);
+        }
+
         public static void PrintCheckersBoard(GameBoard io_CheckersBoard)
         {
             /*The Idea:
@@ -134,10 +154,10 @@ namespace Checkers_UI
             Console.WriteLine(BoardWithFrames);
 
         }
-        public static CheckersGameStep ReadGameMove()
+        public static CheckersGameStep ReadGameMove(ref string io_UserInput)
         {
             bool isInputOk = false;
-            string userInput = String.Empty;
+            //    string userInput = String.Empty;
             Point startPosition = new Point();
             Point requestedPosition = new Point();
             CheckersGameStep requestedStep = new CheckersGameStep();
@@ -147,28 +167,61 @@ namespace Checkers_UI
 
             while (!isInputOk)
             {
-                Console.WriteLine(messageToPrint);
-                userInput = Console.ReadLine();
-                isInputOk = CheckStepInputValidity();
+                Console.Write(messageToPrint);
+                //Console.WriteLine(messageToPrint);
+                io_UserInput = Console.ReadLine();
+                isInputOk = CheckStepInputValidity(io_UserInput);
                 if (!isInputOk)
                 {
                     Console.WriteLine(s_InvalidInputMessage);
                 }
             }
-            MakePointsFromString(userInput, out startPosition, out requestedPosition);
-            //לכתוב את הפונקציה מייק פויינטס על בסיס אינפוט של אורי
+            MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
 
             requestedStep.CurrentPosition = startPosition;
             requestedStep.RequestedPosition = requestedPosition;
-            
+
             return requestedStep;
 
         }
 
-        private static bool CheckStepInputValidity()
+        private static void MakePointsFromString(string o_userInput, out Point o_startPosition, out Point o_requestedPosition)
         {
-            bool[] isInputValid = new bool[3];
-        
+            o_startPosition.x = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
+            o_startPosition.y = (int)(o_userInput[k_StartPositionLineChar] - 'a');
+
+            o_requestedPosition.x = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
+            o_requestedPosition.y = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
+        }
+
+        private static bool CheckStepInputValidity(string o_StepInputFromUser)
+        {
+            bool[] stepInputPartsValidation = new bool[k_StepInputPartsToCheck];
+            bool areAllPartsValid = false;
+
+            for (int i = 0; i < k_StepInputPartsToCheck; i++)
+            {
+                stepInputPartsValidation[i] = false;
+            }
+
+            if (char.IsUpper(o_StepInputFromUser[k_StartPositionColumnChar]) && char.IsUpper(o_StepInputFromUser[k_RequestedPositionColumnChar]))
+            {
+                stepInputPartsValidation[k_ColumnsPart] = true;
+            }
+            if (char.IsLower(o_StepInputFromUser[k_StartPositionLineChar]) && char.IsLower(o_StepInputFromUser[k_RequestedPositionLineChar]))
+            {
+                stepInputPartsValidation[k_LinesPart] = true;
+            }
+            if (o_StepInputFromUser[k_ArrowPlace] == k_ArrowSign)
+            {
+                stepInputPartsValidation[k_ArrowPlace] = true;
+            }
+
+            areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
+                                                                    && stepInputPartsValidation[k_ArrowPlace];
+
+            return areAllPartsValid;
+
         }
 
         private static void CreateBoardHeader(StringBuilder o_BoardHeader)
