@@ -49,6 +49,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Checkers_GameManager\Checkers_GameManager.csproj">
+      <Project>{1dc0a8a1-4b10-45a7-aeaa-9a9ac80f52e1}</Project>
+      <Name>Checkers_GameManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Checkers_LogicAndDataSection\Checkers_LogicAndDataSection.csproj">
       <Project>{c032739b-50ab-4356-bcbe-2fd661342503}</Project>
       <Name>Checkers_LogicAndDataSection</Name>

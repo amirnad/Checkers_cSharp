@@ -36,19 +36,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Checkers_LogicAndDataSection\Checkers_LogicAndDataSection.csproj">
       <Project>{c032739b-50ab-4356-bcbe-2fd661342503}</Project>
       <Name>Checkers_LogicAndDataSection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Checkers_UI\Checkers_UI.csproj">
-      <Project>{e909773b-164c-434f-8b0d-0ed65f1274fe}</Project>
-      <Name>Checkers_UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

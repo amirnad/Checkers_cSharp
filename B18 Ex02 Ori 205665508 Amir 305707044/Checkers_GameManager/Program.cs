@@ -8,14 +8,14 @@
 
 //namespace Checkers_GameManager
 //{
-    
+
 //    class Program
 //    {
 
 //        public static void Main()
 //        {
 //            CheckersGame myGame = new CheckersGame();
-          
+
 
 //            myGame.RunCheckersGame();
 
@@ -35,17 +35,15 @@
 //        public void RunCheckersGame()
 //        {
 //            m_IsGameOn = true;
-                      
+
 //            Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings = setup();//Checkers_UI.class.setup
 //            Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
-            
+
 //            SessionData.InitializePlayers(GameDemoSettings);
 //            m_CheckersBoard.InitializeCheckersBoard();
 
 
-//            while (m_IsGameOn)
-//            {
-//                m_currentActivePlayer = SessionData.GetNextPlayer();
+
 
 
 
@@ -60,7 +58,8 @@
             //        m_RequestedMove = Input.ReadAndCheckInput();
             //        m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
 
-                    
+
+
 //                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined)
 //                    {
 //                        m_isRequestedMoveLegal = true;
@@ -70,21 +69,17 @@
 //                        Output.InputException();
 //                    }
 //                }
-//                  m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
+//                m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
 //            }
 
 
 
 //        }
 
-  
 
 
 
 
-//        private Checkers_LogicAndDataSection.InitialGameSetting setup()
-//        {
-//            Checkers_LogicAndDataSection.InitialGameSetting res = new Checkers_LogicAndDataSection.InitialGameSetting();
 
 
 
@@ -97,6 +92,7 @@
 
 //            return res;
 //        }
+
 //    }
 
 
