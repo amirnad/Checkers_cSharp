@@ -43,7 +43,7 @@ namespace Checkers_LogicAndDataSection
             public static MoveType CalculateMoveType(CheckersGameStep i_requestedStep)
             {
                 MoveType result = new MoveType();
-                
+
                 int distanceY = 0;
                 int distanceX = 0;
 
@@ -65,7 +65,7 @@ namespace Checkers_LogicAndDataSection
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
-                if(distanceX>2||distanceY>2)
+                if (distanceX > 2 || distanceY > 2)
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
@@ -99,19 +99,25 @@ namespace Checkers_LogicAndDataSection
         private Point m_currentSoldierPosition;
         private Point m_requestedSoldierPosition;
         private MoveType m_moveInfo;
+        private bool m_quit;
 
-        public static CheckersGameStep CreateCheckersGameStep(Point i_currentSoldierPosition,Point i_requestedSoldierPosition)
+        public static CheckersGameStep CreateCheckersGameStep(Point i_currentSoldierPosition, Point i_requestedSoldierPosition, bool ToQuit = false)
         {
             CheckersGameStep result = new CheckersGameStep();
 
             result.CurrentPosition = i_currentSoldierPosition;
             result.RequestedPosition = i_requestedSoldierPosition;
             result.moveTypeInfo = MoveType.CalculateMoveType(result);
+            result.m_quit = ToQuit;
 
             return result;
-            
+
         }
 
+        public bool quit
+        {
+            get { return m_quit; }
+        }
         public Point CurrentPosition
         {
             get { return m_currentSoldierPosition; }
@@ -142,7 +148,7 @@ namespace Checkers_LogicAndDataSection
         public bool Equals(CheckersGameStep step)
         {
             bool validity = true;
-            if(!(step.CurrentPosition.x==CurrentPosition.x&& step.CurrentPosition.x == CurrentPosition.x&& step.CurrentPosition.y == CurrentPosition.y && step.CurrentPosition.y == CurrentPosition.y))
+            if (!(step.CurrentPosition.x == CurrentPosition.x && step.CurrentPosition.x == CurrentPosition.x && step.CurrentPosition.y == CurrentPosition.y && step.CurrentPosition.y == CurrentPosition.y))
             {
                 validity = false;
             }

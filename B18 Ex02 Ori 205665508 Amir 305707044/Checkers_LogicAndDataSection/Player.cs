@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Checkers_LogicAndDataSection
 {
@@ -17,6 +18,16 @@ namespace Checkers_LogicAndDataSection
         private ePlayerOptions m_PlayerId;
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
+        private List<GameBoard.Soldier> playerArmy = null;
+        internal void addToPlayerArmy(GameBoard.Soldier soldier)
+        {
+            playerArmy.Add(soldier);
+        }
+        internal void removeFromPlayerArmy(GameBoard.Soldier soldier)
+        {
+            playerArmy.Remove(soldier);
+        }
+
 
         public void decrementNumberOfSoldier()
         {
@@ -77,11 +88,14 @@ namespace Checkers_LogicAndDataSection
                     break;
                 case eBoardSizeOptions.MediumBoard:
                     NumberOfSoldiers = k_NumberOfSoldiersInMediumBoard;
+
                     break;
                 case eBoardSizeOptions.LargeBoard:
                     NumberOfSoldiers = k_NumberOfSoldiersInLargeBoard;
                     break;
             }
+            playerArmy = new List<GameBoard.Soldier>(NumberOfSoldiers);
+
         }
 
         public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
@@ -112,5 +126,22 @@ namespace Checkers_LogicAndDataSection
             //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
         }
 
+        public bool SomeBodyAlive()
+        {
+            return m_NumberOfSoldiers>0;
+        }
+        public bool ThereIsPossibleMovements()
+        {
+            bool someBodyAlive = false;
+            foreach (GameBoard.Soldier s in playerArmy)
+            {
+                if (s.m_PossibleEatMovements.Capacity != 0 || s.m_PossibleRegularMovements.Capacity != 0)
+                {
+                    someBodyAlive = true;
+                    break;
+                }
+            }
+            return someBodyAlive;
+        }
     }
 }

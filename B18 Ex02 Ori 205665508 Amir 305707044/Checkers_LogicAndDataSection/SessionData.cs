@@ -3,6 +3,7 @@ namespace Checkers_LogicAndDataSection
 {
     public enum eTypeOfGame { Undefined,singlePlayer,doublePlayer}
     public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
+    public enum eGameState { KeepGoing = 0, Tie, WinPlayer1, WinPlayer2 ,player1Quit,player2Quit}
 
 
 
@@ -14,7 +15,7 @@ namespace Checkers_LogicAndDataSection
         public static eTypeOfGame gameType = eTypeOfGame.Undefined;
         public static string lastMove;
         public static ePlayerOptions m_currentActivePlayer = ePlayerOptions.Player1;
-        public static ePlayerOptions m_theOtherPlayer = ePlayerOptions.Player2;
+        public static ePlayerOptions m_theOtherPlayer;
 
         readonly static Player m_Player1 = new Checkers_LogicAndDataSection.Player();
         readonly static Player m_Player2 = new Checkers_LogicAndDataSection.Player();
@@ -49,14 +50,39 @@ namespace Checkers_LogicAndDataSection
             {
                 case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
                     m_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
+                    m_theOtherPlayer = ePlayerOptions.ComputerPlayer;
                     break;
                 case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
                     m_Player2.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    m_theOtherPlayer = ePlayerOptions.Player2;
                     break;
             }
         }
 
- 
+        public static eGameState checkGameState()
+        {
+            eGameState resultState;
+            if(!m_Player1.SomeBodyAlive())
+            {
+                resultState = eGameState.WinPlayer2;
+            }
+            else if(!m_Player2.SomeBodyAlive())
+            {
+                resultState = eGameState.WinPlayer1;
+            }
+            else
+            {
+                if(!m_Player1.ThereIsPossibleMovements() && !m_Player2.ThereIsPossibleMovements())
+                {
+                    resultState = eGameState.Tie;
+                }
+                else
+                {
+                    resultState = eGameState.KeepGoing;
+                }
+            }
+            return resultState;
+        }
 
         public static void Main()
         {

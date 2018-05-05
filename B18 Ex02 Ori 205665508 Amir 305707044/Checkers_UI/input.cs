@@ -13,7 +13,7 @@ namespace Checkers_UI
 
         public static CheckersGameStep ReadAndCheckInput()
         {
-            string[] inputs = { "Af>Be", "Hc>Gd","Be>Cd","Bc>De","Ef>Cd","Dc>Be","Cf>Ad","Gd>He","Gf>Fe","He>Gf","Fg>He","Ab>Bc","Fe>Gd","Gb>Hc","Bg>Cf","Hc>Fe","Dg>Ef","Fe>Dg" };
+            string[] inputs = { "Af>Be", "Hc>Gd", "Be>Cd", "Bc>De", "Ef>Cd", "Dc>Be", "Cf>Ad", "Gd>He", "Gf>Fe", "He>Gf", "Fg>He", "Ab>Bc", "Fe>Gd", "Gb>Hc", "Bg>Cf", "Hc>Fe", "Dg>Ef", "Fe>Dg","q" };
             bool[] validation = new bool[3];
 
             string i_inputFromUser = string.Empty;
@@ -26,7 +26,7 @@ namespace Checkers_UI
             Point currentPoint = new Point();
             Point NextPoint = new Point();
             bool valid = false;
-
+            const bool quit = true;
             while (!valid)
             {
                 //i_inputFromUser = Console.ReadLine();
@@ -40,31 +40,39 @@ namespace Checkers_UI
 
 
                 string processedString = i_inputFromUser.Replace(" ", "");
+                if (i_inputFromUser != "q")
+                {
 
-                if (char.IsUpper(processedString[0]) && char.IsUpper(processedString[3]))
-                {
-                    currentPoint.x = (int)(processedString[0] - 'A');
-                    NextPoint.x = (int)(processedString[3] - 'A');
-                    validation[0] = true;
-                }
-                if (char.IsLower(processedString[1]) && char.IsLower(processedString[4]))
-                {
-                    currentPoint.y = (int)(processedString[1] - 'a');
-                    NextPoint.y = (int)(processedString[4] - 'a');
+                    if (char.IsUpper(processedString[0]) && char.IsUpper(processedString[3]))
+                    {
+                        currentPoint.x = (int)(processedString[0] - 'A');
+                        NextPoint.x = (int)(processedString[3] - 'A');
+                        validation[0] = true;
+                    }
+                    if (char.IsLower(processedString[1]) && char.IsLower(processedString[4]))
+                    {
+                        currentPoint.y = (int)(processedString[1] - 'a');
+                        NextPoint.y = (int)(processedString[4] - 'a');
 
-                    validation[1] = true;
-                }
-                if (processedString[2] == '>')
-                {
-                    validation[2] = true;
-                }
-                valid = (validation[0] && validation[1] && validation[2]);
+                        validation[1] = true;
+                    }
+                    if (processedString[2] == '>')
+                    {
+                        validation[2] = true;
+                    }
+                    valid = (validation[0] && validation[1] && validation[2]);
 
-                if (!valid)
-                {
-                    Output.InputException();
+                    if (!valid)
+                    {
+                        Output.InputException();
+                    }
+                    i++;
                 }
-                i++;
+                else
+                {
+                    result = CheckersGameStep.CreateCheckersGameStep(currentPoint, NextPoint, quit);
+                    valid = true;
+                }
             }
 
             result.CurrentPosition = currentPoint;

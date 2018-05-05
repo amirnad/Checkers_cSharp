@@ -6,8 +6,7 @@ namespace Checkers_LogicAndDataSection
     public class GameBoard
     {
 
-        private List<Soldier> computerArmy = null;//in case of cpu this well get filled
-                                                  // private List<Soldier> playerArmy = null;//in case of cpu that we want to practice against each other this well get filled
+    
 
 
         private Soldier[,] m_CheckersBoard = null;
@@ -352,6 +351,15 @@ namespace Checkers_LogicAndDataSection
 
 
             }
+
+            internal void killed(GameBoard gb)
+            {
+
+                Player p = SessionData.GetOtherPlayer();
+                p.decrementNumberOfSoldier();
+                Soldier eatenSoldier = this;
+                p.removeFromPlayerArmy(eatenSoldier);
+            }
         }
 
         internal void MoveSoldier(CheckersGameStep io_MoveToExecute)
@@ -366,9 +374,10 @@ namespace Checkers_LogicAndDataSection
                 Point eatenSoldierPosition = calculatePositionOfEatenSoldier(io_MoveToExecute);
 
                 Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierPosition);
-                Player p = SessionData.GetOtherPlayer();
-                p.decrementNumberOfSoldier();
+                GameBoard gb = this;
+                eatenSoldier.killed(gb);
                 m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
+
             }
 
 
@@ -499,6 +508,7 @@ namespace Checkers_LogicAndDataSection
             Point localPointPlayer1 = new Point();
             Point localPointPlayer2 = new Point();
 
+            
 
             for (int i = 0; i < NumberOfSoldiers; i++)
             {
@@ -510,17 +520,12 @@ namespace Checkers_LogicAndDataSection
 
                 m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
 
-                if (SessionData.gameType == eTypeOfGame.singlePlayer)//preperation for minimal dataBase of moves for AI
-                {
-                    if (computerArmy == null)
-                    {
-                        computerArmy = new List<Soldier>(NumberOfSoldiers);
-                        //playerArmy = new List<Soldier>(NumberOfSoldiers); //AI-practice-MODE
-                    }
-                    computerArmy.Add(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);
-                    //playerArmy.Add(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);////AI-Practice-MODE
 
-                }
+
+                SessionData.GetCurrentPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x]);
+                SessionData.GetOtherPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);////AI-Practice-MODE
+
+
 
 
 
