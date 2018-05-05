@@ -31,6 +31,12 @@ namespace Checkers_LogicAndDataSection
                 return m_Player2;
             }
         }
+
+        public static Player GetNextPlayer()
+        {
+            throw new NotImplementedException();
+        }
+
         public static Player GetOtherPlayer()
         {
             if (SessionData.m_theOtherPlayer == ePlayerOptions.Player1)

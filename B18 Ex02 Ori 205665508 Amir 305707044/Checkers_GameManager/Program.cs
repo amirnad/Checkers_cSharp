@@ -47,15 +47,17 @@
 
 
 
-//            while (m_IsGameOn)
-//            {
-//                m_currentActivePlayer = SessionData.GetCurrentPlayer();
-//                m_isRequestedMoveLegal = false;
 
-//                while (!m_isRequestedMoveLegal)
-//                {
-//                    m_RequestedMove = Input.ReadAndCheckInput();
-//                    m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+            //while (m_IsGameOn)
+            //{
+            //    m_currentActivePlayer = SessionData.GetCurrentPlayer();
+            //    m_isRequestedMoveLegal = false;
+
+            //    while (!m_isRequestedMoveLegal)
+            //    {
+            //        m_RequestedMove = Input.ReadAndCheckInput();
+            //        m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+
 
 
 //                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined)
@@ -80,6 +82,16 @@
 
 
 
+
+
+            //res.player1Name = "amir";
+            //res.player2Name = "ori";
+            //res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer;
+            //res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.MediumBoard;
+
+
+//            return res;
+//        }
 
 //    }
 
