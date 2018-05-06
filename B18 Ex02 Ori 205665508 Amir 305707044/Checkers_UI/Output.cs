@@ -10,7 +10,7 @@ namespace Checkers_UI
     {
         public static void printPoint(Checkers_LogicAndDataSection.Point pt)
         {
-            System.Console.SetCursorPosition(pt.x, pt.y);
+            System.Console.SetCursorPosition(pt.XCoord, pt.YCooord);
             Console.Write("C");
         }
 
@@ -20,7 +20,7 @@ namespace Checkers_UI
             {
 
                 case Checkers_LogicAndDataSection.ePlayerOptions.Player1:
-                    Console.SetCursorPosition(s.Position.x, s.Position.y);
+                    Console.SetCursorPosition(s.Position.XCoord, s.Position.YCooord);
                     if (s.Rank == Checkers_LogicAndDataSection.GameBoard.eSoldierRanks.Regular)
                     {
                         Console.Write('X');
@@ -32,7 +32,7 @@ namespace Checkers_UI
                     break;
                 case Checkers_LogicAndDataSection.ePlayerOptions.Player2:
                 case Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer:
-                    Console.SetCursorPosition(s.Position.x, s.Position.y);
+                    Console.SetCursorPosition(s.Position.XCoord, s.Position.YCooord);
                     if (s.Rank == Checkers_LogicAndDataSection.GameBoard.eSoldierRanks.Regular)
                     {
                         Console.Write('O');
@@ -49,10 +49,10 @@ namespace Checkers_UI
         public static void printMatrix(Checkers_LogicAndDataSection.GameBoard gb)
         {
             Checkers_LogicAndDataSection.GameBoard.Soldier localSoldier;
-            Checkers_LogicAndDataSection.Point localPoint;
-            for (localPoint.y = 0; localPoint.y < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.y++)
+            Checkers_LogicAndDataSection.Point localPoint = new Checkers_LogicAndDataSection.Point();
+            for (localPoint.YCooord = 0; localPoint.YCooord < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.YCooord++)
             {
-                for (localPoint.x = 0; localPoint.x < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.x++)
+                for (localPoint.XCoord = 0; localPoint.XCoord < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.XCoord++)
                 {
                     localSoldier = gb.GetSoldierFromMatrix(localPoint);
                     printSoldier(localSoldier);

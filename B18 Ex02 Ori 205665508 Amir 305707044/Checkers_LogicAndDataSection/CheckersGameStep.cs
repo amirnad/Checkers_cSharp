@@ -49,8 +49,8 @@ namespace Checkers_LogicAndDataSection
 
                 int indexForLastLineOnBoard = 0;
 
-                distanceY = Abs(i_requestedStep.RequestedPosition.y - i_requestedStep.CurrentPosition.y);
-                distanceX = Abs(i_requestedStep.RequestedPosition.x - i_requestedStep.CurrentPosition.x);
+                distanceY = Abs(i_requestedStep.RequestedPosition.YCooord - i_requestedStep.CurrentPosition.YCooord);
+                distanceX = Abs(i_requestedStep.RequestedPosition.XCoord - i_requestedStep.CurrentPosition.XCoord);
 
 
                 if (distanceY == 2 && distanceX == 2)
@@ -82,7 +82,7 @@ namespace Checkers_LogicAndDataSection
                         indexForLastLineOnBoard = (int)SessionData.m_BoardSize - 1;
                         break;
                 }
-                if (i_requestedStep.RequestedPosition.y == indexForLastLineOnBoard)
+                if (i_requestedStep.RequestedPosition.YCooord == indexForLastLineOnBoard)
                 {
                     result.kingMove = true;
                 }
@@ -123,8 +123,8 @@ namespace Checkers_LogicAndDataSection
             get { return m_currentSoldierPosition; }
             set
             {
-                m_currentSoldierPosition.x = value.x;
-                m_currentSoldierPosition.y = value.y;
+                m_currentSoldierPosition.XCoord = value.XCoord;
+                m_currentSoldierPosition.YCooord = value.YCooord;
             }
         }
         public Point RequestedPosition
@@ -132,8 +132,8 @@ namespace Checkers_LogicAndDataSection
             get { return m_requestedSoldierPosition; }
             set
             {
-                m_requestedSoldierPosition.x = value.x;
-                m_requestedSoldierPosition.y = value.y;
+                m_requestedSoldierPosition.XCoord = value.XCoord;
+                m_requestedSoldierPosition.YCooord = value.YCooord;
             }
         }
         public MoveType moveTypeInfo
@@ -148,7 +148,7 @@ namespace Checkers_LogicAndDataSection
         public bool Equals(CheckersGameStep step)
         {
             bool validity = true;
-            if (!(step.CurrentPosition.x == CurrentPosition.x && step.CurrentPosition.x == CurrentPosition.x && step.CurrentPosition.y == CurrentPosition.y && step.CurrentPosition.y == CurrentPosition.y))
+            if (!(step.CurrentPosition.XCoord == CurrentPosition.XCoord && step.CurrentPosition.XCoord == CurrentPosition.XCoord && step.CurrentPosition.YCooord == CurrentPosition.YCooord && step.CurrentPosition.YCooord == CurrentPosition.YCooord))
             {
                 validity = false;
             }
