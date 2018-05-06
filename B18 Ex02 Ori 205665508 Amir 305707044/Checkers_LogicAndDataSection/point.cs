@@ -39,7 +39,7 @@ namespace Checkers_LogicAndDataSection
         public int XCoord
         {
             get { return m_x; }
-            set { m_y = value; }
+            set { m_x = value; }
         }
 
     }

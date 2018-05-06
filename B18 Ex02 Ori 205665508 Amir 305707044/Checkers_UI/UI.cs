@@ -270,7 +270,7 @@ namespace Checkers_UI
             o_requestedPosition = new Point();
 
             o_startPosition.XCoord = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
-            o_startPosition.XCoord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
+            o_startPosition.YCooord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
 
             o_requestedPosition.XCoord = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
             o_requestedPosition.YCooord = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
