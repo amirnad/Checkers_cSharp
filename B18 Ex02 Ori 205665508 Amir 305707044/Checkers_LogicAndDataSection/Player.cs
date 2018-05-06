@@ -86,6 +86,7 @@ namespace Checkers_LogicAndDataSection
                         break;
                 }
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
         }
 
@@ -106,11 +107,12 @@ namespace Checkers_LogicAndDataSection
                 {
                     arr.Add(step);
                 }
+
+                returnedStep = arr[stepToExecuteIndex.Next(arr.Count)];
+
+
             }
-
-            returnedStep = arr[stepToExecuteIndex.Next(arr.Count)];
             return returnedStep;
-
         }
 
         public ePlayerOptions Team
