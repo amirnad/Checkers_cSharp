@@ -71,6 +71,18 @@ namespace Checkers_LogicAndDataSection
                 set { m_Rank = value; }
             }
 
+            public Soldier Clone()
+            {
+                Soldier theClone = new Soldier();
+                theClone.Position = Position;
+                theClone.Rank = Rank;
+                theClone.regularPossibleMovements = regularPossibleMovements;
+                theClone.Team = Team;
+                theClone.eatPossibleMovements = eatPossibleMovements;
+                return theClone;
+                
+            } 
+
             public static Soldier InitializeSoldier(Point i_PositionInMatrix, ePlayerOptions i_Team)
             {
                 Soldier returnedSoldier = new Soldier();
@@ -352,30 +364,36 @@ namespace Checkers_LogicAndDataSection
 
             }
 
-            internal void killed(GameBoard gb)
+            internal void killed(ref Player activatingPlayer)
             {
-
-                Player p = SessionData.GetOtherPlayer();
-                p.decrementNumberOfSoldier();
+                activatingPlayer.decrementNumberOfSoldier();
                 Soldier eatenSoldier = this;
-                p.removeFromPlayerArmy(eatenSoldier);
+                activatingPlayer.removeFromPlayerArmy(eatenSoldier);
             }
         }
 
-        internal void MoveSoldier(CheckersGameStep io_MoveToExecute)
+        public GameBoard Clone()
+        {
+            GameBoard theClone = new GameBoard();
+            theClone.m_CheckersBoard = (Soldier[,])m_CheckersBoard.Clone();//returned is object
+            return theClone;
+        }
+
+        internal void MoveSoldier(CheckersGameStep io_MoveToExecute,ref Player activatingPlayer)
         {
             Soldier theOneWeMove = GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
             theOneWeMove.Position = io_MoveToExecute.RequestedPosition;
             m_CheckersBoard[io_MoveToExecute.CurrentPosition.y, io_MoveToExecute.CurrentPosition.x] = null;
             m_CheckersBoard[io_MoveToExecute.RequestedPosition.y, io_MoveToExecute.RequestedPosition.x] = theOneWeMove;
-
+            io_MoveToExecute.moveTypeInfo = SortMoveType(io_MoveToExecute, activatingPlayer);
+           
             if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
             {
                 Point eatenSoldierPosition = calculatePositionOfEatenSoldier(io_MoveToExecute);
 
                 Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierPosition);
                 GameBoard gb = this;
-                eatenSoldier.killed(gb);
+                eatenSoldier.killed(ref activatingPlayer);
                 m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
 
             }
@@ -518,7 +536,14 @@ namespace Checkers_LogicAndDataSection
 
                 m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
 
-                m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+                if(SessionData.gameType == eTypeOfGame.singlePlayer)
+                {
+                m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2,ePlayerOptions.ComputerPlayer);
+                }
+                else
+                {
+                    m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+                }
 
 
 
@@ -535,7 +560,7 @@ namespace Checkers_LogicAndDataSection
 
 
         }
-        public CheckersGameStep.MoveType SortMoveType(CheckersGameStep i_RequestedMove)
+        public CheckersGameStep.MoveType SortMoveType(CheckersGameStep i_RequestedMove,Player i_currentActivePlayer)
         {
             Soldier currentPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.CurrentPosition);
             Soldier NextPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.RequestedPosition);
@@ -548,7 +573,7 @@ namespace Checkers_LogicAndDataSection
             {
                 validity = false;
             }
-            if (validity && currentPositonSoldier.Team != SessionData.m_currentActivePlayer)
+            if (validity && currentPositonSoldier.Team != i_currentActivePlayer.Team)
             {
                 validity = false;
             }
