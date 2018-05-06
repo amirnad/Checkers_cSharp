@@ -381,7 +381,7 @@ namespace Checkers_LogicAndDataSection
             }
 
 
-            updateBoardAfterMove(io_MoveToExecute);
+           // updateBoardAfterMove(io_MoveToExecute);
 
 
         }
