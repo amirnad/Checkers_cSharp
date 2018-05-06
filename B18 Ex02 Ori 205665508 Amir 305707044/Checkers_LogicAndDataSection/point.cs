@@ -16,7 +16,8 @@ namespace Checkers_LogicAndDataSection
             m_x = i_x;
             m_y = i_y;
         }
-        public bool isInsideBoard()
+
+        public bool IsInsideBoard()
         {
             bool result = true;
             int boardSize = (int)SessionData.m_BoardSize;
@@ -24,6 +25,7 @@ namespace Checkers_LogicAndDataSection
             {
                 result = false;
             }
+
             if (m_y > boardSize - 1 || m_y < 0)
             {
                 result = false;
@@ -31,17 +33,17 @@ namespace Checkers_LogicAndDataSection
 
             return result;
         }
+
         public int YCooord
         {
             get { return m_y; }
             set { m_y = value; }
         }
+
         public int XCoord
         {
             get { return m_x; }
             set { m_x = value; }
         }
-
     }
-
 }

@@ -3,9 +3,15 @@ using System.Collections.Generic;
 
 namespace Checkers_LogicAndDataSection
 {
-    public enum ePlayerOptions { Player1, Player2, ComputerPlayer }
-    public enum eMoveTypes { EatMove, RegularMove, Undefined }
+    public enum ePlayerOptions
+    {
+        Player1, Player2, ComputerPlayer
+    }
 
+    public enum eMoveTypes
+    {
+        EatMove, RegularMove, Undefined
+    }
 
     public class Player
     {
@@ -13,31 +19,28 @@ namespace Checkers_LogicAndDataSection
         public const int k_NumberOfSoldiersInSmallBoard = 6;
         public const int k_NumberOfSoldiersInMediumBoard = 12;
         public const int k_NumberOfSoldiersInLargeBoard = 20;
-
-
         private ePlayerOptions m_PlayerId;
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
-        private List<GameBoard.Soldier> playerArmy = null;
+        private List<GameBoard.Soldier> m_PlayerArmy = null;
 
         public void updateArmy(GameBoard i_gameboard)
         {
-            foreach (GameBoard.Soldier s in playerArmy)
+            foreach (GameBoard.Soldier s in m_PlayerArmy)
             {
                 s.calculatePossibleMovements(ref i_gameboard);
             }
         }
 
-
-        internal void addToPlayerArmy(GameBoard.Soldier soldier)
+        internal void addToPlayerArmy(GameBoard.Soldier i_soldier)
         {
-            playerArmy.Add(soldier);
-        }
-        internal void removeFromPlayerArmy(GameBoard.Soldier soldier)
-        {
-            playerArmy.Remove(soldier);
+            m_PlayerArmy.Add(i_soldier);
         }
 
+        internal void removeFromPlayerArmy(GameBoard.Soldier i_soldier)
+        {
+            m_PlayerArmy.Remove(i_soldier);
+        }
 
         public void decrementNumberOfSoldier()
         {
@@ -62,21 +65,30 @@ namespace Checkers_LogicAndDataSection
                 {
                     case eBoardSizeOptions.SmallBoard:
                         if (value > k_NoSoldiers && value <= k_NumberOfSoldiersInSmallBoard)
+                        {
                             m_NumberOfSoldiers = value;
+                        }
+
                         break;
                     case eBoardSizeOptions.MediumBoard:
                         if (value > k_NoSoldiers && value <= k_NumberOfSoldiersInMediumBoard)
+                        {
                             m_NumberOfSoldiers = value;
+                        }
+
                         break;
                     case eBoardSizeOptions.LargeBoard:
                         if (value > k_NoSoldiers && value <= k_NumberOfSoldiersInLargeBoard)
+                        {
                             m_NumberOfSoldiers = value;
+                        }
+
                         break;
                 }
-
             }
         }
-        //changed from public to private
+
+        // changed from public to private
         public ePlayerOptions Team
         {
             get { return m_PlayerId; }
@@ -86,7 +98,7 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        public void InitializePlayer(string i_PlayerName, ePlayerOptions i_PlayerId = ePlayerOptions.Player1) // input is already checked in Manager and UI projects
+        public void InitializePlayer(string i_PlayerName, ePlayerOptions i_PlayerId = ePlayerOptions.Player1) // input is already checked in  UI project
         {
             PlayerName = i_PlayerName;
             Team = i_PlayerId;
@@ -104,17 +116,16 @@ namespace Checkers_LogicAndDataSection
                     NumberOfSoldiers = k_NumberOfSoldiersInLargeBoard;
                     break;
             }
-            playerArmy = new List<GameBoard.Soldier>(NumberOfSoldiers);
 
+            m_PlayerArmy = new List<GameBoard.Soldier>(NumberOfSoldiers);
         }
 
+        // in make a move there is the logic of switcing turns
+        //the rule is that after MakeAMove() the player that is playing the next move will be in current player in sessionData class 
         public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
         {
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
-
             io_CheckersBoard.MoveSoldier(io_MoveToExecute);
-
-
 
             if (io_MoveToExecute.moveTypeInfo.kingMove)
             {
@@ -133,18 +144,19 @@ namespace Checkers_LogicAndDataSection
                     SessionData.ChangeTurn();
                 }
             }
-            //if three well be an addition to what we do if a player has eaten another player and he have a chnce to eat another one itll be here
-            //here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
+
+            // here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
         }
 
         public bool SomeBodyAlive()
         {
             return m_NumberOfSoldiers > 0;
         }
+
         public bool ThereIsPossibleMovements()
         {
             bool someBodyAlive = false;
-            foreach (GameBoard.Soldier s in playerArmy)
+            foreach (GameBoard.Soldier s in m_PlayerArmy)
             {
                 if (s.m_PossibleEatMovements.Count != 0 || s.m_PossibleRegularMovements.Count != 0)
                 {
@@ -152,13 +164,14 @@ namespace Checkers_LogicAndDataSection
                     break;
                 }
             }
+
             return someBodyAlive;
         }
 
         internal bool HasEatMoves()
         {
             bool playerMustCommitEatMove = false;
-            foreach (GameBoard.Soldier soldierToInspect in playerArmy)
+            foreach (GameBoard.Soldier soldierToInspect in m_PlayerArmy)
             {
                 if (soldierToInspect.eatPossibleMovements.Count != 0)
                 {
@@ -173,7 +186,7 @@ namespace Checkers_LogicAndDataSection
         internal int CalculateTeamValue()
         {
             int returnedValue = 0;
-            foreach (GameBoard.Soldier soldierToCheck in playerArmy)
+            foreach (GameBoard.Soldier soldierToCheck in m_PlayerArmy)
             {
                 switch (soldierToCheck.Rank)
                 {
@@ -185,6 +198,7 @@ namespace Checkers_LogicAndDataSection
                         break;
                 }
             }
+
             return returnedValue;
         }
     }
