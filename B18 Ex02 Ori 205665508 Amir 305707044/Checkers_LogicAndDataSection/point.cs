@@ -8,13 +8,13 @@ namespace Checkers_LogicAndDataSection
 {
     public struct Point
     {
-        public int x;
-        public int y;
+        public int m_x;
+        public int m_y;
 
-        public Point(int _x, int _y)
+        public Point(int i_x, int i_y)
         {
-            x = _x;
-            y = _y;
+            m_x = i_x;
+            m_y = i_y;
         }
         public bool isInsideBoard()
         {
