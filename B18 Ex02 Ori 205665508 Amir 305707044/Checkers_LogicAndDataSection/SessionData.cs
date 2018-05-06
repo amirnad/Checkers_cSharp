@@ -60,7 +60,7 @@ namespace Checkers_LogicAndDataSection
         }
         public static void InitializePlayers(InitialGameSetting i_NameSettings)
         {
-            m_Player1.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
+            m_Player1.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
             switch (Checkers_LogicAndDataSection.SessionData.gameType)
             {
                 case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
@@ -69,7 +69,7 @@ namespace Checkers_LogicAndDataSection
 
                     break;
                 case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
-                    m_Player2.InitializePlayer(i_NameSettings.getPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    m_Player2.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
                     m_theOtherPlayer = ePlayerOptions.Player2;
                     break;
             }

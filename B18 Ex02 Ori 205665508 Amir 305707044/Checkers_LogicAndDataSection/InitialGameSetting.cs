@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Checkers_LogicAndDataSection
 {
-
     public class InitialGameSetting
     {
-
-
         private string m_Player1Name = string.Empty;
         private string m_Player2Name = string.Empty;
-        private eBoardSizeOptions m_BoardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.Undefined;
-        private eTypeOfGame m_GameType = Checkers_LogicAndDataSection.eTypeOfGame.Undefined;
+        private eBoardSizeOptions m_BoardSize = eBoardSizeOptions.Undefined;
+        private eTypeOfGame m_GameType = eTypeOfGame.Undefined;
 
         public void SetGameSettings(string o_playerXInput, string o_playerOInput, eBoardSizeOptions o_BoardSizeInput, eTypeOfGame o_GameTypeInput)
         {
@@ -23,7 +20,8 @@ namespace Checkers_LogicAndDataSection
             m_BoardSize = o_BoardSizeInput;
             m_GameType = o_GameTypeInput;
         }
-        public string getPlayerName(ePlayerOptions i_PlayerIdentifier)
+
+        public string GetPlayerName(ePlayerOptions i_PlayerIdentifier)
         {
             string nameToReturn = string.Empty;
             switch (i_PlayerIdentifier)
@@ -38,13 +36,16 @@ namespace Checkers_LogicAndDataSection
                     nameToReturn = "PC";
                     break;                     
             }
+
             return nameToReturn;
         }
-        public eBoardSizeOptions getBoardSize()
+
+        public eBoardSizeOptions GetBoardSize()
         {
             return m_BoardSize;
         }
-        public eTypeOfGame getGameType()
+
+        public eTypeOfGame GetGameType()
         {
             return m_GameType;
         }
