@@ -18,7 +18,7 @@ namespace Checkers_LogicAndDataSection
 
             private ePlayerOptions m_SoldierTeam;
             private eSoldierRanks m_Rank;
-            
+
             public static Point PointToFillPlayer1
             {
                 get { return nextPointToFillPlayer1; }
@@ -134,7 +134,7 @@ namespace Checkers_LogicAndDataSection
             {
                 Rank = eSoldierRanks.King;
             }
-            
+
             private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
                 List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
@@ -417,8 +417,8 @@ namespace Checkers_LogicAndDataSection
             }
 
         }
-        
- 
+
+
         private Point calculatePositionOfEatenSoldier(CheckersGameStep i_move)
         {
 
@@ -476,8 +476,14 @@ namespace Checkers_LogicAndDataSection
                 localPointPlayer2 = Soldier.PointToFillPlayer2;
 
                 m_CheckersBoard[localPointPlayer1.YCooord, localPointPlayer1.XCoord] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
-
-                m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+                if (SessionData.gameType == eTypeOfGame.doublePlayer)
+                {
+                    m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+                }
+                else
+                {
+                    m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.ComputerPlayer);
+                }
 
 
 
@@ -509,7 +515,7 @@ namespace Checkers_LogicAndDataSection
             {
                 validity = false;
             }
-            if (validity && currentPositonSoldier.Team != SessionData.m_currentActivePlayer)
+            if (validity && currentPositonSoldier.Team != i_currentActivePlayer.Team)
             {
                 validity = false;
             }

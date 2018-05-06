@@ -54,18 +54,18 @@ namespace Checkers_UI
                     if (m_currentActivePlayer.Team != ePlayerOptions.ComputerPlayer)
                     {
                         m_RequestedMove = UI.ReadGameMove(ref userMoveInput);
-                        if(m_RequestedMove.WantsToQuitIndicator)
+                        if (m_RequestedMove.WantsToQuitIndicator)
                         {
                             break;
                         }
                     }
-                    //               else
-                    //               {
-                    //             m_RequestedMove = m_currentActivePlayer.Com
-                    //                }
+                    else
+                    {
+                        m_RequestedMove = m_currentActivePlayer.GetRandomMoveForPc();
+                    }
 
                     m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove, m_currentActivePlayer);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
-                    
+
                     if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined || m_RequestedMove.WantsToQuitIndicator)
                     {
                         m_isRequestedMoveLegal = true;
@@ -80,7 +80,7 @@ namespace Checkers_UI
                     m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
-                    UI.PrintLastMove(userMoveInput, m_currentActivePlayer.PlayerName);
+                    UI.PrintLastMove(m_RequestedMove, m_currentActivePlayer.PlayerName);
                     m_gameState = SessionData.checkGameState();
                 }
                 else
@@ -111,7 +111,7 @@ namespace Checkers_UI
         private void setup(out InitialGameSetting o_Settings)
         {
             o_Settings = new InitialGameSetting();
-            o_Settings.SetGameSettings("Ori", "Amir", eBoardSizeOptions.SmallBoard, eTypeOfGame.doublePlayer);
+            o_Settings.SetGameSettings("Ori", "Amir", eBoardSizeOptions.SmallBoard, eTypeOfGame.singlePlayer);
         }
     }
 }

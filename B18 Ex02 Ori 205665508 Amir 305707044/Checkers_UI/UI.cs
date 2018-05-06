@@ -209,10 +209,14 @@ namespace Checkers_UI
 
         }
 
-        internal static void PrintLastMove(string io_UserMoveInput, string io_PreviousPlayerName)
+        internal static void PrintLastMove(CheckersGameStep io_StepExecuted, string io_PreviousPlayerName)
         {
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
-            messageToPrint.AppendFormat("{0}{1}{2}", io_PreviousPlayerName, s_LastMoveMessage, io_UserMoveInput);
+            StringBuilder lastMove = new StringBuilder();
+            lastMove.AppendFormat("{0}{1}{2}{3}{4}", (char)(io_StepExecuted.CurrentPosition.XCoord + 'A'), (char)(io_StepExecuted.CurrentPosition.YCooord + 'a'),
+                                                        k_ArrowSign.ToString(), (char)(io_StepExecuted.RequestedPosition.XCoord + 'A'), (char)(io_StepExecuted.RequestedPosition.YCooord + 'a'));
+
+            messageToPrint.AppendFormat("{0}{1}{2}", io_PreviousPlayerName, s_LastMoveMessage, lastMove);
             Console.WriteLine(messageToPrint);
         }
 
