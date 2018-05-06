@@ -37,10 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckersGame.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="Output.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="UI.cs" />
+    <Compile Include="UI.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils">

@@ -85,8 +85,6 @@ namespace Checkers_LogicAndDataSection
 
                         break;
                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
         }
 

@@ -1,10 +1,22 @@
 ﻿using System;
+
 namespace Checkers_LogicAndDataSection
 {
-    public enum eTypeOfGame { Undefined, singlePlayer, doublePlayer }
-    public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
-    public enum eGameState { KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit, StartOver, Quit, Undefined }
-    
+    public enum eTypeOfGame
+    {
+        Undefined, singlePlayer, doublePlayer
+    }
+
+    public enum eBoardSizeOptions
+    {
+        Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10
+    }
+
+    public enum eGameState
+    {
+        KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit, StartOver, Quit, Undefined
+    }
+
     public class SessionData
     {
         public static eBoardSizeOptions m_BoardSize = eBoardSizeOptions.Undefined;
@@ -12,65 +24,68 @@ namespace Checkers_LogicAndDataSection
         public static int m_Player2OverallScore = 0;
         public static int m_Player1Points = 0;
         public static int m_Player2Points = 0;
-        public static eTypeOfGame gameType = eTypeOfGame.Undefined;
-        public static string lastMove;
-        public static ePlayerOptions m_currentActivePlayer = ePlayerOptions.Player1;
-        public static ePlayerOptions m_theOtherPlayer;
+        public static eTypeOfGame s_GameType = eTypeOfGame.Undefined;
+        public static ePlayerOptions m_CurrentActivePlayer = ePlayerOptions.Player1;
+        public static ePlayerOptions m_TheOtherPlayer;
 
-        private readonly static Player m_Player1 = new Checkers_LogicAndDataSection.Player();
-        private readonly static Player m_Player2 = new Checkers_LogicAndDataSection.Player();
+        private static readonly Player s_Player1 = new Checkers_LogicAndDataSection.Player();
+        private static readonly Player s_Player2 = new Checkers_LogicAndDataSection.Player();
 
         public static Player GetCurrentPlayer()
         {
-            if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
+            if (m_TheOtherPlayer == ePlayerOptions.Player1)
             {
-                return m_Player1;
+                return s_Player1;
             }
-            else//pc also sits at player2 spot
+            else
             {
-                return m_Player2;
+                // pc also sits at player2 spot
+                return s_Player2;
             }
         }
 
         public static Player GetOtherPlayer()
         {
-            if (SessionData.m_theOtherPlayer == ePlayerOptions.Player1)
+            if (m_TheOtherPlayer == ePlayerOptions.Player1)
             {
-                return m_Player1;
+                return s_Player1;
             }
-            else//pc also sits at player2 spot
+            else
             {
-                return m_Player2;
+                // pc also sits at player2 spot
+                return s_Player2;
             }
         }
 
         public static string GetPlayerName(ePlayerOptions i_PlayerNameToReturn)
         {
-            string returnedName = String.Empty;
+            string returnedName = string.Empty;
             switch (i_PlayerNameToReturn)
             {
                 case ePlayerOptions.Player1:
-                    returnedName = m_Player1.PlayerName;
+                    returnedName = s_Player1.PlayerName;
                     break;
                 case ePlayerOptions.Player2:
-                    returnedName = m_Player2.PlayerName;
+                    returnedName = s_Player2.PlayerName;
                     break;
             }
+
             return returnedName;
         }
+
         public static void InitializePlayers(InitialGameSetting i_NameSettings)
         {
-            m_Player1.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
-            switch (Checkers_LogicAndDataSection.SessionData.gameType)
+            s_Player1.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
+            switch (Checkers_LogicAndDataSection.SessionData.s_GameType)
             {
                 case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
-                    m_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
-                    m_theOtherPlayer = ePlayerOptions.ComputerPlayer;
+                    s_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
+                    m_TheOtherPlayer = ePlayerOptions.ComputerPlayer;
 
                     break;
                 case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
-                    m_Player2.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
-                    m_theOtherPlayer = ePlayerOptions.Player2;
+                    s_Player2.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    m_TheOtherPlayer = ePlayerOptions.Player2;
                     break;
             }
         }
@@ -78,17 +93,17 @@ namespace Checkers_LogicAndDataSection
         public static eGameState checkGameState()
         {
             eGameState resultState;
-            if (!m_Player1.SomeBodyAlive())
+            if (!s_Player1.SomeBodyAlive())
             {
                 resultState = eGameState.WinPlayer2;
             }
-            else if (!m_Player2.SomeBodyAlive())
+            else if (!s_Player2.SomeBodyAlive())
             {
                 resultState = eGameState.WinPlayer1;
             }
             else
             {
-                if (!m_Player1.ThereIsPossibleMovements() && !m_Player2.ThereIsPossibleMovements())
+                if (!s_Player1.ThereIsPossibleMovements() && !s_Player2.ThereIsPossibleMovements())
                 {
                     resultState = eGameState.Tie;
                 }
@@ -97,16 +112,8 @@ namespace Checkers_LogicAndDataSection
                     resultState = eGameState.KeepGoing;
                 }
             }
+
             return resultState;
-        }
-
-        public static void Main()
-        {
-            string name = System.Console.ReadLine();
-            Player p1 = new Player();
-
-            p1.InitializePlayer(name);
-
         }
 
         public static void CalculateScore(eGameState io_gameState)
@@ -114,15 +121,12 @@ namespace Checkers_LogicAndDataSection
             switch (io_gameState)
             {
                 case eGameState.WinPlayer1:
-                    updateSessionPoints(m_Player1, m_Player2, ref m_Player1Points);
-                    //pointsTempHolder = m_Player1.NumberOfSoldiers - m_Player2.NumberOfSoldiers;
-                    //m_Player1Points += updateSessionPoints(pointsTempHolder);
+                    updateSessionPoints(s_Player1, s_Player2, ref m_Player1Points);
+
                     m_Player1OverallScore++;
                     break;
                 case eGameState.WinPlayer2:
-                    updateSessionPoints(m_Player2, m_Player1, ref m_Player2Points);
-                    //pointsTempHolder = m_Player2.NumberOfSoldiers - m_Player1.NumberOfSoldiers;
-                    //m_Player2Points = updateSessionPoints(pointsTempHolder);
+                    updateSessionPoints(s_Player2, s_Player1, ref m_Player2Points);
                     m_Player2OverallScore++;
                     break;
                 case eGameState.player1Quit:
@@ -142,18 +146,15 @@ namespace Checkers_LogicAndDataSection
 
         public static void initializeSessionData(InitialGameSetting gameSettings)
         {
-            m_BoardSize = gameSettings.getBoardSize();
-            gameType = gameSettings.getGameType();
-
-
-
+            m_BoardSize = gameSettings.GetBoardSize();
+            s_GameType = gameSettings.GetGameType();
         }
 
         internal static void ChangeTurn()
         {
-            ePlayerOptions temp = m_currentActivePlayer;
-            m_currentActivePlayer = m_theOtherPlayer;
-            m_theOtherPlayer = temp;
+            ePlayerOptions temp = m_TheOtherPlayer;
+            m_CurrentActivePlayer = m_TheOtherPlayer;
+            m_TheOtherPlayer = temp;
         }
     }
 }

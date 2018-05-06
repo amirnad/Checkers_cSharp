@@ -1,34 +1,11 @@
 ﻿using System;
 using System.Text;
 using Checkers_LogicAndDataSection;
+
 namespace Checkers_UI
 {
-    class UI
+    public class UI
     {
-        private static string s_StartMessage = "Hello! Welcome to our checkers game. Enjoy!";
-        private static string s_UsernameMessage = "Please enter your name: ";
-        private static string s_ChooseGameTypeMessge = "Please choose the game type: (1) Single-Player , (2) Double-Player";
-        private static string s_ChooseBoardSizeMessage = "Please choose the board size: (6)-Small 6x6 , (8)-Medium 8x8, (10)-Large 10x10 ";
-        private static string s_EnterMoveMessage = "'s Turn: ";
-        private static string s_LastMoveMessage = "'s move was: ";
-        private static string s_InvalidInputMessage = "Input is invalid, please try again.";
-        private static string s_TieMessage = "Game ended in a draw!";
-        private static string s_PlayerWon = " WON! Good Job!";
-        private static string s_PlayerQuit = " QUIT! You Loser!";
-        private static string s_PressAnyKeyMessage = "Press any key to show results...";
-        private static string s_AnotherGameMessage = "Do you wish to play another game? (1) Yes, (0) No";
-        private static string s_GoodByeMessage = "Thank you for playing Checkers. Bye Bye!";
-
-        private static string s_PressAnyKeyToExitMessage = "Press Any Key To Exit...";
-
-        private static string s_Player1Board = "--->";
-        private static string s_Player2Board = "<---";
-        private static string s_ScoreMessage = "SCORE:  "; //6
-        private static string s_PointsMessage = "POINTS: "; //8
-
-        private const string k_QuitChar = "Q";
-
-
         private const int k_PlayerXName = 0;
         private const int k_PlayerOName = 1;
         private const int k_BoardSize = 2;
@@ -36,7 +13,7 @@ namespace Checkers_UI
         private const int k_NumberOfInputValues = 4;
         private const int k_MaxNameLength = 20;
 
-        //values for the step input validity checker method
+        // values for the step input validity checker method
         private const int k_StepInputPartsToCheck = 3;
         private const int k_ColumnsPart = 0;
         private const int k_LinesPart = 1;
@@ -46,7 +23,7 @@ namespace Checkers_UI
         private const int k_RequestedPositionColumnChar = 3;
         private const int k_RequestedPositionLineChar = 4;
 
-        //consts for printing reasons
+        // consts for printing reasons
         private const char k_Space = ' ';
         private const char k_LineSeperator = '=';
         private const char k_ColumnSeperator = '|';
@@ -56,16 +33,35 @@ namespace Checkers_UI
         private const char k_Team2SoldierChar = 'O';
         private const char k_Team2KingChar = 'U';
         private const char k_ArrowSign = '>';
+        private const string k_QuitChar = "Q";
 
-
-
+        // All the strings that are being used during the input-output are here:
+        private static string s_StartMessage = "Hello! Welcome to our checkers game. Enjoy!";
+        private static string s_UsernameMessage = "Please enter your name: ";
+        private static string s_ChooseGameTypeMessge = "Please choose the game type: (1) Single-Player , (2) Double-Player";
+        private static string s_ChooseBoardSizeMessage = "Please choose the board size: (6)-Small 6x6 , (8)-Medium 8x8, (10)-Large 10x10 ";
+        private static string s_EnterMoveMessage = "'s Turn: ";
+        private static string s_LastMoveMessage = "'s move was: ";
+        private static string s_InvalidInputMessage = "Input is invalid, please try again.";
+        private static string s_TheScoreMessage = "The Score is:";
+        private static string s_TieMessage = "Game ended in a draw!";
+        private static string s_PlayerWon = " WON! Good Job!";
+        private static string s_PlayerQuit = " QUIT! You Loser!";
+        private static string s_PressAnyKeyMessage = "Press any key to show results...";
+        private static string s_AnotherGameMessage = "Do you wish to play another game? (1) Yes, (0) No";
+        private static string s_GoodByeMessage = "Thank you for playing Checkers. Bye Bye!";
+        private static string s_PressAnyKeyToExitMessage = "Press Any Key To Exit...";
+        private static string s_Player1Board = "--->";
+        private static string s_Player2Board = "<---";
+        private static string s_ScoreMessage = "SCORE:  ";
+        private static string s_PointsMessage = "POINTS: ";
 
         public static void ReadGameInitialInputFromUser(out InitialGameSetting io_GameInitialValues)
         {
             string userInputValue;
             string tempPlayer1NameHolder = string.Empty;
             string tempPlayer2NameHolder = string.Empty;
-            bool[] inputValidityArray = new bool[k_NumberOfInputValues]; //holds true/false for each input value in this order: player1name, player2name, boardSize, gameType
+            bool[] inputValidityArray = new bool[k_NumberOfInputValues]; // holds true/false for each input value in this order: player1name, player2name, boardSize, gameType
             bool gotAllInput = false;
             eBoardSizeOptions chosenBoardSize = eBoardSizeOptions.Undefined;
             eTypeOfGame chosenGameType = eTypeOfGame.Undefined;
@@ -87,6 +83,7 @@ namespace Checkers_UI
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+
                 Ex02.ConsoleUtils.Screen.Clear();
                 while (!inputValidityArray[k_BoardSize])
                 {
@@ -102,6 +99,7 @@ namespace Checkers_UI
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+
                 Ex02.ConsoleUtils.Screen.Clear();
                 while (!inputValidityArray[k_GameType])
                 {
@@ -129,15 +127,14 @@ namespace Checkers_UI
                                     Console.WriteLine(s_InvalidInputMessage);
                                 }
                             }
-
                         }
-
                     }
                     else
                     {
                         Console.WriteLine(s_InvalidInputMessage);
                     }
                 }
+
                 Ex02.ConsoleUtils.Screen.Clear();
                 gotAllInput = true;
             }
@@ -146,10 +143,49 @@ namespace Checkers_UI
             io_GameInitialValues.SetGameSettings(tempPlayer1NameHolder, tempPlayer2NameHolder, chosenBoardSize, chosenGameType);
         }
 
+        private static bool checkUsernameValidity(string i_InputValue)
+        {
+            return !i_InputValue.Contains(k_Space.ToString()) && i_InputValue.Length < k_MaxNameLength;
+        }
+
+        private static bool checkBoardSizeValidity(string i_InputValue)
+        {
+            bool returnedValue;
+            eBoardSizeOptions temporaryBoardSize;
+            bool inputOk = Enum.TryParse(i_InputValue, out temporaryBoardSize);
+            if (!inputOk)
+            {
+                returnedValue = false;
+            }
+            else
+            {
+                returnedValue = temporaryBoardSize.Equals(eBoardSizeOptions.SmallBoard) || temporaryBoardSize.Equals(eBoardSizeOptions.MediumBoard) || temporaryBoardSize.Equals(eBoardSizeOptions.LargeBoard);
+            }
+
+            return returnedValue;
+        }
+
+        private static bool checkGameTypeValidity(string i_InputValue)
+        {
+            bool returnedValue;
+            eTypeOfGame temporaryGameType;
+            bool inputOk = Enum.TryParse(i_InputValue, out temporaryGameType);
+            if (!inputOk)
+            {
+                returnedValue = false;
+            }
+            else
+            {
+                returnedValue = temporaryGameType.Equals(eTypeOfGame.singlePlayer) || temporaryGameType.Equals(eTypeOfGame.doublePlayer);
+            }
+
+            return returnedValue;
+        }
+
         internal static eGameState CheckIfPlayerWantsAnotherGame()
         {
             eGameState newGameState = eGameState.Undefined;
-            string userInput = String.Empty;
+            string userInput = string.Empty;
             Console.WriteLine(s_AnotherGameMessage);
             userInput = Console.ReadLine();
             if (userInput.Equals(1.ToString()))
@@ -163,7 +199,13 @@ namespace Checkers_UI
                 Console.ReadKey();
                 newGameState = eGameState.Quit;
             }
+
             return newGameState;
+        }
+
+        internal static void PrintErrorMessage()
+        {
+            Console.WriteLine(s_InvalidInputMessage);
         }
 
         internal static void PrintGameResult(eGameState io_GameState)
@@ -173,10 +215,9 @@ namespace Checkers_UI
 
             StringBuilder endGameMessage = new StringBuilder();
             StringBuilder resultsMessage = new StringBuilder();
-            string whichMessage = String.Empty;
+            string whichMessage = string.Empty;
             switch (io_GameState)
             {
-
                 case eGameState.Tie:
                     whichMessage = s_TieMessage;
                     break;
@@ -198,23 +239,29 @@ namespace Checkers_UI
                     whichMessage = s_PlayerQuit;
                     break;
             }
+
             endGameMessage.AppendFormat("{0}{1}{2}", whichMessage, Environment.NewLine, s_PressAnyKeyMessage);
             Console.WriteLine(endGameMessage);
             Console.ReadKey();
             Ex02.ConsoleUtils.Screen.Clear();
+            Console.WriteLine(s_TheScoreMessage);
             resultsMessage.AppendFormat("{0}{1}{2}{3}{4}{5}{6}{7}", s_PointsMessage, player1Name, s_Player1Board, SessionData.m_Player1Points, k_ColumnSeperator, SessionData.m_Player2Points, s_Player2Board, player2Name);
             resultsMessage.Append(Environment.NewLine);
             resultsMessage.AppendFormat("{0}{1}{2}{3}{4}{5}{6}{7}", s_ScoreMessage, player1Name, s_Player1Board, SessionData.m_Player1OverallScore, k_ColumnSeperator, SessionData.m_Player2OverallScore, s_Player2Board, player2Name);
             Console.WriteLine(resultsMessage);
-
         }
 
         internal static void PrintLastMove(CheckersGameStep io_StepExecuted, string io_PreviousPlayerName)
         {
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
             StringBuilder lastMove = new StringBuilder();
-            lastMove.AppendFormat("{0}{1}{2}{3}{4}", (char)(io_StepExecuted.CurrentPosition.XCoord + 'A'), (char)(io_StepExecuted.CurrentPosition.YCooord + 'a'),
-                                                        k_ArrowSign.ToString(), (char)(io_StepExecuted.RequestedPosition.XCoord + 'A'), (char)(io_StepExecuted.RequestedPosition.YCooord + 'a'));
+            lastMove.AppendFormat(
+                "{0}{1}{2}{3}{4}",
+                (char)(io_StepExecuted.CurrentPosition.XCoord + 'A'),
+                (char)(io_StepExecuted.CurrentPosition.YCooord + 'a'),
+                 k_ArrowSign.ToString(),
+                 (char)(io_StepExecuted.RequestedPosition.XCoord + 'A'),
+                 (char)(io_StepExecuted.RequestedPosition.YCooord + 'a'));
 
             messageToPrint.AppendFormat("{0}{1}{2}", io_PreviousPlayerName, s_LastMoveMessage, lastMove);
             Console.WriteLine(messageToPrint);
@@ -234,98 +281,6 @@ namespace Checkers_UI
             CreateBoardFooter(BoardWithFrames);
 
             Console.WriteLine(BoardWithFrames);
-
-        }
-        public static CheckersGameStep ReadGameMove(ref string io_UserInput)
-        {
-            bool isInputOk = false;
-            //    string userInput = String.Empty;
-            Point startPosition;
-            Point requestedPosition;
-            CheckersGameStep requestedStep = new CheckersGameStep();
-            string playerNameHolder = SessionData.GetCurrentPlayer().PlayerName;
-            System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
-            messageToPrint.AppendFormat("{0}{1}", playerNameHolder, s_EnterMoveMessage);
-
-            while (!isInputOk)
-            {
-                Console.Write(messageToPrint);
-                //Console.WriteLine(messageToPrint);
-                io_UserInput = Console.ReadLine();
-                isInputOk = CheckStepInputValidity(io_UserInput);
-                if (!isInputOk)
-                {
-                    Console.WriteLine(s_InvalidInputMessage);
-                }
-            }
-
-            if (io_UserInput.Equals(k_QuitChar))
-            {
-                if (SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
-                {
-                    requestedStep.WantsToQuitIndicator = true;
-                }
-            }
-            else
-            {
-                MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
-                requestedStep.CurrentPosition = startPosition;
-                requestedStep.RequestedPosition = requestedPosition;
-
-            }
-
-            return requestedStep;
-
-        }
-
-        private static void MakePointsFromString(string o_userInput, out Point o_startPosition, out Point o_requestedPosition)
-        {
-            o_startPosition = new Point();
-            o_requestedPosition = new Point();
-
-            o_startPosition.XCoord = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
-            o_startPosition.YCooord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
-
-            o_requestedPosition.XCoord = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
-            o_requestedPosition.YCooord = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
-        }
-
-        private static bool CheckStepInputValidity(string o_StepInputFromUser)
-        {
-            const int numOfNeededChars = 5;
-            bool[] stepInputPartsValidation = new bool[k_StepInputPartsToCheck];
-            bool areAllPartsValid = false;
-
-            for (int i = 0; i < k_StepInputPartsToCheck; i++)
-            {
-                stepInputPartsValidation[i] = false;
-            }
-
-            if (o_StepInputFromUser.Length == numOfNeededChars)
-            {
-
-                if (char.IsUpper(o_StepInputFromUser[k_StartPositionColumnChar]) && char.IsUpper(o_StepInputFromUser[k_RequestedPositionColumnChar]))
-                {
-                    stepInputPartsValidation[k_ColumnsPart] = true;
-                }
-                if (char.IsLower(o_StepInputFromUser[k_StartPositionLineChar]) && char.IsLower(o_StepInputFromUser[k_RequestedPositionLineChar]))
-                {
-                    stepInputPartsValidation[k_LinesPart] = true;
-                }
-                if (o_StepInputFromUser[k_ArrowPlace] == k_ArrowSign)
-                {
-                    stepInputPartsValidation[k_ArrowPlace] = true;
-                }
-
-                areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
-                                                                    && stepInputPartsValidation[k_ArrowPlace];
-            }
-            else if(o_StepInputFromUser.Equals(k_QuitChar) && SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
-            {
-                areAllPartsValid = true;
-            }
-            return areAllPartsValid;
-
         }
 
         private static void CreateBoardHeader(StringBuilder o_BoardHeader)
@@ -359,15 +314,14 @@ namespace Checkers_UI
                     Point soldierCoordinate = new Point(j, i);
                     char soldierCharToPrint = BringCharFromMatrix(io_CheckersBoard, soldierCoordinate);
                     o_BoardBody.AppendFormat("{0}{1}{0}{2}", k_Space, soldierCharToPrint, k_ColumnSeperator);
-
                 }
+
                 o_BoardBody.Append(Environment.NewLine);
                 if (i != boardSize - 1)
                 {
                     o_BoardBody.Append(k_Space);
                     o_BoardBody.Append(k_LineSeperator, numberOfLineSeperators);
                     o_BoardBody.Append(Environment.NewLine);
-
                 }
             }
         }
@@ -389,6 +343,7 @@ namespace Checkers_UI
                         {
                             charToPrint = k_Team1KingChar;
                         }
+
                         break;
                     case ePlayerOptions.Player2:
                     case ePlayerOptions.ComputerPlayer:
@@ -400,6 +355,7 @@ namespace Checkers_UI
                         {
                             charToPrint = k_Team2KingChar;
                         }
+
                         break;
                 }
             }
@@ -413,45 +369,102 @@ namespace Checkers_UI
             int numberOfLineSeperators = (boardSize * 4) + 1;
             o_BoardFooter.Append(k_Space);
             o_BoardFooter.Append(k_LineSeperator, numberOfLineSeperators);
-            //  o_BoardFooter.Append(Environment.NewLine);
-
         }
 
-        private static bool checkUsernameValidity(string i_InputValue)
+        public static CheckersGameStep ReadGameMove(ref string io_UserInput)
         {
-            return !(i_InputValue.Contains(k_Space.ToString())) && i_InputValue.Length < k_MaxNameLength;
-        }
-        private static bool checkBoardSizeValidity(string i_InputValue)
-        {
-            bool returnedValue;
-            eBoardSizeOptions temporaryBoardSize;
-            bool inputOk = Enum.TryParse(i_InputValue, out temporaryBoardSize);
-            if (!inputOk)
+            bool isInputOk = false;
+            Point startPosition;
+            Point requestedPosition;
+            CheckersGameStep requestedStep = new CheckersGameStep();
+            string playerNameHolder = SessionData.GetCurrentPlayer().PlayerName;
+            System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
+            messageToPrint.AppendFormat("{0}{1}", playerNameHolder, s_EnterMoveMessage);
+
+            while (!isInputOk)
             {
-                returnedValue = false;
+                Console.Write(messageToPrint);
+                io_UserInput = Console.ReadLine();
+                isInputOk = CheckStepInputValidity(io_UserInput);
+                if (!isInputOk)
+                {
+                    Console.WriteLine(s_InvalidInputMessage);
+                }
+            }
+
+            if (io_UserInput.Equals(k_QuitChar))
+            {
+                if (SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
+                {
+                    requestedStep.WantsToQuitIndicator = true;
+                }
             }
             else
             {
-                returnedValue = temporaryBoardSize.Equals(eBoardSizeOptions.SmallBoard) || temporaryBoardSize.Equals(eBoardSizeOptions.MediumBoard) || temporaryBoardSize.Equals(eBoardSizeOptions.LargeBoard);
+                MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
+                requestedStep.CurrentPosition = startPosition;
+                requestedStep.RequestedPosition = requestedPosition;
             }
-            return returnedValue;
+
+            return requestedStep;
         }
-        private static bool checkGameTypeValidity(string i_InputValue)
+
+        private static bool CheckStepInputValidity(string o_StepInputFromUser)
         {
-            bool returnedValue;
-            eTypeOfGame temporaryGameType;
-            bool inputOk = Enum.TryParse(i_InputValue, out temporaryGameType);
-            if (!inputOk)
+            /* In this method we check if the entered step is a legal checkers game step.
+             * string length must be 5 (Ex. Ab>Cd - 5 chars)
+             * string[0] and string[3] must be upper case
+             * string[1] and string[4] must be lower cast
+             * string[2] must be '>'
+             */
+            const int numOfNeededChars = 5;
+            bool[] stepInputPartsValidation = new bool[k_StepInputPartsToCheck];
+            bool areAllPartsValid = false;
+
+            for (int i = 0; i < k_StepInputPartsToCheck; i++)
             {
-                returnedValue = false;
+                stepInputPartsValidation[i] = false;
             }
-            else
+
+            if (o_StepInputFromUser.Length == numOfNeededChars)
             {
-                returnedValue = temporaryGameType.Equals(eTypeOfGame.singlePlayer) || temporaryGameType.Equals(eTypeOfGame.doublePlayer);
+                if (char.IsUpper(o_StepInputFromUser[k_StartPositionColumnChar]) && char.IsUpper(o_StepInputFromUser[k_RequestedPositionColumnChar]))
+                {
+                    stepInputPartsValidation[k_ColumnsPart] = true;
+                }
+
+                if (char.IsLower(o_StepInputFromUser[k_StartPositionLineChar]) && char.IsLower(o_StepInputFromUser[k_RequestedPositionLineChar]))
+                {
+                    stepInputPartsValidation[k_LinesPart] = true;
+                }
+
+                if (o_StepInputFromUser[k_ArrowPlace] == k_ArrowSign)
+                {
+                    stepInputPartsValidation[k_ArrowPlace] = true;
+                }
+
+                areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
+                                                                    && stepInputPartsValidation[k_ArrowPlace];
             }
-            return returnedValue;
+            else if (o_StepInputFromUser.Equals(k_QuitChar) && SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
+            {
+                // in case user entered Q and is eligible to quit --> He has less soldiers than the second player
+                areAllPartsValid = true;
+            }
+
+            return areAllPartsValid;
         }
 
+        private static void MakePointsFromString(string o_userInput, out Point o_startPosition, out Point o_requestedPosition)
+        {
+            o_startPosition = new Point();
+            o_requestedPosition = new Point();
 
+            o_startPosition.XCoord = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
+            o_startPosition.YCooord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
+
+            o_requestedPosition.XCoord = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
+            o_requestedPosition.YCooord = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
+        }
     }
 }
