@@ -173,7 +173,6 @@ namespace Checkers_UI
 
             StringBuilder endGameMessage = new StringBuilder();
             StringBuilder resultsMessage = new StringBuilder();
-            const int middleScoreBoard = 20;
             string whichMessage = String.Empty;
             switch (io_GameState)
             {
