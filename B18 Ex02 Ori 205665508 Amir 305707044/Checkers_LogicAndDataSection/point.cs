@@ -11,7 +11,7 @@ namespace Checkers_LogicAndDataSection
         public int x;
         public int y;
 
-        public Point(int _x,int _y)
+        public Point(int _x, int _y)
         {
             x = _x;
             y = _y;
@@ -20,7 +20,7 @@ namespace Checkers_LogicAndDataSection
         {
             bool result = true;
             int boardSize = (int)SessionData.m_BoardSize;
-            if(x>boardSize-1||x < 0)
+            if (x > boardSize - 1 || x < 0)
             {
                 result = false;
             }
@@ -30,6 +30,16 @@ namespace Checkers_LogicAndDataSection
             }
 
             return result;
+        }
+        public int YCooord
+        {
+            get { return y; }
+            set { y = value; }
+        }
+        public int XCoord
+        {
+            get { return x; }
+            set { y = value; }
         }
 
     }

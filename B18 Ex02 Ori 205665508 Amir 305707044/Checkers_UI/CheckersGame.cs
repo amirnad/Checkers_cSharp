@@ -8,9 +8,10 @@ namespace Checkers_UI
     {
 
 
-        Checkers_LogicAndDataSection.eGameState gameState = eGameState.KeepGoing;
+        private eGameState m_gameState = eGameState.KeepGoing;
         private const int k_maxGamePlayers = 2;
         private bool m_IsGameOn = false;
+
         private GameBoard m_CheckersBoard = new Checkers_LogicAndDataSection.GameBoard();
 
         private Player m_currentActivePlayer;//o.k
@@ -23,7 +24,9 @@ namespace Checkers_UI
             string userMoveInput = String.Empty;
 
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
-            UI.ReadGameInitialInputFromUser(out GameDemoSettings);
+            setup(out GameDemoSettings);
+
+            //UI.ReadGameInitialInputFromUser(out GameDemoSettings);
 
 
             Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
@@ -34,7 +37,7 @@ namespace Checkers_UI
             UI.PrintCheckersBoard(m_CheckersBoard);
 
 
-            while (gameState == eGameState.KeepGoing)
+            while (m_gameState == eGameState.KeepGoing)
             {
                 m_currentActivePlayer = SessionData.GetCurrentPlayer();
                 m_isRequestedMoveLegal = false;
@@ -47,10 +50,10 @@ namespace Checkers_UI
                     }
                     //               else
                     //               {
-                    //             m_RequestedMove = m_currentActivePlayer.
+                    //             m_RequestedMove = m_currentActivePlayer.Com
                     //                }
 
-                    m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+                    m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove, m_currentActivePlayer);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
 
 
                     if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined || m_RequestedMove.quit)
@@ -68,36 +71,32 @@ namespace Checkers_UI
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
                     UI.PrintLastMove(userMoveInput);
-                    gameState = SessionData.checkGameState();
+                    m_gameState = SessionData.checkGameState();
                 }
                 else
                 {
                     if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
-                        gameState = eGameState.player1Quit;
+                        m_gameState = eGameState.player1Quit;
                     else
-                        gameState = eGameState.player2Quit;
+                        m_gameState = eGameState.player2Quit;
+                }
+                if(m_gameState != eGameState.KeepGoing)
+                {
+                    SessionData.CalculateScore(m_gameState);
+                    UI.PrintGameResult(m_gameState);
                 }
             }
+
 
 
 
         }
 
 
-
-
-
-
-        //private Checkers_LogicAndDataSection.InitialGameSetting setup()
-        //{
-        //    Checkers_LogicAndDataSection.InitialGameSetting res = new Checkers_LogicAndDataSection.InitialGameSetting();
-
-        //    res.player1Name = "amir";
-        //    res.player2Name = "ori";
-        //    res.gameType = Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer;
-        //    res.boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.MediumBoard;
-
-        //    return res;
-        //}
+        private void setup(out InitialGameSetting o_Settings)
+        {
+            o_Settings = new InitialGameSetting();
+            o_Settings.SetGameSettings("Ori", "Amir", eBoardSizeOptions.MediumBoard, eTypeOfGame.doublePlayer);
+        }
     }
 }

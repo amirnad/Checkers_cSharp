@@ -14,7 +14,7 @@ namespace Checkers_LogicAndDataSection
         public const int k_NumberOfSoldiersInMediumBoard = 12;
         public const int k_NumberOfSoldiersInLargeBoard = 20;
 
-
+        
         private ePlayerOptions m_PlayerId;
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
@@ -43,10 +43,10 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        private short NumberOfSoldiers
+        public short NumberOfSoldiers
         {
             get { return m_NumberOfSoldiers; }
-            set
+            private set
             {
                 switch (SessionData.m_BoardSize)
                 {
@@ -128,20 +128,53 @@ namespace Checkers_LogicAndDataSection
 
         public bool SomeBodyAlive()
         {
-            return m_NumberOfSoldiers>0;
+            return m_NumberOfSoldiers > 0;
         }
         public bool ThereIsPossibleMovements()
         {
             bool someBodyAlive = false;
             foreach (GameBoard.Soldier s in playerArmy)
             {
-                if (s.m_PossibleEatMovements.Capacity != 0 || s.m_PossibleRegularMovements.Capacity != 0)
+                if (s.m_PossibleEatMovements.Count != 0 || s.m_PossibleRegularMovements.Count != 0)
                 {
                     someBodyAlive = true;
                     break;
                 }
             }
             return someBodyAlive;
+        }
+
+        internal bool HasEatMoves()
+        {
+            bool playerMustCommitEatMove = false;
+            foreach (GameBoard.Soldier soldierToInspect in playerArmy)
+            {
+                if (soldierToInspect.eatPossibleMovements.Count != 0)
+                {
+                    playerMustCommitEatMove = true;
+                    break;
+                }
+            }
+
+            return playerMustCommitEatMove;
+        }
+
+        internal int CalculateTeamValue()
+        {
+            int returnedValue = 0;
+            foreach(GameBoard.Soldier soldierToCheck in playerArmy)
+            {
+                switch(soldierToCheck.Rank)
+                {
+                    case GameBoard.eSoldierRanks.Regular:
+                        returnedValue += (int)GameBoard.eSoldierRanks.Regular;
+                        break;
+                    case GameBoard.eSoldierRanks.King:
+                        returnedValue += (int)GameBoard.eSoldierRanks.King;
+                        break;
+                }
+            }
+            return returnedValue;
         }
     }
 }

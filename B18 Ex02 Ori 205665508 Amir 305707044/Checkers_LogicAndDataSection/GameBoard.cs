@@ -6,11 +6,12 @@ namespace Checkers_LogicAndDataSection
     public class GameBoard
     {
 
-    
+
 
 
         private Soldier[,] m_CheckersBoard = null;
         public enum eSoldierRanks { Regular = 1, King = 4 }
+
         public class Soldier
         {
             private static Point nextPointToFillPlayer1;
@@ -382,8 +383,6 @@ namespace Checkers_LogicAndDataSection
 
 
             updateBoardAfterMove(io_MoveToExecute);
-
-
         }
 
         private void updateBoardAfterMove(CheckersGameStep io_MoveToExecute)//afterMovement
@@ -508,7 +507,7 @@ namespace Checkers_LogicAndDataSection
             Point localPointPlayer1 = new Point();
             Point localPointPlayer2 = new Point();
 
-            
+
 
             for (int i = 0; i < NumberOfSoldiers; i++)
             {
@@ -535,7 +534,7 @@ namespace Checkers_LogicAndDataSection
 
 
         }
-        public CheckersGameStep.MoveType SortMoveType(CheckersGameStep i_RequestedMove)
+        public CheckersGameStep.MoveType SortMoveType(CheckersGameStep i_RequestedMove, Player i_currentActivePlayer)
         {
             Soldier currentPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.CurrentPosition);
             Soldier NextPositonSoldier = GetSoldierFromMatrix(i_RequestedMove.RequestedPosition);
@@ -553,6 +552,22 @@ namespace Checkers_LogicAndDataSection
                 validity = false;
             }
             if (validity && NextPositonSoldier != null)
+            {
+                validity = false;
+            }
+            //now soldier cant move back - however it is still kept in the possible movemnts
+            if (validity && currentPositonSoldier.Rank != eSoldierRanks.King)
+            {
+                if (i_RequestedMove.RequestedPosition.YCooord > currentPositonSoldier.Position.YCooord && currentPositonSoldier.Team == ePlayerOptions.Player1)
+                {
+                    validity = false;
+                }
+                else if (i_RequestedMove.RequestedPosition.YCooord < currentPositonSoldier.Position.YCooord && currentPositonSoldier.Team == ePlayerOptions.Player2)
+                {
+                    validity = false;
+                }
+            }
+            if (validity && i_currentActivePlayer.HasEatMoves() && CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove).moveType != eMoveTypes.EatMove)
             {
                 validity = false;
             }
@@ -585,6 +600,7 @@ namespace Checkers_LogicAndDataSection
 
             return result;
         }
+
         public Soldier GetSoldierFromMatrix(Point i_GivenCoordinate)
         {
 

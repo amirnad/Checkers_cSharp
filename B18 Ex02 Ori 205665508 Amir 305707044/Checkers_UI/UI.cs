@@ -12,6 +12,17 @@ namespace Checkers_UI
         private static string s_EnterMoveMessage = "'s Turn: ";
         private static string s_LastMoveMessage = "'s move was: ";
         private static string s_InvalidInputMessage = "Input is invalid, please try again.";
+        private static string s_TieMessage = "Game ended in a draw!";
+        private static string s_PlayerWon = " WON! Good Job!";
+        private static string s_PlayerQuit = " QUIT! You Loser!";
+        private static string s_PressAnyKeyMessage = "Press any key to show results...";
+        private static string s_Player1Board = "--->";
+        private static string s_Player2Board = "<---";
+        private static string s_ScoreMessage = "SCORE:  "; //6
+        private static string s_PointsMessage = "POINTS: "; //8
+
+
+
 
         private const int k_PlayerXName = 0;
         private const int k_PlayerOName = 1;
@@ -128,6 +139,50 @@ namespace Checkers_UI
 
             io_GameInitialValues = new InitialGameSetting();
             io_GameInitialValues.SetGameSettings(tempPlayer1NameHolder, tempPlayer2NameHolder, chosenBoardSize, chosenGameType);
+        }
+
+        internal static void PrintGameResult(eGameState io_GameState)
+        {
+            string player1Name = SessionData.GetPlayerName(ePlayerOptions.Player1);
+            string player2Name = SessionData.GetPlayerName(ePlayerOptions.Player2);
+
+            StringBuilder endGameMessage = new StringBuilder();
+            StringBuilder resultsMessage = new StringBuilder();
+            const int middleScoreBoard = 20;
+            string whichMessage = String.Empty;
+            switch (io_GameState)
+            {
+
+                case eGameState.Tie:
+                    whichMessage = s_TieMessage;
+                    break;
+                case eGameState.WinPlayer1:
+                    endGameMessage.Append(player1Name);
+                    whichMessage = s_PlayerWon;
+                    break;
+                case eGameState.WinPlayer2:
+                    endGameMessage.Append(player2Name);
+                    whichMessage = s_PlayerWon;
+                    break;
+                case eGameState.player1Quit:
+                    endGameMessage.Append(player1Name);
+                    whichMessage = s_PlayerQuit;
+                    break;
+                case eGameState.player2Quit:
+                    endGameMessage.Append(player2Name);
+
+                    whichMessage = s_PlayerQuit;
+                    break;
+            }
+            endGameMessage.AppendFormat("{0}{1}{2}", whichMessage, Environment.NewLine, s_PressAnyKeyMessage);
+            Console.WriteLine(endGameMessage);
+            Console.ReadKey();
+            Ex02.ConsoleUtils.Screen.Clear();
+            resultsMessage.AppendFormat("{0}{1}{2}{3}{4}{5}{6}{7}", s_PointsMessage, player1Name, s_Player1Board, SessionData.m_Player1Points, k_ColumnSeperator, SessionData.m_Player2Points, s_Player2Board, player2Name);
+            resultsMessage.Append(Environment.NewLine);
+            resultsMessage.AppendFormat("{0}{1}{2}{3}{4}{5}{6}{7}", s_ScoreMessage, player1Name, s_Player1Board, SessionData.m_Player1OverallScore, k_ColumnSeperator, SessionData.m_Player2OverallScore, s_Player2Board, player2Name);
+            Console.WriteLine(resultsMessage);
+
         }
 
         internal static void PrintLastMove(string io_UserMoveInput)
