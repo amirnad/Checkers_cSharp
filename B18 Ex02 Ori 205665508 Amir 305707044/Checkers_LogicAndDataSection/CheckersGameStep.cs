@@ -67,7 +67,7 @@ namespace Checkers_LogicAndDataSection
                     result.m_MoveType = eMoveTypes.Undefined;
                 }
 
-                switch (SessionData.m_currentActivePlayer)
+                switch (SessionData.m_CurrentActivePlayer)
                 {
                     case ePlayerOptions.Player1:
                         indexForLastLineOnBoard = 0;

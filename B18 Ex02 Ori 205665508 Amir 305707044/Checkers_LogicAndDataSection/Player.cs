@@ -163,7 +163,7 @@ namespace Checkers_LogicAndDataSection
             else
             {
                 currentSoldierToMove.calculatePossibleMovements(ref io_CheckersBoard);
-                if (currentSoldierToMove.EatPossibleMovements.Count == 0)
+                if (currentSoldierToMove.eatPossibleMovements.Count == 0)
                 {
                     SessionData.ChangeTurn();
                 }

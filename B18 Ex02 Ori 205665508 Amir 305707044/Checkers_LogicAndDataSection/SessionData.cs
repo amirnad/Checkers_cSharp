@@ -33,7 +33,7 @@ namespace Checkers_LogicAndDataSection
 
         public static Player GetCurrentPlayer()
         {
-            if (m_TheOtherPlayer == ePlayerOptions.Player1)
+            if (m_TheOtherPlayer != ePlayerOptions.Player1)
             {
                 return s_Player1;
             }
@@ -153,8 +153,8 @@ namespace Checkers_LogicAndDataSection
         internal static void ChangeTurn()
         {
             ePlayerOptions temp = m_TheOtherPlayer;
-            m_CurrentActivePlayer = m_TheOtherPlayer;
-            m_TheOtherPlayer = temp;
+            m_TheOtherPlayer = m_CurrentActivePlayer;
+            m_CurrentActivePlayer = temp;
         }
     }
 }

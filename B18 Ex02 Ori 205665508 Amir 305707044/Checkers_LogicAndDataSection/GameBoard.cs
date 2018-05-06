@@ -270,7 +270,7 @@ namespace Checkers_LogicAndDataSection
 
                 foreach (Point p in points)
                 {
-                    if (p.isInsideBoard())
+                    if (p.IsInsideBoard())
                     {
                         affectedSoldiersPositions.Add(p);
                     }
@@ -335,7 +335,7 @@ namespace Checkers_LogicAndDataSection
                                 PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
 
 
-                                if (PossibleEatingNextPosition.isInsideBoard())
+                                if (PossibleEatingNextPosition.IsInsideBoard())
                                 {
                                     if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
                                     {
@@ -353,7 +353,7 @@ namespace Checkers_LogicAndDataSection
                                     {
                                         PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
                                         PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
-                                        if (PossibleEatingNextPosition.isInsideBoard())
+                                        if (PossibleEatingNextPosition.IsInsideBoard())
                                         {
                                             if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
                                             {
@@ -369,7 +369,7 @@ namespace Checkers_LogicAndDataSection
                                     {
                                         PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
                                         PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
-                                        if (PossibleEatingNextPosition.isInsideBoard())
+                                        if (PossibleEatingNextPosition.IsInsideBoard())
                                         {
                                             if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
                                             {
@@ -405,7 +405,7 @@ namespace Checkers_LogicAndDataSection
             m_CheckersBoard[io_MoveToExecute.RequestedPosition.YCooord, io_MoveToExecute.RequestedPosition.XCoord] = theOneWeMove;
 
 
-            if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
+            if (io_MoveToExecute.MoveTypeInfo.TypeIndicator == eMoveTypes.EatMove)
             {
                 Point eatenSoldierPosition = calculatePositionOfEatenSoldier(io_MoveToExecute);
 
@@ -476,7 +476,7 @@ namespace Checkers_LogicAndDataSection
                 localPointPlayer2 = Soldier.PointToFillPlayer2;
 
                 m_CheckersBoard[localPointPlayer1.YCooord, localPointPlayer1.XCoord] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
-                if (SessionData.gameType == eTypeOfGame.doublePlayer)
+                if (SessionData.s_GameType == eTypeOfGame.doublePlayer)
                 {
                     m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
                 }
@@ -523,7 +523,7 @@ namespace Checkers_LogicAndDataSection
             {
                 validity = false;
             }
-            if (validity && !i_RequestedMove.RequestedPosition.isInsideBoard())
+            if (validity && !i_RequestedMove.RequestedPosition.IsInsideBoard())
             {
                 validity = false;
             }
@@ -539,7 +539,7 @@ namespace Checkers_LogicAndDataSection
                     validity = false;
                 }
             }
-            if (validity && i_currentActivePlayer.HasEatMoves() && CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove).moveType != eMoveTypes.EatMove && !i_RequestedMove.WantsToQuitIndicator)
+            if (validity && i_currentActivePlayer.HasEatMoves() && CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove).TypeIndicator != eMoveTypes.EatMove && !i_RequestedMove.WantsToQuitIndicator)
             {
                 validity = false;
             }
@@ -547,9 +547,9 @@ namespace Checkers_LogicAndDataSection
             {
                 result = CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove);
 
-                if (result.moveType != eMoveTypes.Undefined)
+                if (result.TypeIndicator!= eMoveTypes.Undefined)
                 {
-                    if (currentPositonSoldier.m_PossibleEatMovements.Count != 0 && result.moveType == eMoveTypes.EatMove)
+                    if (currentPositonSoldier.m_PossibleEatMovements.Count != 0 && result.TypeIndicator == eMoveTypes.EatMove)
                         arrayOfMovements = currentPositonSoldier.eatPossibleMovements;
                     else
                         arrayOfMovements = currentPositonSoldier.regularPossibleMovements;
@@ -572,7 +572,7 @@ namespace Checkers_LogicAndDataSection
             }
 
             if (!validity || !exists)
-                result.moveType = eMoveTypes.Undefined;
+                result.TypeIndicator = eMoveTypes.Undefined;
 
 
             return result;
@@ -582,7 +582,7 @@ namespace Checkers_LogicAndDataSection
         {
             Soldier returnedSoldier = null;
 
-            if (i_GivenCoordinate.isInsideBoard())
+            if (i_GivenCoordinate.IsInsideBoard())
             {
                 returnedSoldier = m_CheckersBoard[i_GivenCoordinate.YCooord, i_GivenCoordinate.XCoord];
             }
