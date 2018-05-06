@@ -26,7 +26,7 @@ namespace Checkers_UI
         private static string s_ScoreMessage = "SCORE:  "; //6
         private static string s_PointsMessage = "POINTS: "; //8
 
-
+        private const char k_QuitChar = 'Q';
 
 
         private const int k_PlayerXName = 0;
@@ -154,7 +154,7 @@ namespace Checkers_UI
             userInput = Console.ReadLine();
             if (userInput.Equals(1.ToString()))
             {
-                newGameState = eGameState.StartOver;   
+                newGameState = eGameState.StartOver;
             }
             else
             {
@@ -255,10 +255,16 @@ namespace Checkers_UI
                     Console.WriteLine(s_InvalidInputMessage);
                 }
             }
-            MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
 
-            requestedStep.CurrentPosition = startPosition;
-            requestedStep.RequestedPosition = requestedPosition;
+            if (!io_UserInput.Equals(k_QuitChar))
+            {
+                MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
+                requestedStep.CurrentPosition = startPosition;
+                requestedStep.RequestedPosition = requestedPosition;
+
+            }
+
+
 
             return requestedStep;
 
