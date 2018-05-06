@@ -237,8 +237,8 @@ namespace Checkers_UI
         {
             bool isInputOk = false;
             //    string userInput = String.Empty;
-            Point startPosition = new Point();
-            Point requestedPosition = new Point();
+            Point startPosition;
+            Point requestedPosition;
             CheckersGameStep requestedStep = new CheckersGameStep();
             string playerNameHolder = SessionData.GetCurrentPlayer().PlayerName;
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
@@ -266,6 +266,9 @@ namespace Checkers_UI
 
         private static void MakePointsFromString(string o_userInput, out Point o_startPosition, out Point o_requestedPosition)
         {
+            o_startPosition = new Point();
+            o_requestedPosition = new Point();
+
             o_startPosition.XCoord = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
             o_startPosition.XCoord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
 
