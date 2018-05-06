@@ -19,6 +19,16 @@ namespace Checkers_LogicAndDataSection
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
         private List<GameBoard.Soldier> playerArmy = null;
+
+        public void updateArmy(GameBoard i_gameboard)
+        {
+            foreach(GameBoard.Soldier s in playerArmy)
+            {
+                s.calculatePossibleMovements(ref i_gameboard);
+            }
+        }
+
+
         internal void addToPlayerArmy(GameBoard.Soldier soldier)
         {
             playerArmy.Add(soldier);

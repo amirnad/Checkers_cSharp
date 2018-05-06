@@ -40,6 +40,7 @@ namespace Checkers_UI
             while (m_gameState == eGameState.KeepGoing)
             {
                 m_currentActivePlayer = SessionData.GetCurrentPlayer();
+                m_currentActivePlayer.updateArmy(m_CheckersBoard);
                 m_isRequestedMoveLegal = false;
 
                 while (!m_isRequestedMoveLegal)

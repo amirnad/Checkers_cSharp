@@ -380,9 +380,7 @@ namespace Checkers_LogicAndDataSection
                 m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
 
             }
-
-
-            updateBoardAfterMove(io_MoveToExecute);
+                        
         }
 
         private void updateBoardAfterMove(CheckersGameStep io_MoveToExecute)//afterMovement
