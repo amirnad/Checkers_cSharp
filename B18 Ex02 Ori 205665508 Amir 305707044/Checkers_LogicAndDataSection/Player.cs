@@ -32,14 +32,14 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        internal void addToPlayerArmy(GameBoard.Soldier soldier)
+        internal void addToPlayerArmy(GameBoard.Soldier i_soldier)
         {
-            m_PlayerArmy.Add(soldier);
+            m_PlayerArmy.Add(i_soldier);
         }
 
-        internal void removeFromPlayerArmy(GameBoard.Soldier soldier)
+        internal void removeFromPlayerArmy(GameBoard.Soldier i_soldier)
         {
-            m_PlayerArmy.Remove(soldier);
+            m_PlayerArmy.Remove(i_soldier);
         }
 
         public void decrementNumberOfSoldier()
@@ -98,7 +98,7 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-        public void InitializePlayer(string i_PlayerName, ePlayerOptions i_PlayerId = ePlayerOptions.Player1) // input is already checked in Manager and UI projects
+        public void InitializePlayer(string i_PlayerName, ePlayerOptions i_PlayerId = ePlayerOptions.Player1) // input is already checked in  UI project
         {
             PlayerName = i_PlayerName;
             Team = i_PlayerId;
@@ -120,6 +120,8 @@ namespace Checkers_LogicAndDataSection
             m_PlayerArmy = new List<GameBoard.Soldier>(NumberOfSoldiers);
         }
 
+        // in make a move there is the logic of switcing turns
+        //the rule is that after MakeAMove() the player that is playing the next move will be in current player in sessionData class 
         public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
         {
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
@@ -143,7 +145,6 @@ namespace Checkers_LogicAndDataSection
                 }
             }
 
-            // if three well be an addition to what we do if a player has eaten another player and he have a chnce to eat another one itll be here
             // here was supposed to be else --> do nothing cuz we dont want switch turns --> player ate a soldier and can creat a combo
         }
 
