@@ -37,8 +37,14 @@ namespace Checkers_UI
             UI.PrintCheckersBoard(m_CheckersBoard);
 
 
-            while (m_gameState == eGameState.KeepGoing)
+            while (m_gameState == eGameState.KeepGoing || m_gameState == eGameState.StartOver)
             {
+                if (m_gameState == eGameState.StartOver)
+                {
+                    InitializeAnotherGame(GameDemoSettings);
+                    Ex02.ConsoleUtils.Screen.Clear();
+                    UI.PrintCheckersBoard(m_CheckersBoard);
+                    }
                 m_currentActivePlayer = SessionData.GetCurrentPlayer();
                 m_currentActivePlayer.updateArmy(m_CheckersBoard);
                 m_isRequestedMoveLegal = false;
@@ -81,17 +87,22 @@ namespace Checkers_UI
                     else
                         m_gameState = eGameState.player2Quit;
                 }
-                if(m_gameState != eGameState.KeepGoing)
+                if (m_gameState != eGameState.KeepGoing)
                 {
                     SessionData.CalculateScore(m_gameState);
                     UI.PrintGameResult(m_gameState);
-                    m_GameState = UI.CheckIfPlayerWantsAnotherGame();
+                    m_gameState = UI.CheckIfPlayerWantsAnotherGame();
 
                 }
             }
 
         }
 
+        private void InitializeAnotherGame(InitialGameSetting o_GameDemoSettings)
+        {
+            SessionData.m_currentActivePlayer = ePlayerOptions.Player1;
+            m_CheckersBoard.InitializeCheckersBoard();
+        }
 
         private void setup(out InitialGameSetting o_Settings)
         {

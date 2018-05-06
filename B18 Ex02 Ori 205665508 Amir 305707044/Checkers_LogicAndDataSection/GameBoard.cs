@@ -298,12 +298,15 @@ namespace Checkers_LogicAndDataSection
 
                                 PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
                                 PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
-
-                                if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                if (PossibleEatingNextPosition.isInsideBoard())
                                 {
-                                    gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
-                                    m_PossibleEatMovements.Add(gameStep);
+                                    if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
+                                    {
+                                        gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
+                                        m_PossibleEatMovements.Add(gameStep);
+                                    }
                                 }
+
                             }
                             else//regular soldier
                             {
@@ -501,8 +504,6 @@ namespace Checkers_LogicAndDataSection
             Point localPointPlayer1 = new Point();
             Point localPointPlayer2 = new Point();
 
-
-
             for (int i = 0; i < NumberOfSoldiers; i++)
             {
 
@@ -513,15 +514,8 @@ namespace Checkers_LogicAndDataSection
 
                 m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
 
-
-
                 SessionData.GetCurrentPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x]);
                 SessionData.GetOtherPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);////AI-Practice-MODE
-
-
-
-
-
                 Soldier.moveToNextPlace();
 
             }
@@ -545,7 +539,7 @@ namespace Checkers_LogicAndDataSection
             {
                 validity = false;
             }
-            if (validity && NextPositonSoldier != null) 
+            if (validity && NextPositonSoldier != null)
             {
                 validity = false;
             }

@@ -17,6 +17,9 @@ namespace Checkers_UI
         private static string s_PlayerQuit = " QUIT! You Loser!";
         private static string s_PressAnyKeyMessage = "Press any key to show results...";
         private static string s_AnotherGameMessage = "Do you wish to play another game? (1) Yes, (0) No";
+        private static string s_GoodByeMessage = "Thank you for playing Checkers. Bye Bye!";
+
+        private static string s_PressAnyKeyToExitMessage = "Press Any Key To Exit...";
 
         private static string s_Player1Board = "--->";
         private static string s_Player2Board = "<---";
@@ -149,16 +152,18 @@ namespace Checkers_UI
             string userInput = String.Empty;
             Console.WriteLine(s_AnotherGameMessage);
             userInput = Console.ReadLine();
-            if(userInput.Equals(1))
+            if (userInput.Equals(1.ToString()))
             {
-                initializeAnotherGame();   
+                newGameState = eGameState.StartOver;   
             }
             else
             {
                 Console.WriteLine(s_GoodByeMessage);
-                Console.WriteLine(s_PressAnyKeyMessage);
+                Console.WriteLine(s_PressAnyKeyToExitMessage);
                 Console.ReadKey();
+                newGameState = eGameState.Quit;
             }
+            return newGameState;
         }
 
         internal static void PrintGameResult(eGameState io_GameState)
