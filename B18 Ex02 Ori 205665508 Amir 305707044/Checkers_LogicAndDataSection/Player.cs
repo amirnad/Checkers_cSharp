@@ -85,10 +85,6 @@ namespace Checkers_LogicAndDataSection
 
                         break;
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 89cb6770f1c78080078b0d2e7463144a3371e479
             }
         }
 
@@ -155,19 +151,19 @@ namespace Checkers_LogicAndDataSection
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
             io_CheckersBoard.MoveSoldier(io_MoveToExecute);
 
-            if (io_MoveToExecute.moveTypeInfo.kingMove)
+            if (io_MoveToExecute.MoveTypeInfo.KingMove)
             {
                 currentSoldierToMove.BecomeAKing();
             }
 
-            if (io_MoveToExecute.moveTypeInfo.moveType != eMoveTypes.EatMove)
+            if (io_MoveToExecute.MoveTypeInfo.TypeIndicator != eMoveTypes.EatMove)
             {
                 SessionData.ChangeTurn();
             }
             else
             {
                 currentSoldierToMove.calculatePossibleMovements(ref io_CheckersBoard);
-                if (currentSoldierToMove.eatPossibleMovements.Count == 0)
+                if (currentSoldierToMove.EatPossibleMovements.Count == 0)
                 {
                     SessionData.ChangeTurn();
                 }
@@ -203,7 +199,7 @@ namespace Checkers_LogicAndDataSection
             bool playerMustCommitEatMove = false;
             foreach (GameBoard.Soldier soldierToInspect in m_PlayerArmy)
             {
-                if (soldierToInspect.eatPossibleMovements.Count != 0)
+                if (soldierToInspect.EatPossibleMovements.Count != 0)
                 {
                     playerMustCommitEatMove = true;
                     break;
