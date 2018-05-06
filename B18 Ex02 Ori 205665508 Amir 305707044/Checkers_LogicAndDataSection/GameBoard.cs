@@ -10,8 +10,8 @@ namespace Checkers_LogicAndDataSection
 
         public class Soldier
         {
-            private static Point nextPointToFillPlayer1 = new Point();
-            private static Point nextPointToFillPlayer2 = new Point();
+            private static Point nextPointToFillPlayer1;
+            private static Point nextPointToFillPlayer2;
             private Point m_CoordinateInMatrix;
             internal List<CheckersGameStep> m_PossibleRegularMovements = null;
             internal List<CheckersGameStep> m_PossibleEatMovements = null;
