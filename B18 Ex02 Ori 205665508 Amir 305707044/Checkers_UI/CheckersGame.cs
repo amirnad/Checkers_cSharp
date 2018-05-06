@@ -44,7 +44,7 @@ namespace Checkers_UI
                     InitializeAnotherGame(GameDemoSettings);
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
-                    }
+                }
                 m_currentActivePlayer = SessionData.GetCurrentPlayer();
                 m_currentActivePlayer.updateArmy(m_CheckersBoard);
                 m_isRequestedMoveLegal = false;
@@ -101,6 +101,7 @@ namespace Checkers_UI
         private void InitializeAnotherGame(InitialGameSetting o_GameDemoSettings)
         {
             SessionData.m_currentActivePlayer = ePlayerOptions.Player1;
+            SessionData.InitializePlayers(o_GameDemoSettings);
             m_CheckersBoard.InitializeCheckersBoard();
         }
 
