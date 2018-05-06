@@ -4,9 +4,7 @@ namespace Checkers_LogicAndDataSection
     public enum eTypeOfGame { Undefined, singlePlayer, doublePlayer }
     public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
     public enum eGameState { KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit, StartOver, Quit, Undefined }
-
-
-
+    
     public class SessionData
     {
         public static eBoardSizeOptions m_BoardSize = eBoardSizeOptions.Undefined;

@@ -18,10 +18,7 @@ namespace Checkers_LogicAndDataSection
 
             private ePlayerOptions m_SoldierTeam;
             private eSoldierRanks m_Rank;
-
-
-
-
+            
             public static Point PointToFillPlayer1
             {
                 get { return nextPointToFillPlayer1; }
@@ -137,9 +134,7 @@ namespace Checkers_LogicAndDataSection
             {
                 Rank = eSoldierRanks.King;
             }
-
-
-
+            
             private static List<CheckersGameStep> resetPossibleMovesArray(int indexOfTopRow, Point i_CurrentSoldierPosition, ePlayerOptions playerId)
             {
                 List<CheckersGameStep> resultPossibleMovesArray = new List<CheckersGameStep>();
@@ -510,7 +505,7 @@ namespace Checkers_LogicAndDataSection
             bool validity = true;
             bool exists = false;
 
-            if (currentPositonSoldier == null)
+            if (currentPositonSoldier == null && !i_RequestedMove.WantsToQuitIndicator)
             {
                 validity = false;
             }
@@ -538,7 +533,7 @@ namespace Checkers_LogicAndDataSection
                     validity = false;
                 }
             }
-            if (validity && i_currentActivePlayer.HasEatMoves() && CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove).moveType != eMoveTypes.EatMove)
+            if (validity && i_currentActivePlayer.HasEatMoves() && CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove).moveType != eMoveTypes.EatMove && !i_RequestedMove.WantsToQuitIndicator)
             {
                 validity = false;
             }

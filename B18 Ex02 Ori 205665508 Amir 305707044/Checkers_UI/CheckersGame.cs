@@ -54,6 +54,10 @@ namespace Checkers_UI
                     if (m_currentActivePlayer.Team != ePlayerOptions.ComputerPlayer)
                     {
                         m_RequestedMove = UI.ReadGameMove(ref userMoveInput);
+                        if(m_RequestedMove.WantsToQuitIndicator)
+                        {
+                            break;
+                        }
                     }
                     //               else
                     //               {
@@ -61,9 +65,8 @@ namespace Checkers_UI
                     //                }
 
                     m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove, m_currentActivePlayer);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
-
-
-                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined || m_RequestedMove.quit)
+                    
+                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined || m_RequestedMove.WantsToQuitIndicator)
                     {
                         m_isRequestedMoveLegal = true;
                     }
@@ -72,7 +75,7 @@ namespace Checkers_UI
                         Output.InputException();
                     }
                 }
-                if (!m_RequestedMove.quit)
+                if (!m_RequestedMove.WantsToQuitIndicator)
                 {
                     m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
                     Ex02.ConsoleUtils.Screen.Clear();

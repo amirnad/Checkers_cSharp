@@ -26,7 +26,7 @@ namespace Checkers_UI
         private static string s_ScoreMessage = "SCORE:  "; //6
         private static string s_PointsMessage = "POINTS: "; //8
 
-        private const char k_QuitChar = 'Q';
+        private const string k_QuitChar = "Q";
 
 
         private const int k_PlayerXName = 0;
@@ -173,7 +173,6 @@ namespace Checkers_UI
 
             StringBuilder endGameMessage = new StringBuilder();
             StringBuilder resultsMessage = new StringBuilder();
-            const int middleScoreBoard = 20;
             string whichMessage = String.Empty;
             switch (io_GameState)
             {
@@ -256,15 +255,20 @@ namespace Checkers_UI
                 }
             }
 
-            if (!io_UserInput.Equals(k_QuitChar))
+            if (io_UserInput.Equals(k_QuitChar))
+            {
+                if (SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
+                {
+                    requestedStep.WantsToQuitIndicator = true;
+                }
+            }
+            else
             {
                 MakePointsFromString(io_UserInput, out startPosition, out requestedPosition);
                 requestedStep.CurrentPosition = startPosition;
                 requestedStep.RequestedPosition = requestedPosition;
 
             }
-
-
 
             return requestedStep;
 
@@ -312,7 +316,10 @@ namespace Checkers_UI
                 areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
                                                                     && stepInputPartsValidation[k_ArrowPlace];
             }
-
+            else if(o_StepInputFromUser.Equals(k_QuitChar) && SessionData.GetCurrentPlayer().NumberOfSoldiers < SessionData.GetOtherPlayer().NumberOfSoldiers)
+            {
+                areAllPartsValid = true;
+            }
             return areAllPartsValid;
 
         }

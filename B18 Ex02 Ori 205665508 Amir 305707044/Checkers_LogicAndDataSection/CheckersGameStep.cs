@@ -114,9 +114,10 @@ namespace Checkers_LogicAndDataSection
 
         }
 
-        public bool quit
+        public bool WantsToQuitIndicator
         {
             get { return m_quit; }
+            set { m_quit = value; }
         }
         public Point CurrentPosition
         {
