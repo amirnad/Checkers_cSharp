@@ -199,7 +199,7 @@ namespace Checkers_LogicAndDataSection
             bool playerMustCommitEatMove = false;
             foreach (GameBoard.Soldier soldierToInspect in m_PlayerArmy)
             {
-                if (soldierToInspect.EatPossibleMovements.Count != 0)
+                if (soldierToInspect.eatPossibleMovements.Count != 0)
                 {
                     playerMustCommitEatMove = true;
                     break;

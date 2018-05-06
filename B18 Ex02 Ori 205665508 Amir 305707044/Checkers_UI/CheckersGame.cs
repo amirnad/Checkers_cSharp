@@ -6,31 +6,15 @@ namespace Checkers_UI
     public class CheckersGame
     {
         private const int k_maxGamePlayers = 2;
-<<<<<<< HEAD
-
-        private GameBoard m_CheckersBoard = new Checkers_LogicAndDataSection.GameBoard();
-
-        private Player m_currentActivePlayer;//o.k
-=======
         private eGameState m_gameState = eGameState.KeepGoing;
         private GameBoard m_CheckersBoard = new GameBoard();
         private Player m_currentActivePlayer;
->>>>>>> 89cb6770f1c78080078b0d2e7463144a3371e479
         private bool m_isRequestedMoveLegal = false;
         private CheckersGameStep m_RequestedMove = new CheckersGameStep();
 
         public void RunCheckersGame()
         {
-<<<<<<< HEAD
-            string userMoveInput = String.Empty;
-
-            Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
-            setup(out GameDemoSettings);
-
-            //UI.ReadGameInitialInputFromUser(out GameDemoSettings);
-=======
             string userMoveInput = string.Empty;
->>>>>>> 89cb6770f1c78080078b0d2e7463144a3371e479
 
             // First Part - Get game initial values from the user
             InitialGameSetting GameSettings;
