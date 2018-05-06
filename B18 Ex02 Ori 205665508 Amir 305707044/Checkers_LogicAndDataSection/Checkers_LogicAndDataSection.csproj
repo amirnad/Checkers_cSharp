@@ -39,13 +39,13 @@
     <Compile Include="CheckersGameStep.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="InitialGameSetting.cs" />
-    <Compile Include="Player.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Player.cs" />
     <Compile Include="point.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="SessionData.cs" />
+    <Compile Include="SessionData.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

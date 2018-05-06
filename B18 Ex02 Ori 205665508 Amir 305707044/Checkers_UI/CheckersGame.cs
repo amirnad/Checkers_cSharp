@@ -3,54 +3,64 @@ using Checkers_LogicAndDataSection;
 
 namespace Checkers_UI
 {
-
     public class CheckersGame
     {
-
-
-        private eGameState m_gameState = eGameState.KeepGoing;
         private const int k_maxGamePlayers = 2;
-        private bool m_IsGameOn = false;
+<<<<<<< HEAD
 
         private GameBoard m_CheckersBoard = new Checkers_LogicAndDataSection.GameBoard();
 
         private Player m_currentActivePlayer;//o.k
+=======
+        private eGameState m_gameState = eGameState.KeepGoing;
+        private GameBoard m_CheckersBoard = new GameBoard();
+        private Player m_currentActivePlayer;
+>>>>>>> 89cb6770f1c78080078b0d2e7463144a3371e479
         private bool m_isRequestedMoveLegal = false;
-        private CheckersGameStep m_RequestedMove = new Checkers_LogicAndDataSection.CheckersGameStep();
+        private CheckersGameStep m_RequestedMove = new CheckersGameStep();
 
         public void RunCheckersGame()
         {
-            m_IsGameOn = true;
+<<<<<<< HEAD
             string userMoveInput = String.Empty;
 
             Checkers_LogicAndDataSection.InitialGameSetting GameDemoSettings;//Checkers_UI.class.setup
             setup(out GameDemoSettings);
 
             //UI.ReadGameInitialInputFromUser(out GameDemoSettings);
+=======
+            string userMoveInput = string.Empty;
+>>>>>>> 89cb6770f1c78080078b0d2e7463144a3371e479
 
+            // First Part - Get game initial values from the user
+            InitialGameSetting GameSettings;
+            UI.ReadGameInitialInputFromUser(out GameSettings);
 
-            Checkers_LogicAndDataSection.SessionData.initializeSessionData(GameDemoSettings);
-            SessionData.InitializePlayers(GameDemoSettings);
+            // Second Part - initialize the checkers game values according to the user's choice
+            SessionData.initializeSessionData(GameSettings);
+            SessionData.InitializePlayers(GameSettings);
             m_CheckersBoard.InitializeCheckersBoard();
-
             Ex02.ConsoleUtils.Screen.Clear();
             UI.PrintCheckersBoard(m_CheckersBoard);
 
-
+            // Third Part - Game Loop
             while (m_gameState == eGameState.KeepGoing || m_gameState == eGameState.StartOver)
             {
                 if (m_gameState == eGameState.StartOver)
                 {
-                    InitializeAnotherGame(GameDemoSettings);
+                    // In case asked to start a new game - initialize again
+                    InitializeAnotherGame(GameSettings);
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
                 }
+
                 m_currentActivePlayer = SessionData.GetCurrentPlayer();
-                m_currentActivePlayer.updateArmy(m_CheckersBoard);
+                m_currentActivePlayer.updateArmy(m_CheckersBoard); // update the possible movement for each soldier in the current player's army
                 m_isRequestedMoveLegal = false;
 
                 while (!m_isRequestedMoveLegal)
                 {
+                    // Read a game movement from the user
                     if (m_currentActivePlayer.Team != ePlayerOptions.ComputerPlayer)
                     {
                         m_RequestedMove = UI.ReadGameMove(ref userMoveInput);
@@ -61,23 +71,28 @@ namespace Checkers_UI
                     }
                     else
                     {
+                        // choose a step to execute randomly for PC player
                         m_RequestedMove = m_currentActivePlayer.GetRandomMoveForPc();
                     }
 
-                    m_RequestedMove.moveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove, m_currentActivePlayer);//been recently changed from check for logic wise -> at this time of writing the array of possible moves is working and there for we should only check if one of the moves is allowed.
+                    // Sort the move type - EatMove or RegularMove
+                    m_RequestedMove.MoveTypeInfo = m_CheckersBoard.SortMoveType(m_RequestedMove, m_currentActivePlayer);
 
-                    if (m_RequestedMove.moveTypeInfo.moveType != eMoveTypes.Undefined || m_RequestedMove.WantsToQuitIndicator)
+                    if (m_RequestedMove.MoveTypeInfo.TypeIndicator != eMoveTypes.Undefined || m_RequestedMove.WantsToQuitIndicator)
                     {
                         m_isRequestedMoveLegal = true;
                     }
+
                     if (!m_isRequestedMoveLegal)
                     {
-                        Output.InputException();
+                        UI.PrintErrorMessage();
                     }
                 }
+
                 if (!m_RequestedMove.WantsToQuitIndicator)
                 {
-                    m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
+                    // user doesn't want to quit - execute a move!
+                    m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); // at the end of this method - we are ready to get the next move in the game
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
                     UI.PrintLastMove(m_RequestedMove, m_currentActivePlayer.PlayerName);
@@ -85,25 +100,29 @@ namespace Checkers_UI
                 }
                 else
                 {
-                    if (SessionData.m_currentActivePlayer == ePlayerOptions.Player1)
+                    if (SessionData.m_CurrentActivePlayer == ePlayerOptions.Player1)
+                    {
                         m_gameState = eGameState.player1Quit;
+                    }
                     else
+                    {
                         m_gameState = eGameState.player2Quit;
+                    }
                 }
+
                 if (m_gameState != eGameState.KeepGoing)
                 {
+                    // calculate and print score in case of finished game
                     SessionData.CalculateScore(m_gameState);
                     UI.PrintGameResult(m_gameState);
                     m_gameState = UI.CheckIfPlayerWantsAnotherGame();
-
                 }
             }
-
         }
 
         private void InitializeAnotherGame(InitialGameSetting o_GameDemoSettings)
         {
-            SessionData.m_currentActivePlayer = ePlayerOptions.Player1;
+            SessionData.m_CurrentActivePlayer = ePlayerOptions.Player1;
             SessionData.InitializePlayers(o_GameDemoSettings);
             m_CheckersBoard.InitializeCheckersBoard();
         }

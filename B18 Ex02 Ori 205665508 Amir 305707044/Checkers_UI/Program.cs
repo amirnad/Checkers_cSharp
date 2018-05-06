@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Checkers_UI
 {
-    class Program
+    public class Program
     {
-
         public static void Main()
         {
             CheckersGame myGame = new CheckersGame();
             myGame.RunCheckersGame();
-
         }
     }
 }
