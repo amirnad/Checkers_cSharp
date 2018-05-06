@@ -9,6 +9,240 @@ namespace Checkers_LogicAndDataSection
 
     public class Player
     {
+        private ComputerPlayer computer;
+
+        public void UseComputer(gameStateContainer CloneCurrentstate)
+        {
+            computer.PickBestMove(CloneCurrentstate);
+        }
+        internal class ComputerPlayer
+        {
+            private const int k_miniMaxTreeHeight = 5;
+
+
+            public void PickBestMove(gameStateContainer CloneCurrentstate)
+            {
+                MiniMaxTree tree = BuildMiniMax(CloneCurrentstate);
+            }
+
+            private MiniMaxTree BuildMiniMax(gameStateContainer currentstate)
+            {
+                MiniMaxTree tr = MiniMaxTree.CreateNewTree();
+                currentstate = currentstate.Clone();
+                tr.root = MiniMaxTreeNode.createTreeNode(currentstate, Hueristics(currentstate.Myplayer, currentstate.enemyPlayer));
+                List<CheckersGameStep> rootCounterAttacks = currentstate.Myplayer.GetAllMoves();
+                foreach (CheckersGameStep cgs in rootCounterAttacks)
+                {
+                    CheckersGameStep theStep = cgs;
+                    theStep.moveTypeInfo = currentstate.board.SortMoveType(cgs, currentstate.Myplayer);
+                    if (theStep.moveTypeInfo.moveType != eMoveTypes.Undefined)
+                    {
+                        buildminiMaxRec(currentstate.Clone(), 4, tr.root, theStep);
+                    }
+                }
+                return tr;
+            }
+
+            private void buildminiMaxRec(gameStateContainer currentState, int recursionIndex, MiniMaxTreeNode parent, CheckersGameStep stepToExecute)
+            {
+                List<CheckersGameStep> allmoves;
+                Player p;
+                if (recursionIndex == 0)
+                {
+                    gameStateContainer gameState = currentState.CloneWithMove(stepToExecute, currentState.Myplayer);
+                    MiniMaxTreeNode leaf = MiniMaxTreeNode.createTreeNode(gameState, Hueristics(currentState.Myplayer, currentState.enemyPlayer));
+                    parent.addSon(leaf);
+
+                }
+                else
+                {
+                    if (recursionIndex % 2 == 0)
+                    {
+                        gameStateContainer gameState = currentState.CloneWithMove(stepToExecute, currentState.Myplayer);
+                        MiniMaxTreeNode node = MiniMaxTreeNode.createTreeNode(gameState, Hueristics(currentState.Myplayer, currentState.enemyPlayer));
+                        parent.addSon(node);
+                        allmoves = gameState.enemyPlayer.GetAllMoves();
+                        foreach (CheckersGameStep move in allmoves)
+                        {
+                            CheckersGameStep theStep = move;
+                            theStep.moveTypeInfo = currentState.board.SortMoveType(move, currentState.enemyPlayer);
+                            
+                            if (theStep.moveTypeInfo.moveType != eMoveTypes.Undefined)
+                            {
+
+                                buildminiMaxRec(gameState.Clone(), recursionIndex - 1,node, theStep);
+                            }
+                        }
+
+                    }
+
+                    else
+                    {
+                        gameStateContainer gameState = currentState.CloneWithMove(stepToExecute, currentState.enemyPlayer);
+                        MiniMaxTreeNode node = MiniMaxTreeNode.createTreeNode(gameState, Hueristics(currentState.Myplayer, currentState.enemyPlayer));
+                        parent.addSon(node);
+                        allmoves = gameState.enemyPlayer.GetAllMoves();
+                        foreach (CheckersGameStep move in allmoves)
+                        {
+                            CheckersGameStep theStep = move;
+                            theStep.moveTypeInfo = currentState.board.SortMoveType(move, currentState.enemyPlayer);
+                            if (theStep.moveTypeInfo.moveType != eMoveTypes.Undefined)
+                            {
+                                buildminiMaxRec(gameState.Clone(), recursionIndex - 1, node, theStep);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+            private int Hueristics(Player player, Player enemy)
+            {
+                return player.NumberOfSoldiers - enemy.NumberOfSoldiers;
+            }
+
+            private class MiniMaxTree
+            {
+                public MiniMaxTreeNode root = null;
+
+                internal static MiniMaxTree CreateNewTree()
+                {
+                    MiniMaxTree tree = new MiniMaxTree();
+                    tree.root = null;
+                    return tree;
+                }
+            }
+            ///
+            public static void printMatrix(Checkers_LogicAndDataSection.GameBoard gb)
+            {
+                Checkers_LogicAndDataSection.GameBoard.Soldier localSoldier;
+                Checkers_LogicAndDataSection.Point localPoint;
+                Console.Clear();
+                Console.Write("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ");
+
+                for (localPoint.y = 0; localPoint.y < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.y++)
+                {
+                    for (localPoint.x = 0; localPoint.x < (int)Checkers_LogicAndDataSection.SessionData.m_BoardSize; localPoint.x++)
+                    {
+                        localSoldier = gb.GetSoldierFromMatrix(localPoint);
+                        if (localSoldier != null)
+                            printSoldier(localSoldier);
+                        else
+                            Console.Write(" ");
+                    }
+
+                }
+                Console.Write("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ");
+
+
+            }
+            public static void printPoint(Checkers_LogicAndDataSection.Point pt)
+            {
+                System.Console.SetCursorPosition(pt.x, pt.y);
+                Console.Write("C");
+            }
+
+            public static void printSoldier(Checkers_LogicAndDataSection.GameBoard.Soldier s)
+            {
+                switch (s.Team)
+                {
+
+                    case Checkers_LogicAndDataSection.ePlayerOptions.Player1:
+                        Console.SetCursorPosition(s.Position.x, s.Position.y);
+                        if (s.Rank == Checkers_LogicAndDataSection.GameBoard.eSoldierRanks.Regular)
+                        {
+                            Console.Write('X');
+                        }
+                        else
+                        {
+                            Console.Write('K');
+                        }
+                        break;
+                    case Checkers_LogicAndDataSection.ePlayerOptions.Player2:
+                    case Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer:
+                        Console.SetCursorPosition(s.Position.x, s.Position.y);
+                        if (s.Rank == Checkers_LogicAndDataSection.GameBoard.eSoldierRanks.Regular)
+                        {
+                            Console.Write('O');
+                        }
+                        else
+                        {
+                            Console.Write('u');
+                        }
+                        break;
+
+                }
+
+            }
+            ///
+            private class MiniMaxTreeNode
+            {
+                gameStateContainer Statecontainer;
+                int grade;
+                List<MiniMaxTreeNode> oppositeTeamMoves = new List<MiniMaxTreeNode>();
+
+                public static MiniMaxTreeNode createTreeNode(gameStateContainer stateContainer, int grade)
+                {
+                    MiniMaxTreeNode node = new MiniMaxTreeNode();
+                    node.Statecontainer = stateContainer;
+                    node.grade = grade;
+                    return node;
+                }
+
+                public void addSon(MiniMaxTreeNode son)
+                {
+                    oppositeTeamMoves.Add(son);
+                }
+
+            }
+
+
+
+
+
+
+        }
+
+        private List<CheckersGameStep> GetAllMoves()
+        {
+            List<CheckersGameStep> allPoosibleMoves = new List<CheckersGameStep>();
+
+            foreach (GameBoard.Soldier s in playerArmy)
+            {
+                foreach (CheckersGameStep step in s.regularPossibleMovements)
+                {
+                    allPoosibleMoves.Add(step);
+                }
+                foreach (CheckersGameStep step in s.m_PossibleEatMovements)
+                {
+                    allPoosibleMoves.Add(step);
+                }
+            }
+            return allPoosibleMoves;
+        }
+
+        public Player Clone()
+        {
+            Player TheClone = new Player();
+
+            TheClone.m_NumberOfSoldiers = m_NumberOfSoldiers;
+            TheClone.m_PlayerId = m_PlayerId;
+            TheClone.m_PlayerName = m_PlayerName;
+            TheClone.playerArmy = new List<GameBoard.Soldier>();
+
+            foreach (GameBoard.Soldier s in playerArmy)
+            {
+                TheClone.playerArmy.Add(s.Clone());
+            }
+
+
+            return TheClone;
+
+
+
+        }
+
         public const int k_NoSoldiers = 0;
         public const int k_NumberOfSoldiersInSmallBoard = 6;
         public const int k_NumberOfSoldiersInMediumBoard = 12;
@@ -95,6 +329,10 @@ namespace Checkers_LogicAndDataSection
                     break;
             }
             playerArmy = new List<GameBoard.Soldier>(NumberOfSoldiers);
+            if (i_PlayerId == ePlayerOptions.ComputerPlayer)
+            {
+                computer = new ComputerPlayer();
+            }
 
         }
 
@@ -102,7 +340,9 @@ namespace Checkers_LogicAndDataSection
         {
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
 
-            io_CheckersBoard.MoveSoldier(io_MoveToExecute);
+            Player activatingPlayer = this;
+
+            io_CheckersBoard.MoveSoldier(io_MoveToExecute, ref activatingPlayer);
 
 
 
@@ -128,7 +368,7 @@ namespace Checkers_LogicAndDataSection
 
         public bool SomeBodyAlive()
         {
-            return m_NumberOfSoldiers>0;
+            return m_NumberOfSoldiers > 0;
         }
         public bool ThereIsPossibleMovements()
         {
