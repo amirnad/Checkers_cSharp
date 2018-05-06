@@ -335,8 +335,10 @@ namespace Checkers_LogicAndDataSection
                             if (Rank == eSoldierRanks.King)
                             {
 
+
                                 PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
                                 PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
+
 
                                 if (PossibleEatingNextPosition.isInsideBoard())
                                 {
@@ -346,6 +348,7 @@ namespace Checkers_LogicAndDataSection
                                         m_PossibleEatMovements.Add(gameStep);
                                     }
                                 }
+
                             }
                             else//regular soldier
                             {
@@ -471,8 +474,6 @@ namespace Checkers_LogicAndDataSection
             Point localPointPlayer1 = new Point();
             Point localPointPlayer2 = new Point();
 
-
-
             for (int i = 0; i < NumberOfSoldiers; i++)
             {
 
@@ -485,8 +486,10 @@ namespace Checkers_LogicAndDataSection
 
 
 
+
                 SessionData.GetCurrentPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer1.YCooord, localPointPlayer1.XCoord]);
                 SessionData.GetOtherPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord]);////AI-Practice-MODE
+
 
 
 
