@@ -5,10 +5,6 @@ namespace Checkers_LogicAndDataSection
 {
     public class GameBoard
     {
-
-
-
-
         private Soldier[,] m_CheckersBoard = null;
         public enum eSoldierRanks { Regular = 1, King = 4 }
 
@@ -370,6 +366,7 @@ namespace Checkers_LogicAndDataSection
             m_CheckersBoard[io_MoveToExecute.CurrentPosition.y, io_MoveToExecute.CurrentPosition.x] = null;
             m_CheckersBoard[io_MoveToExecute.RequestedPosition.y, io_MoveToExecute.RequestedPosition.x] = theOneWeMove;
 
+
             if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
             {
                 Point eatenSoldierPosition = calculatePositionOfEatenSoldier(io_MoveToExecute);
@@ -380,7 +377,7 @@ namespace Checkers_LogicAndDataSection
                 m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
 
             }
-                        
+
         }
 
         private void updateBoardAfterMove(CheckersGameStep io_MoveToExecute)//afterMovement
@@ -465,7 +462,6 @@ namespace Checkers_LogicAndDataSection
             return resultPosition;
         }
 
-
         public void InitializeCheckersBoard()
         {
 
@@ -549,7 +545,11 @@ namespace Checkers_LogicAndDataSection
             {
                 validity = false;
             }
-            if (validity && NextPositonSoldier != null)
+            if (validity && NextPositonSoldier != null) 
+            {
+                validity = false;
+            }
+            if (validity && !i_RequestedMove.RequestedPosition.isInsideBoard())
             {
                 validity = false;
             }
@@ -574,22 +574,27 @@ namespace Checkers_LogicAndDataSection
                 result = CheckersGameStep.MoveType.CalculateMoveType(i_RequestedMove);
 
                 if (result.moveType != eMoveTypes.Undefined)
-                    if (currentPositonSoldier.m_PossibleEatMovements.Capacity != 0 && result.moveType == eMoveTypes.EatMove)
+                {
+                    if (currentPositonSoldier.m_PossibleEatMovements.Count != 0 && result.moveType == eMoveTypes.EatMove)
                         arrayOfMovements = currentPositonSoldier.eatPossibleMovements;
                     else
                         arrayOfMovements = currentPositonSoldier.regularPossibleMovements;
-                else
-                    arrayOfMovements = null;
 
-
-
-                foreach (CheckersGameStep step in arrayOfMovements)
-                {
-                    if (step.Equals(i_RequestedMove))
+                    foreach (CheckersGameStep step in arrayOfMovements)
                     {
-                        exists = true;
+                        if (step.Equals(i_RequestedMove))
+                        {
+                            exists = true;
+                        }
                     }
                 }
+                else
+                {
+                    arrayOfMovements = null;
+                }
+
+
+
             }
 
             if (!validity || !exists)
@@ -601,13 +606,13 @@ namespace Checkers_LogicAndDataSection
 
         public Soldier GetSoldierFromMatrix(Point i_GivenCoordinate)
         {
+            Soldier returnedSoldier = null;
 
-            return m_CheckersBoard[i_GivenCoordinate.y, i_GivenCoordinate.x];
+            if (i_GivenCoordinate.isInsideBoard())
+            {
+                returnedSoldier = m_CheckersBoard[i_GivenCoordinate.y, i_GivenCoordinate.x];
+            }
+            return returnedSoldier;
         }
-        //internal MovementType MoveSoldier(CheckersGameStep io_MoveToExecute)
-        //{
-
-        //}
-
     }
 }

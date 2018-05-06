@@ -71,7 +71,7 @@ namespace Checkers_UI
                     m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); //at the end of this method - we are ready to get the next move in the game
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
-                    UI.PrintLastMove(userMoveInput);
+                    UI.PrintLastMove(userMoveInput, m_currentActivePlayer.PlayerName);
                     m_gameState = SessionData.checkGameState();
                 }
                 else
@@ -85,11 +85,10 @@ namespace Checkers_UI
                 {
                     SessionData.CalculateScore(m_gameState);
                     UI.PrintGameResult(m_gameState);
+                    m_GameState = UI.CheckIfPlayerWantsAnotherGame();
+
                 }
             }
-
-
-
 
         }
 
@@ -97,7 +96,7 @@ namespace Checkers_UI
         private void setup(out InitialGameSetting o_Settings)
         {
             o_Settings = new InitialGameSetting();
-            o_Settings.SetGameSettings("Ori", "Amir", eBoardSizeOptions.MediumBoard, eTypeOfGame.doublePlayer);
+            o_Settings.SetGameSettings("Ori", "Amir", eBoardSizeOptions.SmallBoard, eTypeOfGame.doublePlayer);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Checkers_LogicAndDataSection
         public const int k_NumberOfSoldiersInMediumBoard = 12;
         public const int k_NumberOfSoldiersInLargeBoard = 20;
 
-        
+
         private ePlayerOptions m_PlayerId;
         private string m_PlayerName = string.Empty;
         private short m_NumberOfSoldiers;
@@ -22,7 +22,7 @@ namespace Checkers_LogicAndDataSection
 
         public void updateArmy(GameBoard i_gameboard)
         {
-            foreach(GameBoard.Soldier s in playerArmy)
+            foreach (GameBoard.Soldier s in playerArmy)
             {
                 s.calculatePossibleMovements(ref i_gameboard);
             }
@@ -127,6 +127,7 @@ namespace Checkers_LogicAndDataSection
             }
             else
             {
+                currentSoldierToMove.calculatePossibleMovements(ref io_CheckersBoard);
                 if (currentSoldierToMove.eatPossibleMovements.Count == 0)
                 {
                     SessionData.ChangeTurn();
@@ -172,9 +173,9 @@ namespace Checkers_LogicAndDataSection
         internal int CalculateTeamValue()
         {
             int returnedValue = 0;
-            foreach(GameBoard.Soldier soldierToCheck in playerArmy)
+            foreach (GameBoard.Soldier soldierToCheck in playerArmy)
             {
-                switch(soldierToCheck.Rank)
+                switch (soldierToCheck.Rank)
                 {
                     case GameBoard.eSoldierRanks.Regular:
                         returnedValue += (int)GameBoard.eSoldierRanks.Regular;

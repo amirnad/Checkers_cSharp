@@ -16,6 +16,8 @@ namespace Checkers_UI
         private static string s_PlayerWon = " WON! Good Job!";
         private static string s_PlayerQuit = " QUIT! You Loser!";
         private static string s_PressAnyKeyMessage = "Press any key to show results...";
+        private static string s_AnotherGameMessage = "Do you wish to play another game? (1) Yes, (0) No";
+
         private static string s_Player1Board = "--->";
         private static string s_Player2Board = "<---";
         private static string s_ScoreMessage = "SCORE:  "; //6
@@ -141,6 +143,24 @@ namespace Checkers_UI
             io_GameInitialValues.SetGameSettings(tempPlayer1NameHolder, tempPlayer2NameHolder, chosenBoardSize, chosenGameType);
         }
 
+        internal static eGameState CheckIfPlayerWantsAnotherGame()
+        {
+            eGameState newGameState = eGameState.Undefined;
+            string userInput = String.Empty;
+            Console.WriteLine(s_AnotherGameMessage);
+            userInput = Console.ReadLine();
+            if(userInput.Equals(1))
+            {
+                initializeAnotherGame();   
+            }
+            else
+            {
+                Console.WriteLine(s_GoodByeMessage);
+                Console.WriteLine(s_PressAnyKeyMessage);
+                Console.ReadKey();
+            }
+        }
+
         internal static void PrintGameResult(eGameState io_GameState)
         {
             string player1Name = SessionData.GetPlayerName(ePlayerOptions.Player1);
@@ -185,11 +205,10 @@ namespace Checkers_UI
 
         }
 
-        internal static void PrintLastMove(string io_UserMoveInput)
+        internal static void PrintLastMove(string io_UserMoveInput, string io_PreviousPlayerName)
         {
-            string playerNameHolder = SessionData.GetOtherPlayer().PlayerName;
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
-            messageToPrint.AppendFormat("{0}{1}{2}", playerNameHolder, s_LastMoveMessage, io_UserMoveInput);
+            messageToPrint.AppendFormat("{0}{1}{2}", io_PreviousPlayerName, s_LastMoveMessage, io_UserMoveInput);
             Console.WriteLine(messageToPrint);
         }
 
@@ -251,6 +270,7 @@ namespace Checkers_UI
 
         private static bool CheckStepInputValidity(string o_StepInputFromUser)
         {
+            const int numOfNeededChars = 5;
             bool[] stepInputPartsValidation = new bool[k_StepInputPartsToCheck];
             bool areAllPartsValid = false;
 
@@ -259,21 +279,25 @@ namespace Checkers_UI
                 stepInputPartsValidation[i] = false;
             }
 
-            if (char.IsUpper(o_StepInputFromUser[k_StartPositionColumnChar]) && char.IsUpper(o_StepInputFromUser[k_RequestedPositionColumnChar]))
+            if (o_StepInputFromUser.Length == numOfNeededChars)
             {
-                stepInputPartsValidation[k_ColumnsPart] = true;
-            }
-            if (char.IsLower(o_StepInputFromUser[k_StartPositionLineChar]) && char.IsLower(o_StepInputFromUser[k_RequestedPositionLineChar]))
-            {
-                stepInputPartsValidation[k_LinesPart] = true;
-            }
-            if (o_StepInputFromUser[k_ArrowPlace] == k_ArrowSign)
-            {
-                stepInputPartsValidation[k_ArrowPlace] = true;
-            }
 
-            areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
+                if (char.IsUpper(o_StepInputFromUser[k_StartPositionColumnChar]) && char.IsUpper(o_StepInputFromUser[k_RequestedPositionColumnChar]))
+                {
+                    stepInputPartsValidation[k_ColumnsPart] = true;
+                }
+                if (char.IsLower(o_StepInputFromUser[k_StartPositionLineChar]) && char.IsLower(o_StepInputFromUser[k_RequestedPositionLineChar]))
+                {
+                    stepInputPartsValidation[k_LinesPart] = true;
+                }
+                if (o_StepInputFromUser[k_ArrowPlace] == k_ArrowSign)
+                {
+                    stepInputPartsValidation[k_ArrowPlace] = true;
+                }
+
+                areAllPartsValid = stepInputPartsValidation[k_ColumnsPart] && stepInputPartsValidation[k_LinesPart]
                                                                     && stepInputPartsValidation[k_ArrowPlace];
+            }
 
             return areAllPartsValid;
 

@@ -3,7 +3,7 @@ namespace Checkers_LogicAndDataSection
 {
     public enum eTypeOfGame { Undefined, singlePlayer, doublePlayer }
     public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
-    public enum eGameState { KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit }
+    public enum eGameState { KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit, StartOver, Quit, Undefined }
 
 
 
@@ -113,9 +113,6 @@ namespace Checkers_LogicAndDataSection
 
         public static void CalculateScore(eGameState io_gameState)
         {
-            int pointsTempHolder = 0;
-            int scoreTempHolder = 0;
-
             switch (io_gameState)
             {
                 case eGameState.WinPlayer1:

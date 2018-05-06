@@ -53,11 +53,11 @@ namespace Checkers_LogicAndDataSection
                 distanceX = Abs(i_requestedStep.RequestedPosition.x - i_requestedStep.CurrentPosition.x);
 
 
-                if (distanceY == 2)
+                if (distanceY == 2 && distanceX == 2)
                 {
                     result.m_moveType = eMoveTypes.EatMove;
                 }
-                else if (distanceY == 1)
+                else if (distanceY == 1 && distanceX == 1)
                 {
                     result.m_moveType = eMoveTypes.RegularMove;
                 }
@@ -65,7 +65,7 @@ namespace Checkers_LogicAndDataSection
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
-                if (distanceX > 2 || distanceY > 2)
+                if (distanceX > 2 || distanceY > 2 || distanceX < 1 || distanceY < 1)
                 {
                     result.m_moveType = eMoveTypes.Undefined;
                 }
