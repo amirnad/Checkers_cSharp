@@ -45,14 +45,14 @@ namespace Checkers_UI
 
                     if (char.IsUpper(processedString[0]) && char.IsUpper(processedString[3]))
                     {
-                        currentPoint.x = (int)(processedString[0] - 'A');
-                        NextPoint.x = (int)(processedString[3] - 'A');
+                        currentPoint.XCoord = (int)(processedString[0] - 'A');
+                        NextPoint.XCoord = (int)(processedString[3] - 'A');
                         validation[0] = true;
                     }
                     if (char.IsLower(processedString[1]) && char.IsLower(processedString[4]))
                     {
-                        currentPoint.y = (int)(processedString[1] - 'a');
-                        NextPoint.y = (int)(processedString[4] - 'a');
+                        currentPoint.YCooord = (int)(processedString[1] - 'a');
+                        NextPoint.YCooord = (int)(processedString[4] - 'a');
 
                         validation[1] = true;
                     }

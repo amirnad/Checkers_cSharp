@@ -266,11 +266,11 @@ namespace Checkers_UI
 
         private static void MakePointsFromString(string o_userInput, out Point o_startPosition, out Point o_requestedPosition)
         {
-            o_startPosition.x = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
-            o_startPosition.y = (int)(o_userInput[k_StartPositionLineChar] - 'a');
+            o_startPosition.XCoord = (int)(o_userInput[k_StartPositionColumnChar] - 'A');
+            o_startPosition.XCoord = (int)(o_userInput[k_StartPositionLineChar] - 'a');
 
-            o_requestedPosition.x = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
-            o_requestedPosition.y = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
+            o_requestedPosition.XCoord = (int)(o_userInput[k_RequestedPositionColumnChar] - 'A');
+            o_requestedPosition.YCooord = (int)(o_userInput[k_RequestedPositionLineChar] - 'a');
         }
 
         private static bool CheckStepInputValidity(string o_StepInputFromUser)

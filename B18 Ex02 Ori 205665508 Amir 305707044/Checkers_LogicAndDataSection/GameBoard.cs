@@ -147,7 +147,7 @@ namespace Checkers_LogicAndDataSection
                 CheckersGameStep stepToTheLeft = new CheckersGameStep();
                 CheckersGameStep stepToTheRight = new CheckersGameStep();
 
-                if (i_CurrentSoldierPosition.y == indexOfTopRow)
+                if (i_CurrentSoldierPosition.YCooord == indexOfTopRow)
                 {
                     Point MoveToTheLeft = new Point();
                     Point MoveToTheRight = new Point();
@@ -157,32 +157,32 @@ namespace Checkers_LogicAndDataSection
                     stepToTheRight.CurrentPosition = i_CurrentSoldierPosition;
                     if (playerId == ePlayerOptions.Player1)
                     {
-                        MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
-                        MoveToTheLeft.y = i_CurrentSoldierPosition.y - 1;
+                        MoveToTheLeft.XCoord = i_CurrentSoldierPosition.XCoord - 1;
+                        MoveToTheLeft.YCooord = i_CurrentSoldierPosition.YCooord - 1;
 
 
-                        MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
-                        MoveToTheRight.y = i_CurrentSoldierPosition.y - 1;
+                        MoveToTheRight.XCoord = i_CurrentSoldierPosition.XCoord + 1;
+                        MoveToTheRight.YCooord = i_CurrentSoldierPosition.YCooord - 1;
                     }
                     else
                     {
-                        MoveToTheLeft.x = i_CurrentSoldierPosition.x - 1;
-                        MoveToTheLeft.y = i_CurrentSoldierPosition.y + 1;
+                        MoveToTheLeft.XCoord = i_CurrentSoldierPosition.XCoord - 1;
+                        MoveToTheLeft.YCooord = i_CurrentSoldierPosition.YCooord + 1;
 
 
-                        MoveToTheRight.x = i_CurrentSoldierPosition.x + 1;
-                        MoveToTheRight.y = i_CurrentSoldierPosition.y + 1;
+                        MoveToTheRight.XCoord = i_CurrentSoldierPosition.XCoord + 1;
+                        MoveToTheRight.YCooord = i_CurrentSoldierPosition.YCooord + 1;
                     }
 
 
                     stepToTheLeft.RequestedPosition = MoveToTheLeft;
                     stepToTheRight.RequestedPosition = MoveToTheRight;
 
-                    if (stepToTheLeft.RequestedPosition.x >= 0 && stepToTheLeft.RequestedPosition.x < (int)SessionData.m_BoardSize)
+                    if (stepToTheLeft.RequestedPosition.XCoord >= 0 && stepToTheLeft.RequestedPosition.XCoord < (int)SessionData.m_BoardSize)
                     {
                         resultPossibleMovesArray.Add(stepToTheLeft);
                     }
-                    if (stepToTheRight.RequestedPosition.x >= 0 && stepToTheRight.RequestedPosition.x < (int)SessionData.m_BoardSize)
+                    if (stepToTheRight.RequestedPosition.XCoord >= 0 && stepToTheRight.RequestedPosition.XCoord < (int)SessionData.m_BoardSize)
                     {
                         resultPossibleMovesArray.Add(stepToTheRight);
                     }
@@ -199,11 +199,11 @@ namespace Checkers_LogicAndDataSection
             internal static void initializeNextPointToFill()
             {
                 int boardSize = (int)SessionData.m_BoardSize;
-                nextPointToFillPlayer2.x = 1;
-                nextPointToFillPlayer2.y = 0;
+                nextPointToFillPlayer2.XCoord = 1;
+                nextPointToFillPlayer2.YCooord = 0;
 
-                nextPointToFillPlayer1.x = 0;
-                nextPointToFillPlayer1.y = boardSize - 1;
+                nextPointToFillPlayer1.XCoord = 0;
+                nextPointToFillPlayer1.YCooord = boardSize - 1;
             }
 
             internal static void moveToNextPlace()
@@ -211,31 +211,31 @@ namespace Checkers_LogicAndDataSection
                 Point localPoint1 = PointToFillPlayer1;
                 Point localPoint2 = PointToFillPlayer2;
 
-                localPoint2.x += 2;
+                localPoint2.XCoord += 2;
                 int boardSize = (int)SessionData.m_BoardSize;
-                if (localPoint2.x >= boardSize)
+                if (localPoint2.XCoord >= boardSize)
                 {
-                    localPoint2.y++;
-                    if (localPoint2.y % 2 != 0)
+                    localPoint2.YCooord++;
+                    if (localPoint2.YCooord % 2 != 0)
                     {
-                        localPoint2.x = 0;
+                        localPoint2.XCoord = 0;
                     }
                     else
                     {
-                        localPoint2.x = 1;
+                        localPoint2.XCoord = 1;
                     }
                 }
-                localPoint1.x += 2;
-                if (localPoint1.x >= boardSize)
+                localPoint1.XCoord += 2;
+                if (localPoint1.XCoord >= boardSize)
                 {
-                    localPoint1.y--;
-                    if (localPoint1.y % 2 != 0)
+                    localPoint1.YCooord--;
+                    if (localPoint1.YCooord % 2 != 0)
                     {
-                        localPoint1.x = 0;
+                        localPoint1.XCoord = 0;
                     }
                     else
                     {
-                        localPoint1.x = 1;
+                        localPoint1.XCoord = 1;
                     }
                 }
 
@@ -244,6 +244,45 @@ namespace Checkers_LogicAndDataSection
 
 
 
+            }
+
+            private static List<Point> bringPossibleNeigboursPositions(Point centerPoint)
+            {
+                const int TopLeft = 0;
+                const int TopRight = 1;
+                const int BottomLeft = 2;
+                const int BottomRight = 3;
+
+
+                Point LocalPoint = centerPoint;
+                List<Point> affectedSoldiersPositions = new List<Point>();
+                Point[] points = new Point[4];
+
+
+                points[TopLeft].XCoord = centerPoint.XCoord - 1;
+                points[TopLeft].YCooord = centerPoint.YCooord + 1;
+
+                points[TopRight].XCoord = centerPoint.XCoord + 1;
+                points[TopRight].YCooord = centerPoint.YCooord + 1;
+
+                points[BottomRight].XCoord = centerPoint.XCoord + 1;
+                points[BottomRight].YCooord = centerPoint.YCooord - 1;
+
+                points[BottomLeft].XCoord = centerPoint.XCoord - 1;
+                points[BottomLeft].YCooord = centerPoint.YCooord - 1;
+
+
+
+                foreach (Point p in points)
+                {
+                    if (p.isInsideBoard())
+                    {
+                        affectedSoldiersPositions.Add(p);
+                    }
+                }
+
+
+                return affectedSoldiersPositions;
             }
 
             internal void calculatePossibleMovements(ref GameBoard board)
@@ -268,7 +307,7 @@ namespace Checkers_LogicAndDataSection
                         {
                             if (Team == ePlayerOptions.Player1)
                             {
-                                if (p.y - Position.y < 0)
+                                if (p.YCooord - Position.YCooord < 0)
                                 {
                                     gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
                                     m_PossibleRegularMovements.Add(gameStep);
@@ -276,7 +315,7 @@ namespace Checkers_LogicAndDataSection
                             }
                             else
                             {
-                                if (p.y - Position.y > 0)
+                                if (p.YCooord - Position.YCooord > 0)
                                 {
                                     gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, p);
                                     m_PossibleRegularMovements.Add(gameStep);
@@ -286,18 +325,21 @@ namespace Checkers_LogicAndDataSection
                     }
                     else//there is a soldier there
                     {
-                        Point PossibleEatingNextPosition;
+                        Point PossibleEatingNextPosition = new Point();
 
-                        Point localPointDiffrenceBetweenPoints;
-                        localPointDiffrenceBetweenPoints.x = p.x - m_CoordinateInMatrix.x;
-                        localPointDiffrenceBetweenPoints.y = p.y - m_CoordinateInMatrix.y;
+                        Point localPointDiffrenceBetweenPoints = new Point();
+                        localPointDiffrenceBetweenPoints.XCoord = p.XCoord - m_CoordinateInMatrix.XCoord;
+                        localPointDiffrenceBetweenPoints.YCooord = p.YCooord - m_CoordinateInMatrix.YCooord;
                         if (Team != s.Team)
                         {
                             if (Rank == eSoldierRanks.King)
                             {
 
-                                PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
-                                PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+
+                                PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
+                                PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
+
+
                                 if (PossibleEatingNextPosition.isInsideBoard())
                                 {
                                     if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
@@ -312,13 +354,12 @@ namespace Checkers_LogicAndDataSection
                             {
                                 if (Team == ePlayerOptions.Player1)
                                 {
-                                    if (p.y - Position.y < 0)
+                                    if (p.YCooord - Position.YCooord < 0)
                                     {
-                                        PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
-                                        PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+                                        PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
+                                        PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
                                         if (PossibleEatingNextPosition.isInsideBoard())
                                         {
-
                                             if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
                                             {
                                                 gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
@@ -329,13 +370,12 @@ namespace Checkers_LogicAndDataSection
                                 }
                                 else
                                 {
-                                    if (p.y - Position.y > 0)
+                                    if (p.YCooord - Position.YCooord > 0)
                                     {
-                                        PossibleEatingNextPosition.x = p.x + localPointDiffrenceBetweenPoints.x;
-                                        PossibleEatingNextPosition.y = p.y + localPointDiffrenceBetweenPoints.y;
+                                        PossibleEatingNextPosition.XCoord = p.XCoord + localPointDiffrenceBetweenPoints.XCoord;
+                                        PossibleEatingNextPosition.YCooord = p.YCooord + localPointDiffrenceBetweenPoints.YCooord;
                                         if (PossibleEatingNextPosition.isInsideBoard())
                                         {
-
                                             if (board.GetSoldierFromMatrix(PossibleEatingNextPosition) == null)//means the spot is clear
                                             {
                                                 gameStep = CheckersGameStep.CreateCheckersGameStep(m_CoordinateInMatrix, PossibleEatingNextPosition);
@@ -366,8 +406,8 @@ namespace Checkers_LogicAndDataSection
         {
             Soldier theOneWeMove = GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
             theOneWeMove.Position = io_MoveToExecute.RequestedPosition;
-            m_CheckersBoard[io_MoveToExecute.CurrentPosition.y, io_MoveToExecute.CurrentPosition.x] = null;
-            m_CheckersBoard[io_MoveToExecute.RequestedPosition.y, io_MoveToExecute.RequestedPosition.x] = theOneWeMove;
+            m_CheckersBoard[io_MoveToExecute.CurrentPosition.YCooord, io_MoveToExecute.CurrentPosition.XCoord] = null;
+            m_CheckersBoard[io_MoveToExecute.RequestedPosition.YCooord, io_MoveToExecute.RequestedPosition.XCoord] = theOneWeMove;
 
 
             if (io_MoveToExecute.moveTypeInfo.moveType == eMoveTypes.EatMove)
@@ -377,90 +417,20 @@ namespace Checkers_LogicAndDataSection
                 Soldier eatenSoldier = GetSoldierFromMatrix(eatenSoldierPosition);
                 GameBoard gb = this;
                 eatenSoldier.killed(gb);
-                m_CheckersBoard[eatenSoldier.Position.y, eatenSoldier.Position.x] = null;
+                m_CheckersBoard[eatenSoldier.Position.YCooord, eatenSoldier.Position.XCoord] = null;
 
             }
 
         }
-
-        private void updateBoardAfterMove(CheckersGameStep io_MoveToExecute)//afterMovement
-        {
-            Soldier TheMovedSoldier = GetSoldierFromMatrix(io_MoveToExecute.RequestedPosition);
-            Point beforeMovementSoldierLocation = io_MoveToExecute.CurrentPosition;
-            Point afterMovementSoldierLocation = TheMovedSoldier.Position;
-            UpdatePossibleMovements(beforeMovementSoldierLocation);
-            UpdatePossibleMovements(afterMovementSoldierLocation);
-            GameBoard gb = this;
-            TheMovedSoldier.calculatePossibleMovements(ref gb);
-
-        }
-
-        private void UpdatePossibleMovements(Point centerPoint)
-        {
-            List<Point> affectedPoints = bringPossibleNeigboursPositions(centerPoint);
-            if (affectedPoints != null)
-            {
-
-                foreach (Point p in affectedPoints)
-                {
-                    Soldier s = GetSoldierFromMatrix(p);
-                    if (s != null)
-                    {
-                        GameBoard gb = this;
-                        s.calculatePossibleMovements(ref gb);
-
-                    }
-                }
-
-            }
-        }
-
-        private static List<Point> bringPossibleNeigboursPositions(Point centerPoint)
-        {
-            const int TopLeft = 0;
-            const int TopRight = 1;
-            const int BottomLeft = 2;
-            const int BottomRight = 3;
-
-
-            Point LocalPoint = centerPoint;
-            List<Point> affectedSoldiersPositions = new List<Point>();
-            Point[] points = new Point[4];
-
-
-            points[TopLeft].x = centerPoint.x - 1;
-            points[TopLeft].y = centerPoint.y + 1;
-
-            points[TopRight].x = centerPoint.x + 1;
-            points[TopRight].y = centerPoint.y + 1;
-
-            points[BottomRight].x = centerPoint.x + 1;
-            points[BottomRight].y = centerPoint.y - 1;
-
-            points[BottomLeft].x = centerPoint.x - 1;
-            points[BottomLeft].y = centerPoint.y - 1;
-
-
-
-            foreach (Point p in points)
-            {
-                if (p.isInsideBoard())
-                {
-                    affectedSoldiersPositions.Add(p);
-                }
-            }
-
-
-            return affectedSoldiersPositions;
-        }
-
+        
+ 
         private Point calculatePositionOfEatenSoldier(CheckersGameStep i_move)
         {
 
             Point resultPosition = new Point();
 
-            resultPosition.x = i_move.CurrentPosition.x + ((i_move.RequestedPosition.x - i_move.CurrentPosition.x) / 2);
-            resultPosition.y = i_move.CurrentPosition.y + ((i_move.RequestedPosition.y - i_move.CurrentPosition.y) / 2);
+            resultPosition.XCoord = i_move.CurrentPosition.XCoord + ((i_move.RequestedPosition.XCoord - i_move.CurrentPosition.XCoord) / 2);
+            resultPosition.YCooord = i_move.CurrentPosition.YCooord + ((i_move.RequestedPosition.YCooord - i_move.CurrentPosition.YCooord) / 2);
 
             return resultPosition;
         }
@@ -510,12 +480,21 @@ namespace Checkers_LogicAndDataSection
                 localPointPlayer1 = Soldier.PointToFillPlayer1;
                 localPointPlayer2 = Soldier.PointToFillPlayer2;
 
-                m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
+                m_CheckersBoard[localPointPlayer1.YCooord, localPointPlayer1.XCoord] = Soldier.InitializeSoldier(localPointPlayer1, ePlayerOptions.Player1);
 
-                m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
+                m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord] = Soldier.InitializeSoldier(localPointPlayer2, ePlayerOptions.Player2);
 
-                SessionData.GetCurrentPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer1.y, localPointPlayer1.x]);
-                SessionData.GetOtherPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer2.y, localPointPlayer2.x]);////AI-Practice-MODE
+
+
+
+                SessionData.GetCurrentPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer1.YCooord, localPointPlayer1.XCoord]);
+                SessionData.GetOtherPlayer().addToPlayerArmy(m_CheckersBoard[localPointPlayer2.YCooord, localPointPlayer2.XCoord]);////AI-Practice-MODE
+
+
+
+
+
+
                 Soldier.moveToNextPlace();
 
             }
@@ -604,7 +583,7 @@ namespace Checkers_LogicAndDataSection
 
             if (i_GivenCoordinate.isInsideBoard())
             {
-                returnedSoldier = m_CheckersBoard[i_GivenCoordinate.y, i_GivenCoordinate.x];
+                returnedSoldier = m_CheckersBoard[i_GivenCoordinate.YCooord, i_GivenCoordinate.XCoord];
             }
             return returnedSoldier;
         }

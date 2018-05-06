@@ -8,23 +8,23 @@ namespace Checkers_LogicAndDataSection
 {
     public struct Point
     {
-        public int x;
-        public int y;
+        private int m_x;
+        private int m_y;
 
-        public Point(int _x, int _y)
+        public Point(int i_x, int i_y)
         {
-            x = _x;
-            y = _y;
+            m_x = i_x;
+            m_y = i_y;
         }
         public bool isInsideBoard()
         {
             bool result = true;
             int boardSize = (int)SessionData.m_BoardSize;
-            if (x > boardSize - 1 || x < 0)
+            if (m_x > boardSize - 1 || m_x < 0)
             {
                 result = false;
             }
-            if (y > boardSize - 1 || y < 0)
+            if (m_y > boardSize - 1 || m_y < 0)
             {
                 result = false;
             }
@@ -33,13 +33,13 @@ namespace Checkers_LogicAndDataSection
         }
         public int YCooord
         {
-            get { return y; }
-            set { y = value; }
+            get { return m_y; }
+            set { m_y = value; }
         }
         public int XCoord
         {
-            get { return x; }
-            set { y = value; }
+            get { return m_x; }
+            set { m_y = value; }
         }
 
     }
