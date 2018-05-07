@@ -1,42 +1,160 @@
 ﻿using System;
+
 namespace Checkers_LogicAndDataSection
 {
-    public enum eTypeOfGame { Undefined,singlePlayer,doublePlayer}
-    public enum eBoardSizeOptions { Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10 }
-
-    public class InitialGameSetting
+    public enum eTypeOfGame
     {
-        public string player1Name = string.Empty;
-        public string player2Name = string.Empty;
-        public Checkers_LogicAndDataSection.eBoardSizeOptions boardSize = Checkers_LogicAndDataSection.eBoardSizeOptions.Undefined;
-        public Checkers_LogicAndDataSection.eTypeOfGame gameType = Checkers_LogicAndDataSection.eTypeOfGame.Undefined;
+        Undefined, singlePlayer, doublePlayer
+    }
+
+    public enum eBoardSizeOptions
+    {
+        Undefined, SmallBoard = 6, MediumBoard = 8, LargeBoard = 10
+    }
+
+    public enum eGameState
+    {
+        KeepGoing = 0, Tie, WinPlayer1, WinPlayer2, player1Quit, player2Quit, StartOver, Quit, Undefined
     }
 
     public class SessionData
     {
         public static eBoardSizeOptions m_BoardSize = eBoardSizeOptions.Undefined;
-        public static int m_SessionScore;
-        public static int m_SessionPoints;
-        public static eTypeOfGame gameType = eTypeOfGame.Undefined;
-        public static string lastMove;
-        public static ePlayerOptions m_currentActivePlayer = ePlayerOptions.Player1;
+        public static int m_Player1OverallScore = 0;
+        public static int m_Player2OverallScore = 0;
+        public static int m_Player1Points = 0;
+        public static int m_Player2Points = 0;
+        public static eTypeOfGame s_GameType = eTypeOfGame.Undefined;
+        public static ePlayerOptions m_CurrentActivePlayer = ePlayerOptions.Player1;
+        public static ePlayerOptions m_TheOtherPlayer;
 
-        public static void Main()
+        private static readonly Player s_Player1 = new Checkers_LogicAndDataSection.Player();
+        private static readonly Player s_Player2 = new Checkers_LogicAndDataSection.Player();
+
+        public static Player GetCurrentPlayer()
         {
-            string name = System.Console.ReadLine();
-            Player p1 = new Player();
-
-            p1.InitializePlayer(name);
-
+            if (m_TheOtherPlayer != ePlayerOptions.Player1)
+            {
+                return s_Player1;
+            }
+            else
+            {
+                // pc also sits at player2 spot
+                return s_Player2;
+            }
         }
+
+        public static Player GetOtherPlayer()
+        {
+            if (m_TheOtherPlayer == ePlayerOptions.Player1)
+            {
+                return s_Player1;
+            }
+            else
+            {
+                // pc also sits at player2 spot
+                return s_Player2;
+            }
+        }
+
+        public static string GetPlayerName(ePlayerOptions i_PlayerNameToReturn)
+        {
+            string returnedName = string.Empty;
+            switch (i_PlayerNameToReturn)
+            {
+                case ePlayerOptions.Player1:
+                    returnedName = s_Player1.PlayerName;
+                    break;
+                case ePlayerOptions.Player2:
+                    returnedName = s_Player2.PlayerName;
+                    break;
+            }
+
+            return returnedName;
+        }
+
+        public static void InitializePlayers(InitialGameSetting i_NameSettings)
+        {
+            s_Player1.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player1), Checkers_LogicAndDataSection.ePlayerOptions.Player1);
+            switch (Checkers_LogicAndDataSection.SessionData.s_GameType)
+            {
+                case Checkers_LogicAndDataSection.eTypeOfGame.singlePlayer:
+                    s_Player2.InitializePlayer("PC", Checkers_LogicAndDataSection.ePlayerOptions.ComputerPlayer);
+                    m_TheOtherPlayer = ePlayerOptions.ComputerPlayer;
+
+                    break;
+                case Checkers_LogicAndDataSection.eTypeOfGame.doublePlayer:
+                    s_Player2.InitializePlayer(i_NameSettings.GetPlayerName(ePlayerOptions.Player2), Checkers_LogicAndDataSection.ePlayerOptions.Player2);
+                    m_TheOtherPlayer = ePlayerOptions.Player2;
+                    break;
+            }
+        }
+
+        public static eGameState checkGameState()
+        {
+            eGameState resultState;
+            if (!s_Player1.SomeBodyAlive())
+            {
+                resultState = eGameState.WinPlayer2;
+            }
+            else if (!s_Player2.SomeBodyAlive())
+            {
+                resultState = eGameState.WinPlayer1;
+            }
+            else
+            {
+                if (!s_Player1.ThereIsPossibleMovements() && !s_Player2.ThereIsPossibleMovements())
+                {
+                    resultState = eGameState.Tie;
+                }
+                else
+                {
+                    resultState = eGameState.KeepGoing;
+                }
+            }
+
+            return resultState;
+        }
+
+        public static void CalculateScore(eGameState io_gameState)
+        {
+            switch (io_gameState)
+            {
+                case eGameState.WinPlayer1:
+                    updateSessionPoints(s_Player1, s_Player2, ref m_Player1Points);
+
+                    m_Player1OverallScore++;
+                    break;
+                case eGameState.WinPlayer2:
+                    updateSessionPoints(s_Player2, s_Player1, ref m_Player2Points);
+                    m_Player2OverallScore++;
+                    break;
+                case eGameState.player1Quit:
+                    m_Player2OverallScore++;
+                    break;
+                case eGameState.player2Quit:
+                    m_Player1OverallScore++;
+                    break;
+            }
+        }
+
+        private static void updateSessionPoints(Player i_WinningPlayer, Player i_LosingPlayer, ref int o_WinningPlayerCurrentPoints)
+        {
+            int pointsHolder = i_WinningPlayer.CalculateTeamValue() - i_LosingPlayer.CalculateTeamValue();
+            o_WinningPlayerCurrentPoints += pointsHolder;
+        }
+
         public static void initializeSessionData(InitialGameSetting gameSettings)
         {
-            m_BoardSize = gameSettings.boardSize;
-            gameType = gameSettings.gameType;
-
-            
-
+            m_BoardSize = gameSettings.GetBoardSize();
+            s_GameType = gameSettings.GetGameType();
         }
 
+        internal static void ChangeTurn()
+        {
+            ePlayerOptions temp = m_TheOtherPlayer;
+            m_TheOtherPlayer = m_CurrentActivePlayer;
+            m_CurrentActivePlayer = temp;
+        }
     }
 }

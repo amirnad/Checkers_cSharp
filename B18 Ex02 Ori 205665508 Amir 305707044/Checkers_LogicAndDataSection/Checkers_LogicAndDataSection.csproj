@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C032739B-50AB-4356-BCBE-2FD661342503}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Checkers_LogicAndDataSection</RootNamespace>
     <AssemblyName>Checkers_LogicAndDataSection</AssemblyName>
@@ -32,14 +32,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckersGameStep.cs" />
     <Compile Include="GameBoard.cs" />
+    <Compile Include="InitialGameSetting.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="SessionData.cs" />
+    <Compile Include="point.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="SessionData.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
