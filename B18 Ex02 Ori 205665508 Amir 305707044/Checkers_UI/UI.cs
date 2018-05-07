@@ -40,8 +40,8 @@ namespace Checkers_UI
         private static string s_UsernameMessage = "Please enter your name: ";
         private static string s_ChooseGameTypeMessge = "Please choose the game type: (1) Single-Player , (2) Double-Player";
         private static string s_ChooseBoardSizeMessage = "Please choose the board size: (6)-Small 6x6 , (8)-Medium 8x8, (10)-Large 10x10 ";
-        private static string s_EnterMoveMessage = "'s Turn: ";
-        private static string s_LastMoveMessage = "'s move was: ";
+        private static string s_EnterMoveMessageFormat = "'s Turn {0}: ";
+        private static string s_LastMoveMessageFormat = "'s move was {0}: ";
         private static string s_InvalidInputMessage = "Input is invalid, please try again.";
         private static string s_TheScoreMessage = "The Score is:";
         private static string s_TieMessage = "Game ended in a draw!";
@@ -55,6 +55,8 @@ namespace Checkers_UI
         private static string s_Player2Board = "<---";
         private static string s_ScoreMessage = "SCORE:  ";
         private static string s_PointsMessage = "POINTS: ";
+        private static string s_Team1 = "(X)";
+        private static string s_Team2 = "(O)";
 
         public static void ReadGameInitialInputFromUser(out InitialGameSetting io_GameInitialValues)
         {
@@ -251,10 +253,21 @@ namespace Checkers_UI
             Console.WriteLine(resultsMessage);
         }
 
-        internal static void PrintLastMove(CheckersGameStep io_StepExecuted, string io_PreviousPlayerName)
+        internal static void PrintLastMove(CheckersGameStep io_StepExecuted, Player io_PreviousPlayer)
         {
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
+            string playerName = io_PreviousPlayer.PlayerName;
+            string playerTeam = string.Empty;
             StringBuilder lastMove = new StringBuilder();
+            StringBuilder LastMoveMessage = new System.Text.StringBuilder();
+            if (io_PreviousPlayer.Team == ePlayerOptions.Player1)
+            {
+                playerTeam = s_Team1;
+            }
+            else
+            {
+                playerTeam = s_Team2;
+            }
             lastMove.AppendFormat(
                 "{0}{1}{2}{3}{4}",
                 (char)(io_StepExecuted.CurrentPosition.XCoord + 'A'),
@@ -262,8 +275,8 @@ namespace Checkers_UI
                  k_ArrowSign.ToString(),
                  (char)(io_StepExecuted.RequestedPosition.XCoord + 'A'),
                  (char)(io_StepExecuted.RequestedPosition.YCooord + 'a'));
-
-            messageToPrint.AppendFormat("{0}{1}{2}", io_PreviousPlayerName, s_LastMoveMessage, lastMove);
+            LastMoveMessage.AppendFormat(s_LastMoveMessageFormat,playerTeam);
+            messageToPrint.AppendFormat("{0}{1}{2}", playerName, LastMoveMessage,lastMove);
             Console.WriteLine(messageToPrint);
         }
 
@@ -377,9 +390,25 @@ namespace Checkers_UI
             Point startPosition;
             Point requestedPosition;
             CheckersGameStep requestedStep = new CheckersGameStep();
-            string playerNameHolder = SessionData.GetCurrentPlayer().PlayerName;
+            Player currentPlayer = SessionData.GetCurrentPlayer();
+
+
+            string playerNameHolder = currentPlayer.PlayerName;
+            string playersTeam = string.Empty;
             System.Text.StringBuilder messageToPrint = new System.Text.StringBuilder();
-            messageToPrint.AppendFormat("{0}{1}", playerNameHolder, s_EnterMoveMessage);
+            System.Text.StringBuilder enterMoveMessage = new System.Text.StringBuilder();
+
+
+            if (currentPlayer.Team==ePlayerOptions.Player1)
+            {
+                playersTeam = s_Team1;
+            }
+            else
+            {
+                playersTeam = s_Team2;
+            }
+            enterMoveMessage.AppendFormat(s_EnterMoveMessageFormat, playersTeam);
+            messageToPrint.AppendFormat("{0}{1}", playerNameHolder, enterMoveMessage);
 
             while (!isInputOk)
             {

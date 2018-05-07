@@ -79,7 +79,7 @@ namespace Checkers_UI
                     m_currentActivePlayer.MakeAMove(m_RequestedMove, m_CheckersBoard); // at the end of this method - we are ready to get the next move in the game
                     Ex02.ConsoleUtils.Screen.Clear();
                     UI.PrintCheckersBoard(m_CheckersBoard);
-                    UI.PrintLastMove(m_RequestedMove, m_currentActivePlayer.PlayerName);
+                    UI.PrintLastMove(m_RequestedMove, m_currentActivePlayer);
                     m_gameState = SessionData.checkGameState();
                 }
                 else
