@@ -88,7 +88,6 @@ namespace Checkers_LogicAndDataSection
             }
         }
 
-
         public CheckersGameStep GetRandomMoveForPc()
         {
             Random stepToExecuteIndex = new Random();
@@ -101,6 +100,7 @@ namespace Checkers_LogicAndDataSection
                 {
                     arr.Add(step);
                 }
+
                 foreach (CheckersGameStep step in s.m_PossibleRegularMovements)
                 {
                     arr.Add(step);
@@ -143,7 +143,7 @@ namespace Checkers_LogicAndDataSection
         }
 
         // in make a move there is the logic of switcing turns
-        //the rule is that after MakeAMove() the player that is playing the next move will be in current player in sessionData class 
+        // the rule is that after MakeAMove() the player that is playing the next move will be in current player in sessionData class 
         public void MakeAMove(CheckersGameStep io_MoveToExecute, GameBoard io_CheckersBoard)
         {
             GameBoard.Soldier currentSoldierToMove = io_CheckersBoard.GetSoldierFromMatrix(io_MoveToExecute.CurrentPosition);
@@ -189,8 +189,6 @@ namespace Checkers_LogicAndDataSection
 
             return someBodyAlive;
         }
-
-
 
         internal bool HasEatMoves()
         {
